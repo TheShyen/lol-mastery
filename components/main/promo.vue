@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="video-bg">
-      <video src="../../public/heroBg.webm" type="video/webm" autoplay muted loop></video>
+      <video src="../../media/heroBg.webm" type="video/webm" autoplay muted loop></video>
       <div class="effects"></div>
       <div class="video-bg__content">
         <h2 class="slogan">Анализируй. Изучай. Побеждай.</h2>
