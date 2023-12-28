@@ -8,8 +8,8 @@
         LoL Mastery
       </q-toolbar-title>
       <q-tabs class="tabs text-h7 q-mt-xs" >
-        <q-route-tab class="tab" name="images" @click="route.push('/')">Главная</q-route-tab>
-        <q-route-tab class="tab" name="videos" @click="route.push('/champions')">Чемпионы</q-route-tab>
+        <NuxtLink to="/"><q-route-tab class="tab" name="images">Главная</q-route-tab></NuxtLink>
+        <NuxtLink to="/champions"><q-route-tab class="tab" name="videos">Чемпионы </q-route-tab></NuxtLink>
         <q-route-tab class="tab" name="articles">Предметы</q-route-tab>
       </q-tabs>
     </q-toolbar>
