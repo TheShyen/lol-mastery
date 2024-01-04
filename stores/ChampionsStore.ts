@@ -6,11 +6,14 @@ function reformatData(data: { [key: string]: ChampionData }): ChampionData[] {
   return Object.values(data)
 }
 export const useChampionStore = defineStore('champion', () => {
-  const champions = ref<ChampionData[] | []>([])
+  const champions = ref<ChampionData[]>([])
 
   async function getChampions() {
-    const response: ChampionsInfoApi = await getChampionsFromApi();
-    champions.value = reformatData(response.data)
+    const response = await getChampionsFromApi();
+    if (response) {
+      champions.value = reformatData(response.data)
+    }
+
   }
   return {
     champions,

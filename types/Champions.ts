@@ -39,6 +39,7 @@ interface ChampionStats {
 }
 
 export interface ChampionData {
+  data: any;
   version: string;
   id: string;
   key: number;
