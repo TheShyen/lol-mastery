@@ -3,7 +3,7 @@ import getChampionsFromApi from "~/services/championService";
 import type {ChampionData, ChampionsInfoApi} from "~/types/Champions";
 
 function reformatData(data: { [key: string]: ChampionData }): ChampionData[] {
-  return Object.values(data)
+  return Object.values(data).sort((a, b) => a.name.localeCompare(b.name))
 }
 export const useChampionStore = defineStore('champion', () => {
   const champions = ref<ChampionData[]>([])

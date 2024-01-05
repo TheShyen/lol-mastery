@@ -19,17 +19,25 @@ defineProps(['champion'])
   padding: 0px
 .champion-card
   width: 100%
-  max-width: 260px
+  max-width: 250px
   max-height: 340px
+  transition: .3s
   &__image
-    height: 31vh
+    height: 35vh
     max-width: 260px
     object-fit: cover
+    
   &__name
     padding: 8px 15px
     background-color: #212121
     color: white
-
     text-transform: uppercase
     font-family: "Beaufort for LOL Bold"
+    transition: .3s
+      
+  &:hover
+    transform: scale(1.02)
+    .champion-card__name
+      padding: 8px 23px
+      background-color: #006680
 </style>

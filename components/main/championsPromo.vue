@@ -3,37 +3,22 @@
     <div class="champions">
       <div class="info">
         <div class="info__title">Чемпионы</div>
-        <div class="info__desc"></div>
-        <div class="info__btn"></div>
+        <div class="info__desc">Изучай их способности и возможности</div>
+        <MainButton/>
       </div>
-      <div class="roles">
-        <q-tabs class="roles__tabs">
-          <q-tab v-for="role in roles">
-            <img src="/media/assasins.svg" alt="aa"/>
-            {{ role }}
-          </q-tab>
-        </q-tabs>
-      </div>
+      
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type {ChampionData} from "~/types/Champions";
 
-const store = useChampionStore()
-
-const roles = ref(['Убийцы', 'Войны', 'Маги', 'Стрелки', 'Поддержка', 'Танки'])
-const champions = ref<ChampionData[] | []>([]);
-onMounted(() => {
-  store.getChampions()
-  champions.value = store.champions
-})
+import MainButton from "~/components/UI/MainButton.vue";
 </script>
 
 <style lang="sass" scoped>
 .champions
-  height: 800px
+  height: 500px
   background-color: #212121
 
 .info
@@ -42,12 +27,15 @@ onMounted(() => {
   justify-content: center
   flex-direction: column
   margin: 0 auto
-  padding-top: 150px
+  padding-top: 60px
   text-align: center
   
   &__title
     font-family: "Beaufort for LOL Bold"
     font-size: 74px
+  &__desc
+    font-family: "Beaufort for LOL Bold"
+    font-size: 44px
 
 .roles
   &__tabs

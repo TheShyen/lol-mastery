@@ -20,7 +20,7 @@ onMounted(async () => {
 
 <style scoped lang="sass">
 .champions
-  max-width: 1350px
+  max-width: 1300px
   margin: 100px auto 0
   min-height: 800px
 
