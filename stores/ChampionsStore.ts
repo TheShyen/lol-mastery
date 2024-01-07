@@ -1,9 +1,13 @@
 import {defineStore} from "pinia";
 import getChampionsFromApi from "~/services/championService";
-import type {ChampionData, ChampionsInfoApi} from "~/types/Champions";
+import type {ChampionData} from "~/types/Champions";
 
 function reformatData(data: { [key: string]: ChampionData }): ChampionData[] {
-  return Object.values(data).sort((a, b) => a.name.localeCompare(b.name))
+  return Object.keys(data).map(key => {
+    return {
+      ...data[key],
+    };
+  });
 }
 export const useChampionStore = defineStore('champion', () => {
   const champions = ref<ChampionData[]>([])
@@ -13,10 +17,14 @@ export const useChampionStore = defineStore('champion', () => {
     if (response) {
       champions.value = reformatData(response.data)
     }
+  }
 
+  function getChampion(id: string):ChampionData | null {
+    return champions.value.find((item) => item.id === id) || null
   }
   return {
     champions,
-    getChampions
+    getChampions,
+    getChampion
   }
 })

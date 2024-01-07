@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="champions">
+  <div class="champions">
+    <div class="champions__wrapper">
       <ChampionList :champions="champions"/>
     </div>
   </div>
@@ -20,8 +20,11 @@ onMounted(async () => {
 
 <style scoped lang="sass">
 .champions
-  max-width: 1300px
-  margin: 100px auto 0
-  min-height: 800px
+  background: #212121
+  padding-top: 100px
+  &__wrapper
+    margin: 0 auto
+    max-width: 1300px
+    min-height: 800px
 
 </style>

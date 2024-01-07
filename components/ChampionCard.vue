@@ -1,5 +1,5 @@
 <template>
-  <q-card class="champion-card">
+  <q-card class="champion-card" square flat @click="router.push(`/champions/${champion.id}`)">
     <img :src="getSplashArtImage(champion.id)" :alt="champion.name" class="champion-card__image">
 
     <q-card-section>
@@ -10,6 +10,7 @@
 
 <script setup lang="ts">
 import {getSplashArtImage} from "~/services/getSplashArtImage";
+const router = useRouter()
 
 defineProps(['champion'])
 </script>
@@ -29,15 +30,16 @@ defineProps(['champion'])
     
   &__name
     padding: 8px 15px
-    background-color: #212121
-    color: white
+    background-color: #F2E437
     text-transform: uppercase
     font-family: "Beaufort for LOL Bold"
     transition: .3s
       
   &:hover
     transform: scale(1.02)
+    cursor: pointer
+    color: #F2E437
     .champion-card__name
       padding: 8px 23px
-      background-color: #006680
+      background-color: #12211a
 </style>

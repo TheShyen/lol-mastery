@@ -33,10 +33,11 @@ import MainButton from "~/components/UI/MainButton.vue";
   &__title
     font-family: "Beaufort for LOL Bold"
     font-size: 74px
+    font-style: italic
   &__desc
     font-family: "Beaufort for LOL Bold"
     font-size: 44px
-
+    font-style: italic
 .roles
   &__tabs
     font-family: "Beaufort for LOL Bold"
