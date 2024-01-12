@@ -1,26 +1,25 @@
 <template>
   <div class="champions">
-    <div class="champions__wrapper">
-      <ChampionList :champions="champions"/>
+    <Spinner v-if="store.isLoading"/>
+    <div v-else class="champions__wrapper">
+      <ChampionList :champions="store.champions"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type {ChampionData} from "~/types/Champions";
 
+import Spinner from "~/components/UI/Spinner.vue";
 const store = useChampionStore()
 
-const champions = ref<ChampionData[] | []>([]);
 onMounted(async () => {
   await store.getChampions()
-  champions.value = store.champions
 })
 </script>
 
 <style scoped lang="sass">
 .champions
-  background: #212121
+  background: $secondary-bg-color
   padding-top: 100px
   &__wrapper
     margin: 0 auto
