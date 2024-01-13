@@ -3,7 +3,7 @@
     <div class="champion__wrapper">
       <div class="preview">
         <div class="splash-art">
-          <img :src="getSplashArtImage(<string>champion?.id)" :alt="champion?.id" class="splash-art__img"/>
+          <img :src="getSplashArtImageURL(<string>champion?.id)" :alt="champion?.id" class="splash-art__img"/>
           <div class="splash-art__subtitle">{{champion?.name}}</div>
           <div class="splash-art__title">{{champion?.title}}</div>
         </div>
@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import type {ChampionData} from "~/types/Champions";
-import {getSplashArtImage} from "~/services/getSplashArtImage";
+import {getSplashArtImageURL} from "~/services/getSplashArtImageURL";
 
 const route = useRoute()
 const store = useChampionStore()

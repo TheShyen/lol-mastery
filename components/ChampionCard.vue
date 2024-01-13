@@ -1,6 +1,6 @@
 <template>
   <q-card class="champion-card" square flat @click="router.push(`/champions/${champion.id}`)">
-    <img :src="getSplashArtImage(champion.id)" :alt="champion.name" class="champion-card__image">
+    <img :src="getSplashArtImageURL(champion.id)" :alt="champion.name" class="champion-card__image">
 
     <q-card-section>
       <div class="champion-card__name text-h6">{{champion.name}}</div>
@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import {getSplashArtImage} from "~/services/getSplashArtImage";
+import {getSplashArtImageURL} from "~/services/getSplashArtImageURL";
 const router = useRouter()
 
 defineProps(['champion'])
@@ -24,9 +24,10 @@ defineProps(['champion'])
   max-height: 340px
   transition: .3s
   &__image
-    height: 35vh
+    height: 280px
     max-width: 260px
     object-fit: cover
+    object-position: 80% center
     
   &__name
     padding: 8px 15px
