@@ -1,7 +1,7 @@
 <template>
   <div class="button">
     <q-btn>
-      К чемпионам
+      <slot/>
     </q-btn>
   </div>
   

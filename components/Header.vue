@@ -30,20 +30,20 @@ const languageStyle = { backgroundColor: '#F2E437', fontFamily: 'Helvetica Neue 
 
 <style scoped lang="sass">
 .name
-  color: #F2E437
+  color: $gold-color
   font-family: "Helvetica Neue Bold", sans-serif
 .header
-  background: #16171B
+  background: $primary-bg-color
 
 .tabs
-  color: #F2E437
+  color: $gold-color
   font-family: "Helvetica Neue Bold", sans-serif
   font-size: 22px
 .tab
   text-transform: none
   
 .lang
-  color: #F2E437
+  color: $gold-color
   font-family: "Helvetica Neue Bold", sans-serif
   font-size: 18px
   width: 80px

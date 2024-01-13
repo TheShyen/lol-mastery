@@ -3,4 +3,4 @@ export enum LANGUAGE {
   ENG = "Eng"
 }
 
-export const languageArray:string[] = [LANGUAGE.RU, LANGUAGE.ENG]
+export const languageArray:['Ru', 'Eng'] = [LANGUAGE.RU, LANGUAGE.ENG]

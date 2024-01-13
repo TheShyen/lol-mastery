@@ -31,7 +31,7 @@ defineProps(['champion'])
     
   &__name
     padding: 8px 15px
-    background-color: #F2E437
+    background-color: $gold-color
     text-transform: uppercase
     font-family: "Beaufort for LOL Bold"
     transition: .3s
@@ -39,7 +39,7 @@ defineProps(['champion'])
   &:hover
     transform: scale(1.02)
     cursor: pointer
-    color: #F2E437
+    color: $gold-color
     .champion-card__name
       padding: 8px 23px
       background-color: #12211a
