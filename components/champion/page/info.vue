@@ -37,13 +37,13 @@
             </q-tabs>
 
             <q-tab-panels v-model="tab" animated>
-              <q-tab-panel :name="champion.passive.name" class="ability-desc">
-                <div class="text-h5">{{ champion.passive.name }}</div>
-                <div v-html="champion.passive.description"></div>
+              <q-tab-panel :name="champion.passive.name">
+                <div class="text-h5 ability-title">{{ champion.passive.name }}</div>
+                <div v-html="champion.passive.description" class="ability-desc"></div>
               </q-tab-panel>
-              <q-tab-panel v-for='ability of champion.spells' :name="ability.name" class="ability-desc">
-                <div class="text-h5">{{ ability.name }}</div>
-                <div v-html="ability.description"></div>
+              <q-tab-panel v-for='ability of champion.spells' :name="ability.name">
+                <div class="text-h5 ability-title">{{ ability.name }}</div>
+                <div v-html="ability.description" class="ability-desc"></div>
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -167,8 +167,11 @@ const tab = ref('')
   box-shadow: none
 .q-tab-panels
   background: none
-.ability-desc
+.ability-title
   color: $gold-color
+.ability-desc
+  color: $blue-color
   font-family: "Helvetica Neue Bold", sans-serif
   font-size: 14px
+  margin-top: 10px
 </style>

@@ -1,22 +1,19 @@
-import {type ChampionsInfoApi} from "~/types/Champions";
-import type {_AsyncData} from "#app/composables/asyncData";
-import {FetchError} from "ofetch";
-import type { ChampionFullInfoFromApi} from "~/types/ChampionInfo";
 
-export async function getChampionsFromApi() {
+import type {ChampionFullInfoFromApi} from "~/types/ChampionInfo";
+import type {ChampionsInfoApi} from "~/types/Champions";
+
+export async function getChampionsFromApi():Promise<ChampionsInfoApi> {
   try {
-    const {data: champions}:  _AsyncData<ChampionsInfoApi, FetchError<FetchError> | null> = await useFetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/ru_RU/champion.json');
-    return champions.value
+    return await $fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/ru_RU/champion.json')
   } catch (err) {
     const error = err as Error;
     throw new Error('Ошибка при получении данных:' + error.message);
   }
 }
 
-export async function getChampionInfoFromApi(name: string)  {
+export async function getChampionInfoFromApi(name: string): Promise<ChampionFullInfoFromApi>  {
   try {
-    const {data: champion}:  _AsyncData<ChampionFullInfoFromApi, FetchError<FetchError> | null> = await useFetch(`https://ddragon.leagueoflegends.com/cdn/13.24.1/data/ru_RU/champion/${name}.json`);
-    return champion.value
+    return await $fetch(`https://ddragon.leagueoflegends.com/cdn/13.24.1/data/ru_RU/champion/${name}.json`)
   } catch (err) {
     const error = err as Error;
     throw new Error('Ошибка при получении данных:' + error.message);

@@ -15,7 +15,7 @@ export const useChampionStore = defineStore('championPage', () => {
       const response = await getChampionsFromApi();
       champions.value = reformatData(response.data)
     } catch (err) {
-      console.log(err)
+      console.error(err)
     } finally {
       isLoading.value = false;
     }
@@ -27,8 +27,7 @@ export const useChampionStore = defineStore('championPage', () => {
       const response =  await getChampionInfoFromApi(name)
       return response.data[name]
     } catch (err) {
-      console.log(err)
-      return null
+      console.error(err)
     } finally {
       isLoading.value = false;
     }

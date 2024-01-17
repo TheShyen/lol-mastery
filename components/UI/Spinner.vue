@@ -2,7 +2,7 @@
   <div class="spinner">
     <q-spinner
         :thickness="10"
-        color="black"
+        color="yellow"
         size="10em"
     />
   </div>

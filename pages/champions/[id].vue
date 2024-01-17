@@ -4,7 +4,7 @@
     <Error v-if="!champion"/>
     <ChampionPage v-else>
       <ChampionPagePreview :champion="champion"/>
-      <ChampionPageInfo :champion="champion" :initialTab="tab"/>
+      <ChampionPageInfo :champion="champion"/>
     </ChampionPage>
   </div>
 </template>
@@ -21,7 +21,6 @@ import Spinner from "~/components/UI/Spinner.vue";
 const route = useRoute()
 const store = useChampionStore()
 const champion = ref<ChampionDetailedInfo | null>(null)
-const tab = ref('aboba')
 onMounted(async () => {
   champion.value = await store.getChampion(route.params.id as string)
 })

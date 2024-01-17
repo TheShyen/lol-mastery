@@ -12,8 +12,8 @@
 import Spinner from "~/components/UI/Spinner.vue";
 const store = useChampionStore()
 
-onMounted(() => {
-  store.getChampions()
+onMounted( () => {
+ store.getChampions()
 })
 </script>
 
