@@ -82,16 +82,4 @@ defineProps<{
     letter-spacing: 0.1em
     transform: translateX(-50%)
 
-.subtitle
-  font-family: "Beaufort for LOL Bold"
-  font-style: italic
-  font-weight: bolder
-  color: white
-  text-transform: uppercase
-
-.title
-  font-family: "Beaufort for LOL Bold"
-  font-style: italic
-  color: white
-  text-transform: uppercase
 </style>
