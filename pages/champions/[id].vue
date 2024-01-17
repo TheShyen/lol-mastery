@@ -38,30 +38,29 @@
                   </q-tab>
                   <q-tab v-for="spell of champion.spells" :name="spell.name">
                     <img :src="getSpellImageURL(spell.image.full)" alt="spell"/>
-                    <div class="keybind">{{spell.id.slice(-1)}}</div>
                   </q-tab>
                 </q-tabs>
 
                 <q-tab-panels v-model="tab" animated>
                   <q-tab-panel :name="champion.passive.name" class="ability-desc">
                     <div class="text-h5">{{ champion.passive.name }}</div>
-                    {{ champion.passive.description }}
+                    <div v-html="champion.passive.description"></div>
                   </q-tab-panel>
                   <q-tab-panel v-for='ability of champion.spells' :name="ability.name" class="ability-desc">
                     <div class="text-h5">{{ ability.name }}</div>
-                    {{ ability.description }}
+                    <div v-html="ability.description"></div>
                   </q-tab-panel>
                 </q-tab-panels>
               </q-card>
             </div>
             <div class="spells-video">
               <video class="spells-video__source" muted autoplay loop v-show="tab === champion.passive.name">
-                <source :src="getSpellVideoURL(champion.key, 'P')" type="video/webm">
+                <source :src="getSpellVideoURL(reformatChampionKey(champion.key), 'P')" type="video/webm">
               </video>
-              <template v-for="spell of champion.spells">
-                <video class="spells-video__source" muted autoplay loop v-show="tab === spell.name">
-                  <source :src="getSpellVideoURL(champion.key, spell.id.slice(-1))" type="video/webm">
-                </video>
+              <template v-for="(spell, index) of champion.spells" :key="spell.name">
+                  <video class="spells-video__source" muted autoplay loop v-show="tab === spell.name">
+                    <source :src="getSpellVideoURL(reformatChampionKey(champion.key), keys[index])" type="video/webm">
+                  </video>
               </template>
             </div>
           </div>
@@ -72,6 +71,7 @@
 </template>
 
 <script setup lang="ts">
+
 import {getSplashArtImageURL} from "~/services/getSplashArtImageURL";
 import type {ChampionDetailedInfo} from "~/types/ChampionInfo";
 import {ROLES} from "../../constants/roles";
@@ -80,15 +80,18 @@ import Error from "~/components/error.vue";
 import Spinner from "~/components/UI/Spinner.vue";
 import {getSpellVideoURL} from "~/services/getSpellVideoURL";
 
+
 const route = useRoute()
 const store = useChampionStore()
 const champion = ref<ChampionDetailedInfo | null>(null)
-const tab = ref('mails')
-
+const tab = ref('aboba')
+const keys = ['Q', 'W', 'E', 'R']
 onMounted(async () => {
   champion.value = await store.getChampion(route.params.id as string)
+  if (champion.value) {
+    tab.value = champion.value.passive.name
+  }
 })
-
 </script>
 
 <style scoped lang="sass">
@@ -101,7 +104,7 @@ onMounted(async () => {
   &__wrapper
     max-width: 1100px
     margin: 0 auto
-    min-height: 750px
+    min-height: 700px
 
 .bg-image
   position: absolute
@@ -168,7 +171,7 @@ onMounted(async () => {
   background: $secondary-bg-color
 
   &__wrapper
-    max-width: 1500px
+    max-width: 1300px
     margin: 0 auto
     min-height: 850px
 
@@ -213,7 +216,7 @@ onMounted(async () => {
 .spells
   display: flex
   justify-content: space-between
-  align-items: start
+  align-items: flex-start
   flex-direction: row
 
 .spells-info
@@ -229,10 +232,10 @@ onMounted(async () => {
     background-color: $secondary-bg-color
     width: 500px
 .spells-video
-
+  padding-top: 50px
   &__source
-    width: 700px
-    height: 480px
+    width: 550px
+    height: 400px
 
 
 .keybind
