@@ -10,9 +10,12 @@
 
 <script setup lang="ts">
 import {getSplashArtImageURL} from "~/services/getSplashArtImageURL";
+import type {ChampionData} from "~/types/Champions";
 const router = useRouter()
 
-defineProps(['champion'])
+defineProps<{
+  champion: ChampionData
+}>()
 </script>
 
 <style scoped lang="sass">

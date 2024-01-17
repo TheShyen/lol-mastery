@@ -3,20 +3,7 @@
   <div v-else>
     <Error v-if="!champion"/>
     <div v-else>
-      <section class="champion-promo">
-        <div class='bg-image' :style="{ backgroundImage: `url(${getSplashArtImageURL(<string>champion.id)})` }">
-          <div class="overlay"></div>
-        </div>
-        <div class="champion-promo__wrapper">
-          <div class="preview">
-            <div class="splash-art">
-              <img :src="getSplashArtImageURL(<string>champion.id)" :alt="champion.id" class="splash-art__img"/>
-              <div class="splash-art__subtitle subtitle">{{ champion.name }}</div>
-              <div class="splash-art__title title">{{ champion.title }}</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ChampionPagePreview :champion="champion"/>
       <section class="champion-info">
         <div class="champion-info__wrapper">
           <div class="info">

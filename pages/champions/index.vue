@@ -1,7 +1,7 @@
 <template>
-  <div class="champions">
-    <Spinner v-if="store.isLoading"/>
-    <div v-else class="champions__wrapper">
+  <Spinner v-if="store.isLoading"/>
+  <div v-else class="champions">
+    <div  class="champions__wrapper">
       <ChampionList :champions="store.champions"/>
     </div>
   </div>
@@ -12,8 +12,8 @@
 import Spinner from "~/components/UI/Spinner.vue";
 const store = useChampionStore()
 
-onMounted(async () => {
-  await store.getChampions()
+onMounted(() => {
+  store.getChampions()
 })
 </script>
 

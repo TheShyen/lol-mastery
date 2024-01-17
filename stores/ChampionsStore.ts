@@ -6,7 +6,7 @@ import type {ChampionDetailedInfo} from "~/types/ChampionInfo";
 function reformatData(data: { [key: string]: ChampionData }): ChampionData[] {
   return Object.values(data).sort((a, b) => a.name.localeCompare(b.name))
 }
-export const useChampionStore = defineStore('champion', () => {
+export const useChampionStore = defineStore('championPage', () => {
   const champions = ref<ChampionData[]>([])
   const isLoading = ref(false)
   async function getChampions() {
