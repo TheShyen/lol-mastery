@@ -1,3 +1,5 @@
+import type {Image} from "~/types/ImageType";
+
 interface ChampionInfo {
   attack: number;
   defense: number;
@@ -5,15 +7,7 @@ interface ChampionInfo {
   difficulty: number;
 }
 
-interface ChampionImage {
-  full: string;
-  sprite: string;
-  group: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
+
 
 interface ChampionStats {
   hp: number;
@@ -46,7 +40,7 @@ export interface ChampionData {
   title: string;
   blurb: string;
   info: ChampionInfo;
-  image: ChampionImage;
+  image: Image;
   tags: string[];
   partype: string;
   stats: ChampionStats;

@@ -1,12 +1,12 @@
 import {defineStore} from "pinia";
 import {getChampionInfoFromApi, getChampionsFromApi} from "~/services/championService";
 import type {ChampionData} from "~/types/Champions";
-import type {ChampionDetailedInfo} from "~/types/ChampionInfo";
+
 
 function reformatData(data: { [key: string]: ChampionData }): ChampionData[] {
   return Object.values(data).sort((a, b) => a.name.localeCompare(b.name))
 }
-export const useChampionStore = defineStore('championPage', () => {
+export const useChampionStore = defineStore('champions', () => {
   const champions = ref<ChampionData[]>([])
   const isLoading = ref(false)
   async function getChampions() {
