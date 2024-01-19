@@ -10,7 +10,7 @@
       <q-tabs class="tabs q-mt-xs" >
         <q-route-tab class="tab" name="images" @click="route.push('/')">Главная</q-route-tab>
         <q-route-tab class="tab" name="videos" @click="route.push('/champions')">Чемпионы</q-route-tab>
-        <q-route-tab class="tab" name="articles">Предметы</q-route-tab>
+        <q-route-tab class="tab" name="articles" @click="route.push('/items')">Предметы</q-route-tab>
       </q-tabs>
       <q-select square filled v-model="language" color="black" bg-color="yellow" :popup-content-style="languageStyle" :options="languageArray" class="lang"/>
     </q-toolbar>

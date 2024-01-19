@@ -9,3 +9,7 @@ export function getSpellImageURL(name: string):string {
 export function getPassiveImageURL(name: string):string {
     return urlConstruction(BASE_URL_IMAGE, `passive/${name}`)
 }
+
+export function getItemImageUrl(name: string): string {
+  return urlConstruction(BASE_URL_IMAGE, `item/${name}`)
+}

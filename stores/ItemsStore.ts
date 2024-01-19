@@ -8,7 +8,7 @@ function reformatData(data: Record<string,ItemDataFromApi>): ItemData[] {
       ...data[key],
       id: key
     }
-  })
+  }).filter(item => item.gold.purchasable)
 }
 export const useItemStore = defineStore('items', () => {
 
@@ -28,6 +28,7 @@ export const useItemStore = defineStore('items', () => {
 
 
   return {
+    items,
     isLoading,
     getItems
   }
