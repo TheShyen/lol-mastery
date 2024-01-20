@@ -9,7 +9,7 @@
             <div class="item-info">
               <div>{{ item.name }}</div>
               <div>{{ item.plaintext }}</div>
-              <div>{{ item.description }}</div>
+              <div v-html="item.description"></div>
               <div>{{ item.gold.base }}</div>
             </div>
           </q-menu>
