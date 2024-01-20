@@ -1,3 +1,3 @@
 import {getActualGameVersion} from "~/services/getActualGameVersion";
 
-export const version = await getActualGameVersion()
+export const version = getActualGameVersion()
