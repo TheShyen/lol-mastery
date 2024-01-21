@@ -5,12 +5,12 @@
       <div class="items-list">
         <div v-for="item in store.items" :key="item.name" class="item" @click="console.log(item)">
           <img :alt="item.name" :src="getItemImageUrl(item.image.full)" class="item__icon"/>
-          <q-menu fit anchor="bottom start" self="top left" dark square>
+          <q-menu fit anchor="bottom start" self="top left" dark square max-height="300">
             <div class="item-info">
               <div>{{ item.name }}</div>
               <div>{{ item.plaintext }}</div>
               <div v-html="item.description"></div>
-              <div>{{ item.gold.base }}</div>
+              <div>{{ item.gold.total }}</div>
             </div>
           </q-menu>
         </div>
@@ -61,4 +61,5 @@ onMounted(() => {
     color: #FFFFFF
 .item-info
   padding: 10px 10px
+  max-width: 500px
 </style>

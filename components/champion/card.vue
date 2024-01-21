@@ -1,7 +1,6 @@
 <template>
   <q-card class="champion-card" square flat @click="router.push(`/champions/${champion.id}`)">
-    <q-img :src="getSplashArtImageURL(champion.id)" :alt="champion.name" class="champion-card__image"></q-img>
-
+    <q-img :src="getSplashArtImageURL(champion.id)" :alt="champion.name" class="champion-card__image" position="80% 50%"></q-img>
     <q-card-section>
       <div class="champion-card__name text-h6">{{champion.name}}</div>
     </q-card-section>
@@ -23,9 +22,10 @@ defineProps<{
   background: none
 .q-card__section--vert
   padding: 0px
-q-img__image
-  object-fit: cover
-  object-position: 80% center
+.q-img
+  &__image
+    object-fit: cover
+    object-position: 80% 50%
 .champion-card
   width: 100%
   max-width: 250px
