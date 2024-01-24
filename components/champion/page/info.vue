@@ -9,7 +9,7 @@
           </div>
           <div class="difficult">
             <div class="head">Сложность</div>
-            <div class="subhead">{{ champion.info.difficulty }}</div>
+            <div class="subhead">{{ calcDifficult(champion.info.difficulty) }}</div>
           </div>
         </div>
         <div class="info__divider"></div>
@@ -69,6 +69,7 @@ import {getPassiveImageURL, getSpellImageURL} from "~/services/getSpellImageUrl"
 import {getSpellVideoURL} from "~/services/getSpellVideoURL";
 import {ROLES} from "~/constants/roles";
 import type {ChampionDetailedInfo} from "~/types/ChampionInfo";
+import {calcDifficult} from "~/utils/calcDifficult";
 
 
 const props = defineProps<{
@@ -103,7 +104,7 @@ const tab = ref('')
 
   &__left
     display: flex
-    justify-content: center
+    justify-content: space-around
     align-items: center
     flex-direction: row
     text-align: center

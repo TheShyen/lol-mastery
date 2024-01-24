@@ -7,9 +7,9 @@
           <img :alt="item.name" :src="getItemImageUrl(item.image.full)" class="item__icon"/>
           <q-menu fit anchor="bottom start" self="top left" dark square max-height="300">
             <div class="item-info">
-              <div>{{ item.name }}</div>
+              <div class="item-info__name">{{ item.name }}</div>
               <div>{{ item.plaintext }}</div>
-              <div v-html="item.description"></div>
+              <div v-html="formatText(item.description)"></div>
               <div>{{ item.gold.total }}</div>
             </div>
           </q-menu>
@@ -30,13 +30,37 @@ const store = useItemStore()
 onMounted(() => {
   store.getItems()
 })
+
+const colorMap = {
+  attention: '#b9265d',
+  passive: '#00D2F4',
+  rules: '#f17006',
+  status: '#7fe193',
+  lifeSteal: 'red',
+  ornnBonus: '#b9265d',
+};
+function formatText(originalText: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(originalText, 'text/html');
+
+  const applyStyles = (element: HTMLElement) => {
+    const tagName = element.tagName.toLowerCase();
+    if (colorMap[tagName]) {
+      element.style.color = colorMap[tagName];
+    }
+    Array.from(element.children).forEach(applyStyles);
+  };
+
+  Array.from(doc.body.children).forEach(applyStyles);
+  return doc.body.innerHTML;
+}
 </script>
 
 <style scoped lang="sass">
 .items
   background: $secondary-bg-color
   padding-top: 100px
-
+  color: #8fc4ad
   &__wrapper
     margin: 0 auto
     max-width: 1300px
@@ -62,4 +86,6 @@ onMounted(() => {
 .item-info
   padding: 10px 10px
   max-width: 500px
+  &__name
+    color: burlywood
 </style>
