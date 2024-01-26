@@ -4,11 +4,11 @@
       <div class="info">
         <div class="info__left">
           <div class="role">
-            <div class="head">Роль</div>
-            <div class="subhead">{{ ROLES[champion.tags[0]] }}</div>
+            <div class="head">{{ $t('role') }}</div>
+            <div class="subhead">{{ calcRole(champion.tags[0]) }}</div>
           </div>
           <div class="difficult">
-            <div class="head">Сложность</div>
+            <div class="head">{{ $t('difficulty') }}</div>
             <div class="subhead">{{ calcDifficult(champion.info.difficulty) }}</div>
           </div>
         </div>
@@ -17,7 +17,7 @@
       </div>
       <div class="spells">
         <div class="spells-info">
-          <div class="title spells-info__title">Умения</div>
+          <div class="title spells-info__title">{{ $t('abilities') }}</div>
           <q-card class="spells-info__abilities">
             <q-tabs
                 v-model="tab"
@@ -43,7 +43,9 @@
               </q-tab-panel>
               <q-tab-panel v-for='ability of champion.spells' :name="ability.name">
                 <div class="text-h5 ability-title">{{ ability.name }}</div>
+                <div class="ability-desc" v-html="reformatAbilityDesc(ability.tooltip)"></div>
                 <div v-html="ability.description" class="ability-desc"></div>
+                <div class="ability-title" style="padding-top: 10px">"?" обозначает что данные не доступны с Riot API. Вы можете уточнить скрытые данные в клиенте игры League of Legends</div>
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -67,9 +69,9 @@
 
 import {getPassiveImageURL, getSpellImageURL} from "~/services/getSpellImageUrl";
 import {getSpellVideoURL} from "~/services/getSpellVideoURL";
-import {ROLES} from "~/constants/roles";
 import type {ChampionDetailedInfo} from "~/types/ChampionInfo";
 import {calcDifficult} from "~/utils/calcDifficult";
+import {calcRole} from "~/utils/calcRole";
 
 
 const props = defineProps<{
@@ -80,9 +82,13 @@ onMounted(() => {
   if (props.champion) {
     tab.value = props.champion.passive.name
   }
+  
 })
 const keys = ['Q', 'W', 'E', 'R']
 const tab = ref('')
+function reformatAbilityDesc(inputString: string) {
+  return inputString.replace(/{{(.*?)}}/g, '?');
+}
 </script>
 
 <style scoped lang="sass">

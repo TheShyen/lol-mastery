@@ -3,14 +3,13 @@
   <div v-else class="items">
     <div class="items__wrapper">
       <div class="items-list">
-        <div v-for="item in store.items" :key="item.name" class="item" @click="console.log(item)">
+        <div v-for="item in store.items" :key="item.name" class="item">
           <img :alt="item.name" :src="getItemImageUrl(item.image.full)" class="item__icon"/>
           <q-menu fit anchor="bottom start" self="top left" dark square max-height="300">
             <div class="item-info">
               <div class="item-info__name">{{ item.name }}</div>
-              <div>{{ item.plaintext }}</div>
               <div v-html="formatText(item.description)"></div>
-              <div>{{ item.gold.total }}</div>
+              <div class="item-info__cost">Стоимость: {{ item.gold.total }}</div>
             </div>
           </q-menu>
         </div>
@@ -26,18 +25,23 @@ import {useItemStore} from "~/stores/ItemsStore";
 import {getItemImageUrl} from "~/services/getSpellImageUrl";
 
 const store = useItemStore()
-
+const langStore = useLangStore()
 onMounted(() => {
   store.getItems()
 })
-
+watch(() => langStore.locale, ()=> {
+  store.getItems()
+})
 const colorMap = {
   attention: '#b9265d',
+  active: '#b1d376',
   passive: '#00D2F4',
   rules: '#f17006',
   status: '#7fe193',
   lifeSteal: 'red',
-  ornnBonus: '#b9265d',
+  ornnbonus: '#b9265d',
+  nerfedstat: '#c7b8e3',
+  buffedstat: '#c7b8e3'
 };
 function formatText(originalText: string) {
   const parser = new DOMParser();
@@ -60,7 +64,7 @@ function formatText(originalText: string) {
 .items
   background: $secondary-bg-color
   padding-top: 100px
-  color: #8fc4ad
+  color: #b41a7b
   &__wrapper
     margin: 0 auto
     max-width: 1300px
@@ -87,5 +91,8 @@ function formatText(originalText: string) {
   padding: 10px 10px
   max-width: 500px
   &__name
-    color: burlywood
+    color: #eacaa0
+  &__cost
+    color: $gold-color
+    padding-top: 10px
 </style>

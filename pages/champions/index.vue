@@ -11,9 +11,13 @@
 
 import Spinner from "~/components/UI/Spinner.vue";
 const store = useChampionStore()
+const langStore = useLangStore()
 
 onMounted( () => {
  store.getChampions()
+})
+watch(() => langStore.locale, ()=> {
+  store.getChampions()
 })
 </script>
 

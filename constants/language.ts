@@ -1,5 +1,14 @@
 export enum LANGUAGE {
-  RU = "Ru",
-  ENG = "Eng"
+  Ru = "Ru",
+  Eng = "Eng"
 }
-export const languageArray:LANGUAGE[] = [LANGUAGE.RU, LANGUAGE.ENG]
+type LangMapType = {
+  Ru: string;
+  Eng: string;
+  [key: string]: string;
+};
+export const languageMap:LangMapType = {
+  Ru: "ru_RU",
+  Eng: "en_US"
+}
+export const languageArray:LANGUAGE[] = [LANGUAGE.Ru, LANGUAGE.Eng]

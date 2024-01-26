@@ -38,6 +38,6 @@ export const useChampionStore = defineStore('champions', () => {
     isLoading,
     champions,
     getChampions,
-    getChampion
+    getChampion,
   }
 })

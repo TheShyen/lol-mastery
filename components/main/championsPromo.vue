@@ -2,8 +2,8 @@
   <div>
     <div class="champions">
       <div class="info">
-        <div class="info__title">Чемпионы</div>
-        <div class="info__desc">Изучай их способности и возможности</div>
+        <div class="info__title">{{ $t('champions') }}</div>
+        <div class="info__desc">{{ $t('mainChampPromo') }}</div>
         <MainButton/>
       </div>
       

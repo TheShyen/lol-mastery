@@ -8,22 +8,21 @@
         LoLMastery
       </q-toolbar-title>
       <q-tabs class="tabs q-mt-xs" >
-        <q-route-tab class="tab" name="images" @click="route.push('/')">Главная</q-route-tab>
-        <q-route-tab class="tab" name="videos" @click="route.push('/champions')">Чемпионы</q-route-tab>
-        <q-route-tab class="tab" name="articles" @click="route.push('/items')">Предметы</q-route-tab>
+        <q-route-tab class="tab" name="images" @click="route.push('/')">{{ $t('main') }}</q-route-tab>
+        <q-route-tab class="tab" name="videos" @click="route.push('/champions')">{{ $t('champions') }}</q-route-tab>
+        <q-route-tab class="tab" name="articles" @click="route.push('/items')">{{ $t('items') }}</q-route-tab>
       </q-tabs>
-      <q-select square filled v-model="language" color="black" bg-color="yellow" :popup-content-style="languageStyle" :options="languageArray" class="lang"/>
+      <q-select square filled v-model="languageStore.locale" color="black" bg-color="yellow" :popup-content-style="languageStyle" :options="languageArray" class="lang"/>
     </q-toolbar>
   </q-header>
 </template>
 
 <script setup lang="ts">
-
-import {LANGUAGE, languageArray} from "~/constants/language";
+import {languageArray} from "~/constants/language";
+import {useLangStore} from "~/stores/LanguageStore";
 
 const route = useRouter()
-
-const language = ref(LANGUAGE.RU)
+const languageStore = useLangStore()
 
 const languageStyle = { backgroundColor: '#F2E437', fontFamily: 'Helvetica Neue Bold'}
 </script>
