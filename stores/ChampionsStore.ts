@@ -32,8 +32,8 @@ export const useChampionStore = defineStore('champions', () => {
     } finally {
       isLoading.value = false;
     }
-
   }
+
   return {
     isLoading,
     champions,

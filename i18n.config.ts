@@ -13,6 +13,10 @@ export default defineI18nConfig(() => ({
       role: 'Role',
       difficulty: 'Difficulty',
       abilities: 'Abilities',
+      symbolInfo: '"?" indicates data not available from Riot API. You can confirm undisclosed values in League of Legends game client',
+      cost: 'Cost(mana/energy):',
+      cooldown: 'Cooldown(second):',
+      goldCost: 'Price:'
 
     },
     Ru: {
@@ -24,6 +28,10 @@ export default defineI18nConfig(() => ({
       role: 'Роль',
       difficulty: 'Сложность',
       abilities: 'Умения',
+      symbolInfo: '"?" обозначает что данные не доступны с Riot API. Вы можете уточнить скрытые данные в клиенте игры League of Legends',
+      cost: 'Стоимость(маны/энергии):',
+      cooldown: 'Перезарядка(секунды):',
+      goldCost: 'Стоимость:'
     }
   }
 }))

@@ -9,7 +9,7 @@
             <div class="item-info">
               <div class="item-info__name">{{ item.name }}</div>
               <div v-html="formatText(item.description)"></div>
-              <div class="item-info__cost">Стоимость: {{ item.gold.total }}</div>
+              <div class="item-info__cost">{{$t('goldCost')}} {{ item.gold.total }}</div>
             </div>
           </q-menu>
         </div>
@@ -73,12 +73,15 @@ function formatText(originalText: string) {
 .items-list
   display: flex
   flex-wrap: wrap
-  justify-content: space-between
+  justify-content: space-evenly
+  gap: 10px 10px
 
 .item
   text-align: center
-  margin: 10px
-
+  cursor: pointer
+  &:hover
+    transition: 0.5s all
+    transform: scale(1.1)
   &__icon
     width: 50px
     height: 50px

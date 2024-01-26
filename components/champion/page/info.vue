@@ -43,9 +43,11 @@
               </q-tab-panel>
               <q-tab-panel v-for='ability of champion.spells' :name="ability.name">
                 <div class="text-h5 ability-title">{{ ability.name }}</div>
-                <div class="ability-desc" v-html="reformatAbilityDesc(ability.tooltip)"></div>
+                <div class="ability-cost-cooldown">{{$t('cost')}} {{ability?.costBurn}}</div>
+                <div class="ability-cost-cooldown">{{$t('cooldown')}} {{ability?.cooldownBurn}}</div>
+                <div class="ability-tooltip" v-html="reformatAbilityDesc(ability.tooltip)"></div>
                 <div v-html="ability.description" class="ability-desc"></div>
-                <div class="ability-title" style="padding-top: 10px">"?" обозначает что данные не доступны с Riot API. Вы можете уточнить скрытые данные в клиенте игры League of Legends</div>
+                <div class="ability-title" style="padding-top: 10px">{{$t('symbolInfo')}}</div>
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -181,4 +183,14 @@ function reformatAbilityDesc(inputString: string) {
   font-family: "Helvetica Neue Bold", sans-serif
   font-size: 14px
   margin-top: 10px
+.ability-tooltip
+  color: #f86b6b
+  font-family: "Helvetica Neue Bold", sans-serif
+  font-size: 14px
+  margin-top: 10px
+.ability-cost-cooldown
+  color: #56cca8
+  font-family: "Helvetica Neue Bold", sans-serif
+  font-size: 13px
+  margin-top: 2px
 </style>
