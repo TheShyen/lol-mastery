@@ -20,19 +20,20 @@
         color="yellow"
         debounce="500"
         filled
+        @keydown.enter.stop="searchAccount(search)"
         label-slot
         label-color="yellow"
         square
       >
         <template v-slot:append>
-          <q-icon color="yellow" name="search"/>
+          <q-icon color="yellow" name="search" @click="searchAccount(search)"/>
         </template>
         <template v-slot:label>
           {{$t('search')}}
         </template>
       </q-input>
       <q-list separator v-if="search.length">
-        <q-item v-for="champ in searchResult" v-ripple clickable class="search-item">
+        <q-item v-for="champ in searchResult" v-ripple clickable class="search-item" @click="openChampionPage(champ)">
           <q-item-section avatar>
             <q-avatar square>
               <q-img :src="getSquareChampionImg(champ.image.full)"></q-img>
@@ -57,6 +58,7 @@ import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
 const route = useRouter()
 const languageStore = useLangStore()
 const champStore = useChampionStore()
+const accountStore = useAccountStore()
 const languageStyle = { backgroundColor: '#F2E437', fontFamily: 'Helvetica Neue Bold'}
 const search = ref('')
 const searchResult = ref<ChampionData[]>([])
@@ -69,6 +71,14 @@ watch(search, () => {
   
 })
 
+function openChampionPage(champ: ChampionData) {
+  route.push(`/champions/${champ.id}`)
+  search.value = ''
+}
+
+function searchAccount(val:string) {
+  console.log(accountStore.getAccountInfo(val))
+}
 </script>
 
 <style scoped lang="sass">

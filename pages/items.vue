@@ -4,7 +4,11 @@
     <div class="items__wrapper">
       <div class="items-list">
         <div v-for="item in store.items" :key="item.name" class="item">
-          <img :alt="item.name" :src="getItemImageUrl(item.image.full)" class="item__icon"/>
+          <q-img :alt="item.name" :src="getItemImageUrl(item.image.full)" loading="eager" class="item__icon">
+            <template v-slot:loading>
+              <q-skeleton square size="50px" />
+            </template>
+          </q-img>
           <q-menu fit anchor="bottom start" self="top left" dark square max-height="300">
             <div class="item-info">
               <div class="item-info__name">{{ item.name }}</div>
