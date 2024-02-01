@@ -17,7 +17,8 @@ export default defineI18nConfig(() => ({
       cost: 'Cost(mana/energy):',
       cooldown: 'Cooldown(second):',
       goldCost: 'Price:',
-      search: 'Search'
+      search: 'Search',
+      level: 'Level'
 
     },
     Ru: {
@@ -33,7 +34,8 @@ export default defineI18nConfig(() => ({
       cost: 'Стоимость(маны/энергии):',
       cooldown: 'Перезарядка(секунды):',
       goldCost: 'Стоимость:',
-      search: 'Поиск'
+      search: 'Поиск',
+      level: 'Уровень'
     }
   }
 }))

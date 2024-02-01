@@ -54,11 +54,11 @@ import {languageArray} from "~/constants/language";
 import {useLangStore} from "~/stores/LanguageStore";
 import type {ChampionData} from "~/types/Champions";
 import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
+import {nickConversion} from "~/utils/nickConversion";
 
 const route = useRouter()
 const languageStore = useLangStore()
 const champStore = useChampionStore()
-const accountStore = useAccountStore()
 const languageStyle = { backgroundColor: '#F2E437', fontFamily: 'Helvetica Neue Bold'}
 const search = ref('')
 const searchResult = ref<ChampionData[]>([])
@@ -76,8 +76,8 @@ function openChampionPage(champ: ChampionData) {
   search.value = ''
 }
 
-function searchAccount(val:string) {
-  console.log(accountStore.getAccountInfo(val))
+async function searchAccount(val:string) {
+  await route.push('/summoner/' + nickConversion(val))
 }
 </script>
 
