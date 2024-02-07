@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
@@ -6,7 +7,8 @@ const app = express();
 
 app.use(cors());
 
-const API_KEY = 'RGAPI-de722be0-3084-4e26-8551-4c94fc568be1';
+const API_KEY = process.env.VITE_APP_API_KEY;
+
 function getPUUID(nick) {
     return axios.get(`https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${nick}?api_key=${API_KEY}`)
         .then(response => response.data.puuid)
@@ -30,9 +32,20 @@ function getRank(id) {
 }
 
 function getMatchList(puuid) {
-    return axios.get(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=20&api_key=${API_KEY}`)
+    return axios.get(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10&api_key=${API_KEY}`)
         .then(response => response.data)
         .catch(err => console.error(err))
+}
+async function createMatchListWithFullInfo(PUUID) {
+  const matchList = await getMatchList(PUUID);
+  const matchInfoPromises = matchList.map(id => {
+    return axios.get(`https://europe.api.riotgames.com/lol/match/v5/matches/${id}?api_key=${API_KEY}`)
+      .then(response => response.data)
+      .catch(err => {
+        console.error(err)
+      });
+  });
+  return Promise.all(matchInfoPromises);
 }
 app.get('/summoner/:userId', async (req, res) => {
     const nick = req.params.userId.split("+").join('/')
@@ -40,11 +53,12 @@ app.get('/summoner/:userId', async (req, res) => {
     const accountInfo = await getAccountInfo(PUUID)
     const championMastery = await getChampionMastery(PUUID)
     const rankInfo = await getRank(accountInfo.id)
-    const matchList = await getMatchList(PUUID)
+    const matchList = await createMatchListWithFullInfo(PUUID)
     return res.json({
         accountInfo,
         championMastery,
-        rankInfo
+        rankInfo,
+        matchList
     })
 })
 app.listen(4000, function() {
