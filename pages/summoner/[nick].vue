@@ -18,11 +18,14 @@
             <img class="ratings__emblem" :src="getEmblemImagePath(summonerInfo.rankInfo[0].tier)" alt="emblem"/>
             <div class="ratings__text">{{summonerInfo.rankInfo[0].tier}} {{summonerInfo.rankInfo[0].rank}}</div>
             <div class="ratings__text">Wins: {{summonerInfo.rankInfo[0].wins}}  Losses: {{summonerInfo.rankInfo[0].losses}}</div>
+            <div class="ratings__text">LP: {{summonerInfo.rankInfo[0].leaguePoints}}</div>
           </div>
-          <div class="graphs"></div>
+          <div class="graphs">
+            <div class="ratings__text">Winrate: {{Math.floor((summonerInfo.rankInfo[0].wins / (summonerInfo.rankInfo[0].losses + summonerInfo.rankInfo[0].wins)) * 100)}}%</div>
+          </div>
         </section>
         <section class="match-list">
-
+        
         </section>
       </div>
     </div>
@@ -80,7 +83,9 @@ async function getChampForBanner() {
     font-size: 34px
   &__lvl
     font-size: 16px
-
+.rank-info
+  display: flex
+  justify-content: space-around
 .ratings
   &__emblem
     width: 200px
@@ -89,4 +94,8 @@ async function getChampForBanner() {
     font-family:  "Helvetica Neue Bold", sans-serif
     font-size: 18px
     color: $gold-color
+    text-align: center
+.graphs
+  display: flex
+  align-items: center
 </style>
