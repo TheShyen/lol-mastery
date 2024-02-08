@@ -2,7 +2,6 @@ import {defineStore} from "pinia";
 import {getChampionInfoFromApi, getChampionsFromApi} from "~/services/championService";
 import type {ChampionData} from "~/types/Champions";
 
-
 function reformatData(data: { [key: string]: ChampionData }): ChampionData[] {
   return Object.values(data).sort((a, b) => a.name.localeCompare(b.name))
 }
