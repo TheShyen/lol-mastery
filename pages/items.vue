@@ -12,7 +12,7 @@
           <q-menu fit anchor="bottom start" self="top left" dark square max-height="300">
             <div class="item-info">
               <div class="item-info__name">{{ item.name }}</div>
-              <div v-html="formatText(item.description)"></div>
+              <div v-html="formatItemText(item.description)"></div>
               <div class="item-info__cost">{{$t('goldCost')}} {{ item.gold.total }}</div>
             </div>
           </q-menu>
@@ -27,41 +27,14 @@
 import Spinner from "~/components/UI/Spinner.vue";
 import {useItemStore} from "~/stores/ItemsStore";
 import {getItemImageUrl} from "~/services/getSpellImageUrl";
+import {formatItemText} from "~/utils/formatItemText";
 
 const store = useItemStore()
-const langStore = useLangStore()
 onMounted(() => {
   store.getItems()
 })
-watch(() => langStore.locale, ()=> {
-  store.getItems()
-})
-const colorMap = {
-  attention: '#b9265d',
-  active: '#b1d376',
-  passive: '#00D2F4',
-  rules: '#f17006',
-  status: '#7fe193',
-  lifeSteal: 'red',
-  ornnbonus: '#b9265d',
-  nerfedstat: '#c7b8e3',
-  buffedstat: '#c7b8e3'
-};
-function formatText(originalText: string) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(originalText, 'text/html');
 
-  const applyStyles = (element: HTMLElement) => {
-    const tagName = element.tagName.toLowerCase();
-    if (colorMap[tagName]) {
-      element.style.color = colorMap[tagName];
-    }
-    Array.from(element.children).forEach(applyStyles);
-  };
 
-  Array.from(doc.body.children).forEach(applyStyles);
-  return doc.body.innerHTML;
-}
 </script>
 
 <style scoped lang="sass">

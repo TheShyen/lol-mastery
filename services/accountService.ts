@@ -1,6 +1,6 @@
-import type {SummonerInfo} from "~/types/Account";
+import type {AllPlayerInfo} from "~/types/Player/PlayerInfo";
 
-export async function getSummoner(nick: string): Promise<SummonerInfo> {
+export async function getSummoner(nick: string): Promise<AllPlayerInfo> {
   try {
     return await $fetch(`http://localhost:4000/summoner/${nick}`)
   } catch (err) {

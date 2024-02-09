@@ -17,6 +17,7 @@ function getAccountInfo(puuid) {
     return axios.get(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${API_KEY}`)
         .then(response => response.data)
         .catch(err => console.error(err))
+
 }
 function getChampionMastery(puuid) {
     return axios.get(`https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?api_key=${API_KEY}`)
@@ -28,6 +29,7 @@ function getRank(id) {
     return axios.get(`https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${API_KEY}`)
         .then(response => response.data)
         .catch(err => console.error(err))
+
 }
 
 function getMatchList(puuid) {
@@ -46,19 +48,37 @@ async function createMatchListWithFullInfo(PUUID) {
   });
   return Promise.all(matchInfoPromises);
 }
-app.get('/summoner/:userId', async (req, res) => {
-    const nick = req.params.userId.split("+").join('/')
-    const PUUID = await getPUUID(nick)
-    const accountInfo = await getAccountInfo(PUUID)
-    const championMastery = await getChampionMastery(PUUID)
-    const rankInfo = await getRank(accountInfo.id)
-    const matchList = await createMatchListWithFullInfo(PUUID)
-    return res.json({
-        accountInfo,
-        championMastery,
-        rankInfo,
-        matchList
+function createPlayerGameStats(matchList, puuid) {
+    return matchList.map((item) => {
+        const playerIndex = item.metadata.participants.indexOf(puuid)
+        item.info.participants[playerIndex].matchID = item.info.gameId
+        return item.info.participants[playerIndex]
     })
+}
+app.get('/summoner/:userId', async (req, res) => {
+    try {
+        const nick = req.params.userId.split("+").join('/');
+        const PUUID = await getPUUID(nick);
+        const accountInfo = await getAccountInfo(PUUID);
+        const [championMastery, rankInfo, matchList] = await Promise.all([
+            getChampionMastery(PUUID),
+            getRank(accountInfo.id),
+            createMatchListWithFullInfo(PUUID)
+        ]);
+
+        const playerGameStats = createPlayerGameStats(matchList, PUUID);
+
+        return res.json({
+            accountInfo,
+            championMastery,
+            rankInfo,
+            matchList,
+            playerGameStats
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
 })
 app.listen(4000, function() {
     console.log('Proxy server started on port 4000')
