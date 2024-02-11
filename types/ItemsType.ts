@@ -114,6 +114,8 @@ interface Stats {
 }
 
 export interface ItemDataFromApi {
+  depth: number;
+  requiredChampion: string;
   name: string;
   description: string;
   colloq: string;
@@ -125,15 +127,22 @@ export interface ItemDataFromApi {
   maps: Maps;
   stats: Stats;
 }
+export interface ItemsTree {
+  header: string,
+  tags: string[]
+}
 
 export interface ItemFromApi {
   type: "item";
   version: string;
   basic: Basic;
   data: Record<string, ItemDataFromApi>;
+  tree: ItemsTree[]
 }
 
 export interface ItemData {
+  requiredChampion: string;
+  depths: number;
   name: string;
   id: string;
   description: string;

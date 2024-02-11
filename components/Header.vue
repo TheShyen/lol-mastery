@@ -18,9 +18,8 @@
         v-model="search"
         :input-style="{ color: 'yellow' }"
         color="yellow"
-        debounce="500"
+        :loading="!!search.length && !searchResult.length"
         filled
-        @keydown.enter.stop="searchAccount(search)"
         label-slot
         label-color="yellow"
         square
@@ -33,14 +32,14 @@
         </template>
       </q-input>
       <q-list separator v-if="search.length">
-        <q-item v-for="champ in searchResult" v-ripple clickable class="search-item" @click="openChampionPage(champ)">
-          <q-item-section avatar>
+        <q-item v-for="champ in searchResult" v-ripple clickable class="search-item" @click="handleListClick(champ)">
+          <q-item-section avatar v-if="typeof champ !== 'string'">
             <q-avatar square>
               <q-img :src="getSquareChampionImg(champ.image.full)"></q-img>
             </q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-item-label class="search-item__text">{{champ.name}}</q-item-label>
+            <q-item-label class="search-item__text">{{champ.name || champ}}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -61,18 +60,25 @@ const languageStore = useLangStore()
 const champStore = useChampionStore()
 const languageStyle = { backgroundColor: '#F2E437', fontFamily: 'Helvetica Neue Bold'}
 const search = ref('')
-const searchResult = ref<ChampionData[]>([])
+const searchResult = ref<ChampionData[] | string[]>([])
 watch(search, () => {
   if(search.value.length) {
     searchResult.value = champStore.champions.filter(item => item.name.toLowerCase().startsWith(search.value.toLowerCase()))
+    if(search.value.includes('#')) {
+      searchResult.value.push(search.value)
+    }
   } else {
     searchResult.value = []
   }
   
 })
 
-function openChampionPage(champ: ChampionData) {
-  route.push(`/champions/${champ.id}`)
+function handleListClick(champ: ChampionData | string) {
+  if (typeof champ == 'string') {
+    searchAccount(champ)
+  } else {
+    route.push(`/champions/${champ.id}`)
+  }
   search.value = ''
 }
 

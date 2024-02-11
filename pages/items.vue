@@ -32,6 +32,7 @@ import {formatItemText} from "~/utils/formatItemText";
 const store = useItemStore()
 onMounted(() => {
   store.getItems()
+  console.log(store.items)
 })
 
 

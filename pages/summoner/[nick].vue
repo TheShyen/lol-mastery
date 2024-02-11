@@ -1,5 +1,5 @@
 <template>
-  <Spinner v-if="accountStore.isLoading "/>
+  <Spinner v-if="accountStore.isLoading"/>
   <div v-else>
     <Error v-if="!summonerInfo"/>
     <div class="summoner" v-else>
@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import Error from "~/components/error.vue";
+import Error from "~/components/Error.vue";
 import Spinner from "~/components/UI/Spinner.vue";
 import type {AllPlayerInfo, RankInfo} from "~/types/Player/PlayerInfo";
 import {getSplashArtImageURL} from "~/services/getSplashArtImageURL";

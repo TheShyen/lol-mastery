@@ -13,7 +13,7 @@
 
 import type {ChampionDetailedInfo} from "~/types/ChampionInfo";
 
-import Error from "~/components/error.vue";
+import Error from "~/components/Error.vue";
 import Spinner from "~/components/UI/Spinner.vue";
 
 
