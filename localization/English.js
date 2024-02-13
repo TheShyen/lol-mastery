@@ -20,6 +20,12 @@ export const EnglishDict = {
     day: 'day',
     ago: 'ago',
     victory: 'Victory',
-    defeat: 'Defeat'
+    defeat: 'Defeat',
+    startItems: 'Starter Items',
+    boots: 'Boots',
+    epicItems: 'Epic Items',
+    baseItems: 'Basic Items',
+    legendaryItems: 'Legendary Items',
+    ornnItems: 'Orrn Items'
 
 }

@@ -20,5 +20,11 @@ export const RussianDict = {
     day: 'дня',
     ago: 'назад',
     victory: 'Победа',
-    defeat: 'Поражение'
+    defeat: 'Поражение',
+    startItems: 'Начальные предметы',
+    boots: 'Ботинки',
+    epicItems: 'Эпические предметы',
+    baseItems: 'Базовые предметы',
+    legendaryItems: 'Легендарные предметы',
+    ornnItems: 'Предметы от Орна'
 }

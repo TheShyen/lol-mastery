@@ -115,26 +115,18 @@ function getGameResult(gameRes: boolean, $t: VueI18n['t']) {
   return gameRes ? `${$t('victory')}` : `${$t('defeat')}`
 }
 
-function getAllPlayersInfo(game: PlayerGameStat) {
-  let playersInfo: PlayerGameStat[] = []
-  summonerInfo.value?.matchList.map(item => {
-    if(item.info.gameId == game.matchID) {
-      playersInfo = item.info.participants
-    }
-  })
-  return playersInfo
+function getAllPlayersInfo(game: PlayerGameStat): PlayerGameStat[] {
+  const matchInfo = summonerInfo.value?.matchList.find(item => item.info.gameId === game.matchID)
+  return matchInfo ? matchInfo.info.participants : []
 }
 function getItemById(id: string) {
   itemStore.getItems()
   return itemStore.items.find((item) => item.id == id)
 }
-function getMatchTimes(game: PlayerGameStat, $t: VueI18n['t']) {
-  let gameEndTime = 0
-  summonerInfo.value?.matchList.map(item => {
-    if(item.info.gameId == game.matchID) {
-      gameEndTime = item.info.gameEndTimestamp
-    }
-  })
+function getMatchTimes(game: PlayerGameStat, $t: VueI18n['t']): string {
+  const matchInfo = summonerInfo.value?.matchList.find(item => item.info.gameId === game.matchID)
+  if (!matchInfo) return ''
+  const gameEndTime = matchInfo.info.gameEndTimestamp
   return `${getTimeElapsed(gameEndTime, $t)} - ${Math.floor(game.timePlayed / 60)}${$t('minutes')}  ${game.timePlayed % 60}s`
 }
 </script>

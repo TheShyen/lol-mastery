@@ -116,6 +116,7 @@ interface Stats {
 export interface ItemDataFromApi {
   depth: number;
   requiredChampion: string;
+  requiredAlly: string;
   name: string;
   description: string;
   colloq: string;
@@ -142,7 +143,8 @@ export interface ItemFromApi {
 
 export interface ItemData {
   requiredChampion: string;
-  depths: number;
+  requiredAlly: string;
+  depth: number;
   name: string;
   id: string;
   description: string;
@@ -154,4 +156,13 @@ export interface ItemData {
   tags: string[];
   maps: Maps;
   stats: Stats;
+}
+
+export interface groupedItems {
+  startItems: ItemData[],
+  boots: ItemData[],
+  baseItems: ItemData[],
+  epicItems: ItemData[],
+  legendaryItems: ItemData[],
+  ornnItems: ItemData[]
 }
