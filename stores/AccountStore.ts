@@ -1,7 +1,6 @@
 import {getSummoner} from "~/services/accountService";
 
 export const useAccountStore = defineStore('account', () => {
-  const accountInfo = ref(null)
   const isLoading = ref(false)
   async function getAccountInfo(nick: string) {
     try {
@@ -11,12 +10,12 @@ export const useAccountStore = defineStore('account', () => {
       console.error(err)
       return null
     } finally {
+      console.log('false load')
       isLoading.value = false;
     }
 
   }
   return {
-    accountInfo,
     isLoading,
     getAccountInfo
   }

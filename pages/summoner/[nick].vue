@@ -32,17 +32,24 @@ import type {VueI18n} from "vue-i18n";
 const route = useRoute()
 const accountStore = useAccountStore()
 const championStore = useChampionStore()
-const summonerInfo = ref<AllPlayerInfo | null>(null)
+const summonerInfo = ref<AllPlayerInfo | null >(null)
 const champion = ref<ChampionData | null>(null)
 
 
-// onCreated
-summonerInfo.value = await accountStore.getAccountInfo(route.params.nick as string)
-await getChampForBanner()
+const itemStore = useItemStore()
+onMounted(async () => {
+  summonerInfo.value = await accountStore.getAccountInfo(route.params.nick as string)
+  await getChampForBanner()
+  if (!itemStore.items) {
+    await itemStore.getItems()
+  }
+  
+})
 
 async function getChampForBanner() {
-  await championStore.getChampions()
-  console.log(summonerInfo.value)
+  if (!championStore.champions) {
+    await championStore.getChampions()
+  }
   champion.value = championStore.champions.find(elem => elem.key == summonerInfo.value?.championMastery[0].championId) || null
 }
 function getAllPlayersInfo(game: PlayerPerformance) {

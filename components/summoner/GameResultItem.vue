@@ -55,12 +55,10 @@ const props = defineProps<{
 
 const itemKeys = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6'];
 function getGameResult(gameRes: boolean, $t: VueI18n['t']) {
-  
   return gameRes ? `${$t('victory')}` : `${$t('defeat')}`
 }
 
 function getItemById(id: string) {
-  itemStore.getItems()
   return itemStore.items.find((item) => item.id == id)
 }
 
