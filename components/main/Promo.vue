@@ -1,8 +1,7 @@
 <template>
   <div>
     <div class="video-bg">
-      <img v-if="showPlaceholder" src="../../media/lolPlaceholder.webp" alt="Placeholder Image" class="video-placeholder"/>
-      <video v-show="showPlaceholder" src="../../media/heroBg.webm" type="video/webm" autoplay muted loop @loadeddata="hidePlaceholder()"></video>
+      <video src="../../media/heroBg.webm" type="video/webm" autoplay muted loop></video>
       <div class="effects"></div>
       <div class="video-bg__content">
         <h2 class="slogan">{{ $t('slogan') }}</h2>
@@ -12,11 +11,7 @@
 </template>
 
 <script setup lang="ts">
-const showPlaceholder = ref(true)
 
-function hidePlaceholder() {
-  showPlaceholder.value = false
-}
 </script>
 
 <style scoped lang="sass">
@@ -36,13 +31,7 @@ function hidePlaceholder() {
     width: 100%
     height: 100vh
     object-fit: cover
-.video-placeholder
-  position: absolute
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  object-fit: cover
+
 
 .effects
   position: absolute
