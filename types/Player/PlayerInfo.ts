@@ -1,12 +1,7 @@
-import type {PlayerGameStat} from "~/types/Player/PlayerGameStat";
 import type {Teams} from "~/types/Player/Teams";
 import type {rankMap} from "~/constants/ranks";
+import type {PlayerPerformance} from "~/types/Player/PlayerPerformance";
 
-export interface Puuid {
-  puuid: string,
-  gameName: string,
-  tagLine: string
-}
 
 export interface AccountInfo {
   id: string,
@@ -42,7 +37,7 @@ export interface MatchInfo {
   gameType: string;
   gameVersion: string;
   mapId: number;
-  participants: PlayerGameStat[];
+  participants: PlayerPerformance[];
   platformId: string;
   queueId: number;
   teams: Teams[];
@@ -53,7 +48,7 @@ export interface MatchMetadata {
     matchId: string;
     participants: string[]
 }
-export interface RankInfo {
+export interface GameModeStat {
   freshBlood: boolean;
   hotStreak: boolean;
   inactive: boolean;
@@ -76,8 +71,8 @@ export interface AllPlayerInfo {
     info: MatchInfo;
     metadata: MatchMetadata
   }[];
-  playerGameStats: PlayerGameStat[];
-  rankInfo: RankInfo[];
+  playerPerformances: PlayerPerformance[];
+  gameModesStats: GameModeStat[];
   championMastery: ChampionMastery[]
 }
 

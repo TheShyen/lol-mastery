@@ -1,7 +1,7 @@
 <template>
   <Spinner v-if="store.isLoading"/>
   <div v-else class="champions">
-    <div  class="champions__wrapper">
+    <div class="champions__wrapper">
       <ChampionList :champions="store.champions"/>
     </div>
   </div>

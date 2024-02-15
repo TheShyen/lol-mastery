@@ -1,4 +1,4 @@
-export interface PlayerGameStat {
+export interface PlayerPerformance {
     allInPings: number;
     assistMePings: number;
     assists: number;

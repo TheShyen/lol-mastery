@@ -6,7 +6,7 @@
         <div class="items-section__name">{{ $t(key) }}</div>
         <div class="items-list">
           <div class="item" v-for="item in itemGroup">
-            <q-img :alt="item.name" :src="getItemImageUrl(item.image.full)" loading="eager" class="item__icon">
+            <q-img :alt="item.name" :src="getItemImageUrl(item.image.full)" loading="lazy" class="item__icon">
               <template v-slot:loading>
                 <q-skeleton square size="50px"/>
               </template>

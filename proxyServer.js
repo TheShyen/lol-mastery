@@ -25,7 +25,7 @@ function getChampionMastery(puuid) {
         .catch(err => console.error(err))
 }
 
-function getRank(id) {
+function getGameModesStats(id) {
     return axios.get(`https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${API_KEY}`)
         .then(response => response.data)
         .catch(err => console.error(err))
@@ -33,9 +33,9 @@ function getRank(id) {
 }
 
 function getMatchList(puuid) {
-    return axios.get(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10&api_key=${API_KEY}`)
-        .then(response => response.data)
-        .catch(err => console.error(err))
+  return axios.get(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10&api_key=${API_KEY}`)
+    .then(response => response.data)
+    .catch(err => console.error(err))
 }
 async function createMatchListWithFullInfo(PUUID) {
   const matchList = await getMatchList(PUUID);
@@ -49,32 +49,35 @@ async function createMatchListWithFullInfo(PUUID) {
   return Promise.all(matchInfoPromises);
 }
 function createPlayerGameStats(matchList, puuid) {
-    return matchList.forEach((item) => {
-        const playerIndex = item.metadata.participants.indexOf(puuid)
-        const playerInfo = { ...item.info.participants[playerIndex] };
-        playerInfo.matchID = item.info.gameId;
-        return playerInfo;
-    })
+  const playerGameStats = []
+  matchList.forEach((item) => {
+
+    const playerIndex = item.metadata.participants.indexOf(puuid)
+    const playerInfo = {...item.info.participants[playerIndex]};
+    playerInfo.matchID = item.info.gameId;
+    playerGameStats.push(playerInfo)
+  })
+  return playerGameStats
 }
 app.get('/summoner/:userId', async (req, res) => {
     try {
         const nick = req.params.userId.split("+").join('/');
         const PUUID = await getPUUID(nick);
         const accountInfo = await getAccountInfo(PUUID);
-        const [championMastery, rankInfo, matchList] = await Promise.all([
+        const [championMastery, gameModesStats, matchList] = await Promise.all([
             getChampionMastery(PUUID),
-            getRank(accountInfo.id),
+            getGameModesStats(accountInfo.id),
             createMatchListWithFullInfo(PUUID)
         ]);
 
-        const playerGameStats = createPlayerGameStats(matchList, PUUID);
+        const playerPerformances = createPlayerGameStats(matchList, PUUID);
 
         return res.json({
             accountInfo,
             championMastery,
-            rankInfo,
+            gameModesStats,
             matchList,
-            playerGameStats
+            playerPerformances
         });
     } catch (error) {
         console.error(error);

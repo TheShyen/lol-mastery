@@ -20,12 +20,8 @@ import Spinner from "~/components/UI/Spinner.vue";
 
 const route = useRoute()
 const store = useChampionStore()
-const langStore = useLangStore()
 const champion = ref<ChampionDetailedInfo | null>(null)
 onMounted(async () => {
-  champion.value = await store.getChampion(route.params.id as string)
-})
-watch(() => langStore.locale, async ()=> {
   champion.value = await store.getChampion(route.params.id as string)
 })
 </script>
