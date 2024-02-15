@@ -2,7 +2,7 @@
   <div>
     <div class="video-bg">
       <img v-if="showPlaceholder" src="../../media/lolPlaceholder.webp" alt="Placeholder Image" class="video-placeholder"/>
-      <video v-show="showPlaceholder" src="../../media/heroBg.webm" type="video/webm" autoplay muted loop @canplay="hidePlaceholder()"></video>
+      <video v-show="showPlaceholder" src="../../media/heroBg.webm" type="video/webm" autoplay muted loop @loadeddata="hidePlaceholder()"></video>
       <div class="effects"></div>
       <div class="video-bg__content">
         <h2 class="slogan">{{ $t('slogan') }}</h2>
