@@ -3,7 +3,7 @@
     <q-toolbar class="justify-evenly">
       <q-toolbar-title class="text-h5 name" shrink >
         <q-avatar size="lg">
-          <img alt="logo" src="/headerLogo.png" width="500" height="500">
+          <img alt="logo" src="/headerLogo.png">
         </q-avatar>
         LoLMastery
       </q-toolbar-title>

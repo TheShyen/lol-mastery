@@ -10,11 +10,7 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: [
-    '@nuxtjs/i18n',
-    'nuxt-quasar-ui',
-    '@pinia/nuxt'
-  ],
+  modules: ['@nuxtjs/i18n', 'nuxt-quasar-ui', '@pinia/nuxt', "@nuxt/image"],
   i18n: {
     vueI18n: './i18n.config.ts'
   },
