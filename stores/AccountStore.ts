@@ -10,7 +10,6 @@ export const useAccountStore = defineStore('account', () => {
       console.error(err)
       return null
     } finally {
-      console.log('false load')
       isLoading.value = false;
     }
 

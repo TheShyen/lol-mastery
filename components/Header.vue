@@ -18,7 +18,6 @@
         v-model="search"
         :input-style="{ color: 'yellow' }"
         color="yellow"
-        :loading="!!search.length && !searchResult.length"
         filled
         label-slot
         label-color="yellow"
@@ -32,14 +31,14 @@
         </template>
       </q-input>
       <q-list separator v-if="search.length">
-        <q-item v-for="champ in searchResult" v-ripple clickable class="search-item" @click="handleListClick(champ)">
-          <q-item-section avatar v-if="typeof champ !== 'string'">
+        <q-item v-for="searchListItem in searchResult" v-ripple clickable class="search-item" @click="goToCharacterOrSummonerPage(searchListItem)">
+          <q-item-section avatar v-if="typeof searchListItem !== 'string'">
             <q-avatar square>
-              <q-img :src="getSquareChampionImg(champ.image.full)"></q-img>
+              <q-img :src="getSquareChampionImg(searchListItem.image.full)"></q-img>
             </q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-item-label class="search-item__text">{{champ.name || champ}}</q-item-label>
+            <q-item-label class="search-item__text">{{searchListItem.name || searchListItem}}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -58,22 +57,30 @@ import {nickConversion} from "~/utils/nickConversion";
 const route = useRouter()
 const languageStore = useLangStore()
 const champStore = useChampionStore()
+const {t} = useI18n()
 const languageStyle = { backgroundColor: '#F2E437', fontFamily: 'Helvetica Neue Bold'}
 const search = ref('')
-const searchResult = ref<ChampionData[] | string[]>([])
-watch(search, () => {
-  if(search.value.length) {
-    searchResult.value = champStore.champions.filter(item => item.name.toLowerCase().startsWith(search.value.toLowerCase()))
-    if(search.value.includes('#')) {
-      searchResult.value.push(search.value)
+const searchResult = ref<(ChampionData | string)[]>([])
+watch(search, (newSearchValue) => {
+  if(newSearchValue.length) {
+    searchResult.value = champStore.champions.filter(item => item.name.toLowerCase().startsWith(newSearchValue.toLowerCase()))
+    if(newSearchValue.includes('#')) {
+      searchResult.value.push(newSearchValue)
     }
-  } else {
+    if(newSearchValue && !searchResult.value.length) {
+      
+      searchResult.value.push(t('nothingFound'))
+    }
+  }
+  else {
     searchResult.value = []
   }
-  
 })
 
-function handleListClick(champ: ChampionData | string) {
+function goToCharacterOrSummonerPage(champ: ChampionData | string) {
+  if (searchResult.value.includes(t('nothingFound'))) {
+    return;
+  }
   if (typeof champ == 'string') {
     searchAccount(champ)
   } else {

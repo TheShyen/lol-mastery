@@ -1,13 +1,14 @@
 <template>
-    <q-layout view="hhh lpR fFf"  :class="{ 'bg-color': store.isLoading}" >
+    <q-layout view="hhh lpR fFf" :class="{ 'bg-color':champStore.isLoading | itemsStore.isLoading}">
       <Header></Header>
-      <slot />
+      <slot/>
     </q-layout>
 </template>
 
 <script setup lang="ts">
 
-const store = useChampionStore()
+const champStore = useChampionStore()
+const itemsStore = useItemStore()
 </script>
 
 <style scoped lang="sass">

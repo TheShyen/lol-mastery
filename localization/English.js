@@ -26,6 +26,7 @@ export const EnglishDict = {
     epicItems: 'Epic Items',
     baseItems: 'Basic Items',
     legendaryItems: 'Legendary Items',
-    ornnItems: 'Orrn Items'
+    ornnItems: 'Orrn Items',
+    nothingFound: 'Nothing was found'
 
 }

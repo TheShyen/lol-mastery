@@ -1,27 +1,24 @@
 <template>
-  <Spinner v-if="accountStore.isLoading"/>
-  <div v-else>
-    <Error v-if="!summonerInfo"/>
-    <div class="summoner" v-else>
-      <div class="summoner__wrapper">
-        <SummonerBanner :summonerAccountInfo="summonerInfo.accountInfo" :mainChampion="champion"/>
-        <SummonerRankInfo :gameModesStats="summonerInfo.gameModesStats"/>
-        <section class="match-list">
-          <SummonerGameResultItem
-            v-for="playerPerformance in summonerInfo.playerPerformances"
-            :playerPerformance="playerPerformance"
-            :playersInfo="getAllPlayersInfo(playerPerformance)"
-            :matchTime="getMatchTimes(playerPerformance, $t)"
-          />
-        </section>
-      </div>
-    </div>
+
+<div v-if="summonerInfo" class="summoner">
+  <div class="summoner__wrapper">
+    <SummonerBanner :summonerAccountInfo="summonerInfo.accountInfo" :mainChampion="champion"/>
+    <SummonerRankInfo :gameModesStats="summonerInfo.gameModesStats"/>
+    <section class="match-list">
+      <SummonerGameResultItem
+        v-for="playerPerformance in summonerInfo.playerPerformances"
+        :playerPerformance="playerPerformance"
+        :playersInfo="getAllPlayersInfo(playerPerformance)"
+        :matchTime="getMatchTimes(playerPerformance, $t)"
+      />
+    </section>
   </div>
+</div>
 </template>
 
 <script setup lang="ts">
 import Error from "~/components/Error.vue";
-import Spinner from "~/components/UI/Spinner.vue";
+import Spinner from "~/components/UI/DownloadPageSpinner.vue";
 import type {AllPlayerInfo} from "~/types/Player/PlayerInfo";
 import type {ChampionData} from "~/types/Champions";
 import type {PlayerPerformance} from "~/types/Player/PlayerPerformance";
@@ -37,14 +34,18 @@ const champion = ref<ChampionData | null>(null)
 
 
 const itemStore = useItemStore()
-onMounted(async () => {
-  summonerInfo.value = await accountStore.getAccountInfo(route.params.nick as string)
-  await getChampForBanner()
-  if (!itemStore.items) {
-    await itemStore.getItems()
-  }
-  
-})
+
+summonerInfo.value = await accountStore.getAccountInfo(route.params.nick as string)
+await getChampForBanner()
+if (!itemStore.items) {
+  await itemStore.getItems()
+}
+if (!summonerInfo.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Page Not Found'
+  })
+}
 
 async function getChampForBanner() {
   if (!championStore.champions) {

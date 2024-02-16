@@ -1,8 +1,6 @@
 <template>
-  <Spinner v-if="store.isLoading"/>
-  <div v-else>
-    <Error v-if="!champion"/>
-    <ChampionPage v-else>
+  <div v-if="champion">
+    <ChampionPage >
       <ChampionPagePreview :champion="champion"/>
       <ChampionPageInfo :champion="champion"/>
     </ChampionPage>
@@ -13,17 +11,19 @@
 
 import type {ChampionDetailedInfo} from "~/types/ChampionInfo";
 
-import Error from "~/components/Error.vue";
-import Spinner from "~/components/UI/Spinner.vue";
-
-
-
 const route = useRoute()
 const store = useChampionStore()
 const champion = ref<ChampionDetailedInfo | null>(null)
-onMounted(async () => {
-  champion.value = await store.getChampion(route.params.id as string)
-})
+
+champion.value = await store.getChampion(route.params.name as string)
+if (!champion.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Page Not Found'
+  })
+}
+
+
 </script>
 
 <style lang="sass">

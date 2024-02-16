@@ -26,5 +26,6 @@ export const RussianDict = {
     epicItems: 'Эпические предметы',
     baseItems: 'Базовые предметы',
     legendaryItems: 'Легендарные предметы',
-    ornnItems: 'Предметы от Орна'
+    ornnItems: 'Предметы от Орна',
+    nothingFound: 'Ничего не найдено'
 }

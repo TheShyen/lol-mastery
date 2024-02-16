@@ -46,35 +46,49 @@ export const useItemStore = defineStore('items', () => {
       ornnItems: []
     }
     items.forEach(item => {
-      if (groupedItems.value) {
-        const { tags, depth, gold, requiredAlly } = item;
-
-        const isLaneOrJungle = tags.includes('Lane') || tags.includes('Jungle');
-        const isBootsUnder600Gold = tags.includes('Boots') && gold.base < 600;
-        const isNotBoots = !tags.includes('Boots');
-        const isDepthUnder3 = depth < 3;
-        const isGoldUnder2500 = gold.total < 2500;
-
-        if ((isLaneOrJungle || isBootsUnder600Gold) && !depth) {
-          // Предмет начальной стадии
-          groupedItems.value.startItems.push(item);
-        } else if (tags.length === 1 && !depth && isNotBoots && gold.base < 2500) {
-          // Базовые предметы
-          groupedItems.value.baseItems.push(item);
-        } else if (isNotBoots && isDepthUnder3 && isGoldUnder2500) {
-          // Эпические предметы
-          groupedItems.value.epicItems.push(item);
-        } else if (tags.includes('Boots') && depth) {
-          // Предметы обуви
-          groupedItems.value.boots.push(item);
-        } else if (depth && !requiredAlly) {
-          // Легендарные предметы
-          groupedItems.value.legendaryItems.push(item);
-        } else if (requiredAlly === 'Ornn' && depth) {
-          // Предметы, требующие союзника Ornn
-          groupedItems.value.ornnItems.push(item);
-        }
+      const {tags, depth, gold, requiredAlly} = item;
+      
+      const isLaneOrJungle = tags.includes('Lane') || tags.includes('Jungle');
+      const isBootsUnder600Gold = tags.includes('Boots') && gold.base < 600;
+      const isNotBoots = !tags.includes('Boots');
+      const isDepthUnder3 = depth < 3;
+      const isGoldUnder2500 = gold.total < 2500;
+      
+      const isStartItem = (isLaneOrJungle || isBootsUnder600Gold) && !depth;
+      if (isStartItem) {
+        groupedItems.value.startItems.push(item);
+        return;
       }
+      
+      const isBaseItem = tags.length === 1 && !depth && isNotBoots && gold.base < 2500
+      if (isBaseItem) {
+        groupedItems.value.baseItems.push(item);
+      }
+      
+      const isEpicItem = isNotBoots && isDepthUnder3 && isGoldUnder2500
+      if (isEpicItem) {
+        groupedItems.value.epicItems.push(item);
+        return;
+      }
+      
+      const isBoot = Boolean(tags.includes('Boots') && depth)
+      if (isBoot) {
+        groupedItems.value.boots.push(item);
+        return;
+      }
+      
+      const isLegendaryItem = Boolean(depth && !requiredAlly)
+      if (isLegendaryItem) {
+        groupedItems.value.legendaryItems.push(item);
+        return;
+      }
+      
+      const isOrnnItem = Boolean(requiredAlly === 'Ornn' && depth)
+      if (isOrnnItem) {
+        groupedItems.value.ornnItems.push(item);
+        return;
+      }
+
     })
   }
 

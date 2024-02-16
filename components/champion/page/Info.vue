@@ -36,18 +36,24 @@
               </q-tab>
             </q-tabs>
 
-            <q-tab-panels v-model="tab" animated>
-              <q-tab-panel :name="champion.passive.name">
-                <div class="text-h5 ability-title">{{ champion.passive.name }}</div>
-                <div v-html="champion.passive.description" class="ability-desc"></div>
+            <q-tab-panels
+              v-model="tab"
+              animated
+              swipeable
+              transition-next="jump-up"
+              transition-prev="jump-up"
+            >
+              <q-tab-panel :name="champion.passive.name" class="ability">
+                <div class="text-h5 ability__text">{{ champion.passive.name }}</div>
+                <div v-html="champion.passive.description" class="ability__desc"></div>
               </q-tab-panel>
-              <q-tab-panel v-for='ability of champion.spells' :name="ability.name">
-                <div class="text-h5 ability-title">{{ ability.name }}</div>
-                <div class="ability-cost-cooldown">{{$t('cost')}} {{ability?.costBurn}}</div>
-                <div class="ability-cost-cooldown">{{$t('cooldown')}} {{ability?.cooldownBurn}}</div>
-                <div class="ability-tooltip" v-html="reformatAbilityDesc(ability.tooltip)"></div>
-                <div v-html="ability.description" class="ability-desc"></div>
-                <div class="ability-title" style="padding-top: 10px">{{$t('symbolInfo')}}</div>
+              <q-tab-panel v-for='ability of champion.spells' :name="ability.name" class="ability" >
+                <div class="text-h5 ability__text">{{ ability.name }}</div>
+                <div class="ability__cost-cooldown">{{$t('cost')}} {{ability?.costBurn}}</div>
+                <div class="ability__cost-cooldown">{{$t('cooldown')}} {{ability?.cooldownBurn}}</div>
+                <div class="ability__tooltip" v-html="reformatAbilityDesc(ability.tooltip)"></div>
+                <div v-html="ability.description" class="ability__desc"></div>
+                <div class="ability__text" style="padding-top: 10px">{{$t('symbolInfo')}}</div>
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -96,7 +102,7 @@ function reformatAbilityDesc(inputString: string) {
 <style scoped lang="sass">
 .champion-info
   background: $secondary-bg-color
-
+  font-family: "Helvetica Neue Bold", sans-serif
   &__wrapper
     max-width: 1300px
     margin: 0 auto
@@ -127,16 +133,14 @@ function reformatAbilityDesc(inputString: string) {
   &__right
     padding: 3.75rem
     max-width: 500px
-    font-family: "Helvetica Neue Bold", sans-serif
     color: #FFFFFF
 
 .head
-  font-family: "Helvetica Neue Bold", sans-serif
   font-size: 18px
   color: #FFFFFF
 
 .subhead
-  font-family: "Beaufort for LOL Bold"
+  font-family: "Beaufort for LOL Bold", sans-serif
   font-size: 20px
   color: $gold-color
 
@@ -168,7 +172,6 @@ function reformatAbilityDesc(inputString: string) {
 .keybind
   position: absolute
   top: 65%
-  font-family: "Helvetica Neue Bold", sans-serif
   font-size: 18px
   color: #ffffff
   left: 70%
@@ -176,21 +179,21 @@ function reformatAbilityDesc(inputString: string) {
   box-shadow: none
 .q-tab-panels
   background: none
-.ability-title
-  color: $gold-color
-.ability-desc
-  color: $blue-color
-  font-family: "Helvetica Neue Bold", sans-serif
-  font-size: 14px
-  margin-top: 10px
-.ability-tooltip
-  color: #f86b6b
-  font-family: "Helvetica Neue Bold", sans-serif
-  font-size: 14px
-  margin-top: 10px
-.ability-cost-cooldown
-  color: #56cca8
-  font-family: "Helvetica Neue Bold", sans-serif
-  font-size: 13px
-  margin-top: 2px
+.ability
+  padding-bottom: 60px
+  min-height: 500px
+  &__text
+    color: $gold-color
+  &__desc
+    color: $blue-color
+    font-size: 14px
+    margin-top: 10px
+  &__tooltip
+    color: #f86b6b
+    font-size: 14px
+    margin-top: 10px
+  &__cost-cooldown
+    color: #56cca8
+    font-size: 13px
+    margin-top: 2px
 </style>

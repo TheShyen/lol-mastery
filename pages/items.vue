@@ -1,9 +1,10 @@
 <template>
-  <Spinner v-if="store.isLoading"/>
-  <div v-else class="items">
+  <div class="items">
     <div class="items__wrapper">
       <div class="items-section" v-for="(itemGroup, key) in store.groupedItems" :key="key">
         <div class="items-section__name">{{ $t(key) }}</div>
+        <q-skeleton height="60px" style="padding-bottom: 20px" v-if="store.isLoading">
+        </q-skeleton>
         <div class="items-list">
           <div class="item" v-for="item in itemGroup">
             <q-img :alt="item.name" :src="getItemImageUrl(item.image.full)" loading="lazy" class="item__icon">
@@ -28,16 +29,14 @@
 
 <script setup lang="ts">
 
-import Spinner from "~/components/UI/Spinner.vue";
 import {useItemStore} from "~/stores/ItemsStore";
 import {getItemImageUrl} from "~/services/getSpellImageUrl";
 import {formatItemText} from "~/utils/formatItemText";
-import Error from "~/components/Error.vue";
+
 
 const store = useItemStore()
-onMounted(() => {
-  store.getItems()
-})
+
+
 
 
 </script>
@@ -65,7 +64,7 @@ onMounted(() => {
   flex-wrap: wrap
   flex-direction: column
   margin-top: 10px
-
+  min-height: 100px
   &__name
     font-size: 20px
     color: $blue-color
