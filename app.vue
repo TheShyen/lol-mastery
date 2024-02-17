@@ -5,10 +5,13 @@
 </template>
 
 <script setup lang="ts">
+import Spinner from "~/components/UI/DownloadPageSpinner.vue";
+
 const route = useRoute()
 const lang = useLangStore()
 const champStore = useChampionStore()
 const itemStore = useItemStore()
+const accountStore = useAccountStore()
 
 onMounted(() => {
   lang.locale = JSON.parse(localStorage.getItem('language')  || 'Ru')

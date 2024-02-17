@@ -51,7 +51,6 @@ async function createMatchListWithFullInfo(PUUID) {
 function createPlayerGameStats(matchList, puuid) {
   const playerGameStats = []
   matchList.forEach((item) => {
-
     const playerIndex = item.metadata.participants.indexOf(puuid)
     const playerInfo = {...item.info.participants[playerIndex]};
     playerInfo.matchID = item.info.gameId;
