@@ -27,6 +27,7 @@ export const useChampionStore = defineStore('champions', () => {
       return response.data[name]
     } catch (err) {
       console.error(err)
+      showError('error')
       return null
     } finally {
       isLoading.value = false;

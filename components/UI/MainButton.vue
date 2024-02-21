@@ -1,10 +1,7 @@
 <template>
-  <div class="button">
-    <q-btn>
-      <slot/>
-    </q-btn>
-  </div>
-  
+  <q-btn class="button" square>
+    <slot/>
+  </q-btn>
 </template>
 
 <script setup lang="ts">
@@ -13,7 +10,7 @@
 
 <style scoped lang="sass">
 .button
-  display: flex
-  justify-content: center
-  align-items: center
+  background-color: $gold-color
+  font-weight: 900
+  text-transform: uppercase
 </style>

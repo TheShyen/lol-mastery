@@ -1,10 +1,3 @@
-<script setup lang="ts">
-import MainButton from "~/components/UI/MainButton.vue";
-
-
-const handleError = () => clearError({ redirect: '/' })
-</script>
-
 <template>
   <NuxtLayout>
     <div class="error">
@@ -19,27 +12,33 @@ const handleError = () => clearError({ redirect: '/' })
   </NuxtLayout>
 </template>
 
+<script setup lang="ts">
+import MainButton from "~/components/UI/MainButton.vue";
+
+const handleError = () => clearError({ redirect: '/' })
+</script>
+
 <style lang="sass" scoped>
 .error
-  margin: 200px auto
+  margin: 0 auto
+  padding-top: 30vh
+  font-family: "Helvetica Neue Bold", serif
 .info
   display: flex
   justify-content: center
   flex-direction: column
   align-items: center
+  color: $gold-color
   &__title
-    font-family: Raleway, serif
     font-size: 28px
     font-weight: 900
     text-transform: uppercase
   &__desc
-    font-family: Raleway, serif
     font-size: 20px
     font-weight: 500
     text-align: center
   &__btn
     margin-top: 15px
-    font-family: Raleway, serif
-    font-weight: 900
-    text-transform: none
+    font-size: 16px
+    color: black
 </style>

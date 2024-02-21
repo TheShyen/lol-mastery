@@ -49,14 +49,12 @@ async function createMatchListWithFullInfo(PUUID) {
   return Promise.all(matchInfoPromises);
 }
 function createPlayerGameStats(matchList, puuid) {
-  const playerGameStats = []
-  matchList.forEach((item) => {
+  return matchList.map((item) => {
     const playerIndex = item.metadata.participants.indexOf(puuid)
     const playerInfo = {...item.info.participants[playerIndex]};
     playerInfo.matchID = item.info.gameId;
-    playerGameStats.push(playerInfo)
+    return playerInfo;
   })
-  return playerGameStats
 }
 app.get('/summoner/:userId', async (req, res) => {
     try {

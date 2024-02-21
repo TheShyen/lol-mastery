@@ -1,7 +1,6 @@
 <template>
   <div>
     <MainPromo/>
-    <MainChampionsPromo/>
   </div>
 </template>
 

@@ -18,19 +18,21 @@
         v-model="search"
         :input-style="{ color: 'yellow' }"
         color="yellow"
+        @focus="showRecentSearch"
         filled
+        type="search"
         label-slot
         label-color="yellow"
         square
       >
         <template v-slot:append>
-          <q-icon color="yellow" name="search" @click="searchAccount(search)"/>
+          <q-icon color="yellow" name="search"/>
         </template>
         <template v-slot:label>
           {{$t('search')}}
         </template>
       </q-input>
-      <q-list separator v-if="search.length">
+      <q-list separator v-if="search.length || recentList.length">
         <q-item v-for="searchListItem in searchResult" v-ripple clickable class="search-item" @click="goToCharacterOrSummonerPage(searchListItem)">
           <q-item-section avatar v-if="typeof searchListItem !== 'string'">
             <q-avatar square>
@@ -39,6 +41,12 @@
           </q-item-section>
           <q-item-section>
             <q-item-label class="search-item__text">{{searchListItem.name || searchListItem}}</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-separator dark />
+        <q-item v-for="recentItem in recentList" v-ripple clickable class="search-item" @click="goToCharacterOrSummonerPage(recentItem)">
+          <q-item-section>
+            <q-item-label class="search-item__text">{{recentItem}}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -61,6 +69,7 @@ const {t} = useI18n()
 const languageStyle = { backgroundColor: '#F2E437', fontFamily: 'Helvetica Neue Bold'}
 const search = ref('')
 const searchResult = ref<(ChampionData | string)[]>([])
+const recentList = ref<string[]>([])
 watch(search, (newSearchValue) => {
   if(newSearchValue.length) {
     searchResult.value = champStore.champions.filter(item => item.name.toLowerCase().startsWith(newSearchValue.toLowerCase()))
@@ -68,7 +77,6 @@ watch(search, (newSearchValue) => {
       searchResult.value.push(newSearchValue)
     }
     if(newSearchValue && !searchResult.value.length) {
-      
       searchResult.value.push(t('nothingFound'))
     }
   }
@@ -91,6 +99,13 @@ function goToCharacterOrSummonerPage(champ: ChampionData | string) {
 
 async function searchAccount(val:string) {
   await route.push('/summoner/' + nickConversion(val))
+}
+
+function showRecentSearch() {
+  const validJson = getFromLocalStorage('recent')
+  if(validJson) {
+    recentList.value = JSON.parse(validJson)
+  }
 }
 </script>
 

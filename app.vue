@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang="ts">
+import {addToLocalStorage} from "~/utils/addToLocalStorage";
+import {getFromLocalStorage} from "~/utils/getFromLocalStorage";
 
 const route = useRoute()
 const lang = useLangStore()
@@ -13,9 +15,9 @@ const itemStore = useItemStore()
 
 
 onMounted(() => {
-  const getLangFromLS = localStorage.getItem('language')
-  if (getLangFromLS) {
-    lang.locale = JSON.parse(getLangFromLS)
+  const langJson = getFromLocalStorage('language')
+  if(langJson) {
+    lang.locale = JSON.parse(langJson)
   }
   champStore.getChampions()
   itemStore.getItems()
@@ -23,7 +25,7 @@ onMounted(() => {
 watch(() => lang.locale, () => {
   champStore.getChampions()
   itemStore.getItems()
-  localStorage.setItem('language', JSON.stringify(lang.locale))
+  addToLocalStorage('language', JSON.stringify(lang.locale))
 })
 
 watch(() => route.fullPath, () => {

@@ -22,8 +22,8 @@ import type {AllPlayerInfo} from "~/types/Player/PlayerInfo";
 import type {ChampionData} from "~/types/Champions";
 import type {PlayerPerformance} from "~/types/Player/PlayerPerformance";
 import type {VueI18n} from "vue-i18n";
-
-
+import {getFromLocalStorage} from "~/utils/getFromLocalStorage";
+import {addToLocalStorage} from "~/utils/addToLocalStorage";
 
 const route = useRoute()
 const accountStore = useAccountStore()
@@ -38,6 +38,14 @@ onMounted(async () => {
     await itemStore.getItems()
   }
   await getChampForBanner()
+  const json = getFromLocalStorage('recent')
+  let allRecent = []
+  if (json) {
+    allRecent.push(JSON.parse(json))
+  }
+  const nick = route.params.nick as string
+  allRecent.push(nick.replace('+' , '#'))
+  addToLocalStorage('recent', JSON.stringify(allRecent.slice(-5)))
 })
 
 async function getChampForBanner() {
@@ -45,7 +53,6 @@ async function getChampForBanner() {
     await championStore.getChampions()
   }
   champion.value = championStore.champions.find(elem => elem.key == summonerInfo.value?.championMastery[0].championId) || null
-  console.log(champion.value)
 }
 function getAllPlayersInfo(game: PlayerPerformance) {
   let playersInfo: PlayerPerformance[] = []

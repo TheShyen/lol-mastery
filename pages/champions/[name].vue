@@ -16,14 +16,6 @@ const store = useChampionStore()
 const champion = ref<ChampionDetailedInfo | null>(null)
 
 champion.value = await store.getChampion(route.params.name as string)
-if (!champion.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Page Not Found'
-  })
-}
-
-
 </script>
 
 <style lang="sass">
