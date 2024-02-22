@@ -9,23 +9,22 @@ import {addToLocalStorage} from "~/utils/addToLocalStorage";
 import {getFromLocalStorage} from "~/utils/getFromLocalStorage";
 
 const route = useRoute()
-const lang = useLangStore()
+const langStore = useLangStore()
 const champStore = useChampionStore()
 const itemStore = useItemStore()
+const appStore = useAppStore()
 
 
 onMounted(() => {
-  const langJson = getFromLocalStorage('language')
-  if(langJson) {
-    lang.locale = JSON.parse(langJson)
-  }
+  langStore.setLanguageFromLocalStorage()
+  appStore.setRecentPlayersFromLocalStorage()
   champStore.getChampions()
   itemStore.getItems()
 })
-watch(() => lang.locale, () => {
+watch(() => langStore.locale, () => {
   champStore.getChampions()
   itemStore.getItems()
-  addToLocalStorage('language', JSON.stringify(lang.locale))
+  addToLocalStorage('language', JSON.stringify(langStore.locale))
 })
 
 watch(() => route.fullPath, () => {

@@ -7,8 +7,8 @@ export const useAccountStore = defineStore('account', () => {
       isLoading.value = true;
       return await getSummoner(nick)
     } catch (err) {
-      showError('Ошибка')
       console.error(err)
+      showError('Ошибка')
       return null
     } finally {
       isLoading.value = false;

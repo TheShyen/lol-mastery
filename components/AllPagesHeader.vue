@@ -17,8 +17,9 @@
       <q-input
         v-model="search"
         :input-style="{ color: 'yellow' }"
+        ref="searchElementRef"
         color="yellow"
-        @focus="showRecentSearch"
+        @focus="isFocus = true"
         filled
         type="search"
         label-slot
@@ -32,7 +33,7 @@
           {{$t('search')}}
         </template>
       </q-input>
-      <q-list separator v-if="search.length || recentList.length">
+      <q-list v-if="search.length || isFocus" separator>
         <q-item v-for="searchListItem in searchResult" v-ripple clickable class="search-item" @click="goToCharacterOrSummonerPage(searchListItem)">
           <q-item-section avatar v-if="typeof searchListItem !== 'string'">
             <q-avatar square>
@@ -44,7 +45,13 @@
           </q-item-section>
         </q-item>
         <q-separator dark />
-        <q-item v-for="recentItem in recentList" v-ripple clickable class="search-item" @click="goToCharacterOrSummonerPage(recentItem)">
+        <q-item
+          v-for="recentItem in appStore.recentPlayers"
+          v-ripple
+          class="search-item"
+          clickable
+          @click="searchAccount(recentItem)"
+        >
           <q-item-section>
             <q-item-label class="search-item__text">{{recentItem}}</q-item-label>
           </q-item-section>
@@ -57,19 +64,31 @@
 
 <script setup lang="ts">
 import {languageArray} from "~/constants/language";
-import {useLangStore} from "~/stores/LanguageStore";
 import type {ChampionData} from "~/types/Champions";
 import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
 import {nickConversion} from "~/utils/nickConversion";
+import type {VNodeRef} from "vue";
 
 const route = useRouter()
 const languageStore = useLangStore()
 const champStore = useChampionStore()
+const appStore = useAppStore()
 const {t} = useI18n()
+
 const languageStyle = { backgroundColor: '#F2E437', fontFamily: 'Helvetica Neue Bold'}
 const search = ref('')
 const searchResult = ref<(ChampionData | string)[]>([])
-const recentList = ref<string[]>([])
+const isFocus = ref(false)
+const searchElementRef = ref<VNodeRef>('')
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+})
+function handleClickOutside (event: Event) {
+  if(event.target !== searchElementRef.value.nativeEl) {
+    isFocus.value = false
+  }
+}
 watch(search, (newSearchValue) => {
   if(newSearchValue.length) {
     searchResult.value = champStore.champions.filter(item => item.name.toLowerCase().startsWith(newSearchValue.toLowerCase()))
@@ -97,15 +116,8 @@ function goToCharacterOrSummonerPage(champ: ChampionData | string) {
   search.value = ''
 }
 
-async function searchAccount(val:string) {
-  await route.push('/summoner/' + nickConversion(val))
-}
-
-function showRecentSearch() {
-  const validJson = getFromLocalStorage('recent')
-  if(validJson) {
-    recentList.value = JSON.parse(validJson)
-  }
+function searchAccount(val:string) {
+  route.push('/summoner/' + nickConversion(val))
 }
 </script>
 
@@ -145,5 +157,8 @@ function showRecentSearch() {
     background-color: $secondary-bg-color
   &__text
     color: $gold-color
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
     
 </style>

@@ -1,7 +1,11 @@
 <template>
-  <div>
-
-  </div>
+  <main>
+    <div>
+      <section>
+      
+      </section>
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">

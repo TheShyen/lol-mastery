@@ -10,6 +10,7 @@
           :matchTime="getMatchTimes(playerPerformance, $t)"
           :playerPerformance="playerPerformance"
           :playersInfo="getAllPlayersInfo(playerPerformance)"
+          @click="router.push('/match/' + playerPerformance.matchID)"
         />
       </section>
     </div>
@@ -22,30 +23,28 @@ import type {AllPlayerInfo} from "~/types/Player/PlayerInfo";
 import type {ChampionData} from "~/types/Champions";
 import type {PlayerPerformance} from "~/types/Player/PlayerPerformance";
 import type {VueI18n} from "vue-i18n";
-import {getFromLocalStorage} from "~/utils/getFromLocalStorage";
+
 import {addToLocalStorage} from "~/utils/addToLocalStorage";
 
+
 const route = useRoute()
+const router = useRouter()
 const accountStore = useAccountStore()
 const championStore = useChampionStore()
+const appStore = useAppStore()
 const summonerInfo = ref<AllPlayerInfo | null >(null)
 const champion = ref<ChampionData | null>(null)
 const itemStore = useItemStore()
 
 onMounted(async () => {
   summonerInfo.value = await accountStore.getAccountInfo(route.params.nick as string)
+  await getChampForBanner()
   if (!itemStore.items) {
     await itemStore.getItems()
   }
-  await getChampForBanner()
-  const json = getFromLocalStorage('recent')
-  let allRecent = []
-  if (json) {
-    allRecent.push(JSON.parse(json))
+  if (summonerInfo.value) {
+    addPlayerToRecentList()
   }
-  const nick = route.params.nick as string
-  allRecent.push(nick.replace('+' , '#'))
-  addToLocalStorage('recent', JSON.stringify(allRecent.slice(-5)))
 })
 
 async function getChampForBanner() {
@@ -73,6 +72,14 @@ function getMatchTimes(game: PlayerPerformance, $t: VueI18n['t']) {
   return `${getTimeElapsed(gameEndTime, $t)} - ${Math.floor(game.timePlayed / 60)}${$t('minutes')}  ${game.timePlayed % 60}s`
 }
 
+function addPlayerToRecentList() {
+  const nick = (route.params.nick as string).replace('+', '#')
+  if (!appStore.recentPlayers.includes(nick)) {
+    appStore.recentPlayers.unshift(nick)
+    appStore.recentPlayers = appStore.recentPlayers.slice(0, 5)
+    addToLocalStorage('recent', JSON.stringify(appStore.recentPlayers))
+  }
+}
 </script>
 
 <style scoped lang="sass">

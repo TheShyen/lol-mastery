@@ -15,6 +15,7 @@
       <template v-for="key in itemKeys">
         <q-img
           class="champion-items__img"
+          @click.stop
           :src="getItemImageUrl(playerPerformance[key] + '.png')"
         >
           <ItemInfoPopup :itemInfo="getItemById(playerPerformance[key])"/>
@@ -29,7 +30,7 @@
           class="match-champions__img"
           :src="getSquareChampionImg(playerInfo.championName + '.png')"
           v-for="playerInfo in playersInfo"
-          @click="router.push('/champions/' + playerInfo.championName)"
+          @click.stop="router.push('/champions/' + playerInfo.championName)"
         >
         </q-img>
       </div>
