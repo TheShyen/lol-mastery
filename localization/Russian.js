@@ -11,6 +11,7 @@ export const RussianDict = {
     cost: 'Стоимость(маны/энергии):',
     cooldown: 'Перезарядка(секунды):',
     goldCost: 'Стоимость:',
+    gold: 'золота',
     search: 'Поиск',
     level: 'Уровень',
     hours: 'часов',

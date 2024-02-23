@@ -1,4 +1,4 @@
-import {getSummoner} from "~/services/accountService";
+import {getGame, getSummoner} from "~/services/accountService";
 
 export const useAccountStore = defineStore('account', () => {
   const isLoading = ref(false)
@@ -13,10 +13,22 @@ export const useAccountStore = defineStore('account', () => {
     } finally {
       isLoading.value = false;
     }
-
+  }
+  async function getGameInfo(id: string) {
+    try {
+      isLoading.value = true;
+      return await getGame(id)
+    } catch (err) {
+      console.error(err)
+      showError('Ошибка')
+      return null
+    } finally {
+      isLoading.value = false;
+    }
   }
   return {
     isLoading,
-    getAccountInfo
+    getAccountInfo,
+    getGameInfo
   }
 })

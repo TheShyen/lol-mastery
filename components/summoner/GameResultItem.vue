@@ -6,10 +6,17 @@
       </div>
       <div class="champion-icon__runes"></div>
     </div>
-    <div class="game-result__status" :class="{red : !playerPerformance.win}">{{getGameResult(playerPerformance.win, $t)}}</div>
+    <div v-if="!isMatchPage" class="game-result__status" :class="{red : !playerPerformance.win}">{{getGameResult(playerPerformance.win, $t)}}</div>
+    <div v-else class="player-info">
+      <div class="player-info__nick">{{playerPerformance.riotIdGameName + "#" + playerPerformance.riotIdTagline}}</div>
+      <div class="player-info__rank">{{playerPerformance.rank[0].tier}} {{playerPerformance.rank[0].rank}}</div>
+    </div>
     <div class="kda-info">
       <div>{{playerPerformance.kills}} / {{playerPerformance.deaths}} / {{playerPerformance.assists}}</div>
-      <div>{{playerPerformance.totalAllyJungleMinionsKilled + playerPerformance.totalMinionsKilled}} CS</div>
+      <div>
+        <div>{{playerPerformance.totalAllyJungleMinionsKilled + playerPerformance.totalMinionsKilled}} CS</div>
+        <div v-if="isMatchPage">{{(playerPerformance.goldEarned / 1000).toFixed(1)}}k {{$t('gold')}}</div>
+      </div>
     </div>
     <div class="champion-items">
       <template v-for="key in itemKeys">
@@ -44,20 +51,22 @@ import {getItemImageUrl} from "~/services/getSpellImageUrl";
 import type {VueI18n} from "vue-i18n";
 import type {PlayerPerformance} from "~/types/Player/PlayerPerformance";
 import ItemInfoPopup from "~/components/ItemInfoPopup.vue";
+import {getGameResult} from "../../utils/getGameResult";
 
 const router = useRouter()
 const itemStore = useItemStore()
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   playerPerformance: PlayerPerformance,
-  playersInfo: PlayerPerformance[],
-  matchTime: string
-}>()
+  playersInfo?: PlayerPerformance[],
+  matchTime?: string
+  isMatchPage?: boolean
+}>(), {
+  isMatchPage: false
+})
 
 const itemKeys = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6'];
-function getGameResult(gameRes: boolean, $t: VueI18n['t']) {
-  return gameRes ? `${$t('victory')}` : `${$t('defeat')}`
-}
+
 
 function getItemById(id: string) {
   return itemStore.items.find((item) => item.id == id)
@@ -74,10 +83,25 @@ function getItemById(id: string) {
   height: 90px
   background-color: #282828
   border-bottom: 1px solid #383434
+  cursor: pointer
+  &:hover
+    background-color: #303030
+    transition: 0.6s
   &__status
     color: #2DEB90
     min-width: 80px
     text-align: center
+
+.player-info
+  min-width: 180px
+  color: #ffffff
+  text-align: left
+  &__nick
+    font-size: 13px
+  &__rank
+    font-size: 10px
+    font-style: italic
+    opacity: 0.7
 .red
   color: #ff5859
 .kda-info

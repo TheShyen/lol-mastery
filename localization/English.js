@@ -11,6 +11,7 @@ export const EnglishDict = {
     cost: 'Cost(mana/energy):',
     cooldown: 'Cooldown(second):',
     goldCost: 'Price:',
+    gold: 'gold',
     search: 'Search',
     level: 'Level',
     hours: 'hours',

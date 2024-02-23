@@ -63,14 +63,14 @@ export interface GameModeStat {
   veteran: boolean;
   wins: number;
 }
-
+export interface Match {
+  info: MatchInfo;
+  metadata: MatchMetadata
+}
 
 export interface AllPlayerInfo {
   accountInfo: AccountInfo;
-  matchList: {
-    info: MatchInfo;
-    metadata: MatchMetadata
-  }[];
+  matchList: Match[];
   playerPerformances: PlayerPerformance[];
   gameModesStats: GameModeStat[];
   championMastery: ChampionMastery[]

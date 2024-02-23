@@ -1,3 +1,5 @@
+import type {GameModeStat} from "~/types/Player/PlayerInfo";
+
 export interface PlayerPerformance {
     allInPings: number;
     assistMePings: number;
@@ -5,7 +7,7 @@ export interface PlayerPerformance {
     baronKills: number;
     basicPings: number;
     bountyLevel: number;
-    matchID: number;
+    matchID: string;
     challenges: {
         [key: string]: number | number[];
     };
@@ -113,6 +115,7 @@ export interface PlayerPerformance {
     quadraKills: number;
     riotIdGameName: string;
     riotIdTagline: string;
+    rank?: GameModeStat[]
     role: string;
     sightWardsBoughtInGame: number;
     spell1Casts: number;

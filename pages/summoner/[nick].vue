@@ -10,6 +10,7 @@
           :matchTime="getMatchTimes(playerPerformance, $t)"
           :playerPerformance="playerPerformance"
           :playersInfo="getAllPlayersInfo(playerPerformance)"
+          :matchResult="true"
           @click="router.push('/match/' + playerPerformance.matchID)"
         />
       </section>
@@ -56,7 +57,7 @@ async function getChampForBanner() {
 function getAllPlayersInfo(game: PlayerPerformance) {
   let playersInfo: PlayerPerformance[] = []
   summonerInfo.value?.matchList.forEach(item => {
-    if(item.info.gameId == game.matchID) {
+    if(item.metadata.matchId == game.matchID) {
       playersInfo = item.info.participants
     }
   })
@@ -65,7 +66,7 @@ function getAllPlayersInfo(game: PlayerPerformance) {
 function getMatchTimes(game: PlayerPerformance, $t: VueI18n['t']) {
   let gameEndTime = 0
   summonerInfo.value?.matchList.forEach(item => {
-    if(item.info.gameId == game.matchID) {
+    if(item.metadata.matchId == game.matchID) {
       gameEndTime = item.info.gameEndTimestamp
     }
   })
@@ -84,7 +85,6 @@ function addPlayerToRecentList() {
 
 <style scoped lang="sass">
 .summoner
-  background-color: $secondary-bg-color
   min-height: 100vh
   font-family: "Helvetica Neue Bold", sans-serif
   &__wrapper
