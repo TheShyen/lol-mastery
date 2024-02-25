@@ -13,6 +13,7 @@
         <q-route-tab class="tab" name="articles" @click="route.push('/items')">{{ $t('items') }}</q-route-tab>
       </q-tabs>
     </q-toolbar>
+    <q-select borderless dark v-model="accountStore.region" :popup-content-style="regionStyle" class="region" :options="regionNamesArray" />
     <div class="search">
       <q-input
         v-model="search"
@@ -68,14 +69,18 @@ import type {ChampionData} from "~/types/Champions";
 import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
 import {nickConversion} from "~/utils/nickConversion";
 import type {VNodeRef} from "vue";
+import {regionNamesArray} from "~/constants/region";
 
 const route = useRouter()
 const languageStore = useLangStore()
 const champStore = useChampionStore()
 const appStore = useAppStore()
+const accountStore = useAccountStore()
 const {t} = useI18n()
 
 const languageStyle = { backgroundColor: '#F2E437', fontFamily: 'Helvetica Neue Bold'}
+const regionStyle = {fontFamily: 'Helvetica Neue Bold', fontSize: '12px'}
+
 const search = ref('')
 const searchResult = ref<(ChampionData | string)[]>([])
 const isFocus = ref(false)
@@ -138,7 +143,13 @@ function searchAccount(val:string) {
   font-size: 22px
 .tab
   text-transform: none
-  
+.region
+  font-family: "Helvetica Neue Bold", sans-serif
+  font-size: 12px
+  width: 80px
+  margin-top: 3px
+  margin-right: 10px
+  margin-left: 50px
 .lang
   color: $gold-color
   font-family: "Helvetica Neue Bold", sans-serif

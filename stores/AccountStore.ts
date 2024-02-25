@@ -1,7 +1,9 @@
 import {getGame, getSummoner} from "~/services/accountService";
+import {REGION_NAME} from "~/constants/region";
 
 export const useAccountStore = defineStore('account', () => {
   const isLoading = ref(false)
+  const region = ref(REGION_NAME.RU)
   async function getAccountInfo(nick: string) {
     try {
       isLoading.value = true;
@@ -28,6 +30,7 @@ export const useAccountStore = defineStore('account', () => {
   }
   return {
     isLoading,
+    region,
     getAccountInfo,
     getGameInfo
   }
