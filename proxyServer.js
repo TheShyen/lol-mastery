@@ -13,20 +13,20 @@ function getPUUID(nick) {
         .then(response => response.data.puuid)
         .catch(err => console.error(err))
 }
-function getAccountInfo(puuid) {
-    return axios.get(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${API_KEY}`)
+function getAccountInfo(puuid, region) {
+    return axios.get(`https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${API_KEY}`)
         .then(response => response.data)
         .catch(err => console.error(err))
 
 }
-function getChampionMastery(puuid) {
-    return axios.get(`https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?api_key=${API_KEY}`)
+function getChampionMastery(puuid, region) {
+    return axios.get(`https://${region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?api_key=${API_KEY}`)
         .then(response => response.data)
         .catch(err => console.error(err))
 }
 
-function getGameModesStats(id) {
-    return axios.get(`https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${API_KEY}`)
+function getGameModesStats(id, region) {
+    return axios.get(`https://${region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${API_KEY}`)
         .then(response => response.data)
         .catch(err => console.error(err))
 
@@ -55,14 +55,16 @@ function createPlayerGameStats(matchList, puuid) {
     return playerInfo;
   })
 }
-app.get('/summoner/:userId', async (req, res) => {
+
+app.get('/:region/summoner/:userId', async (req, res) => {
     try {
         const nick = req.params.userId.split("+").join('/');
+        const region = req.params.region
         const PUUID = await getPUUID(nick);
-        const accountInfo = await getAccountInfo(PUUID);
+        const accountInfo = await getAccountInfo(PUUID, region);
         const [championMastery, gameModesStats, matchList] = await Promise.all([
-            getChampionMastery(PUUID),
-            getGameModesStats(accountInfo.id),
+            getChampionMastery(PUUID, region),
+            getGameModesStats(accountInfo.id, region),
             createMatchListWithFullInfo(PUUID)
         ]);
 
@@ -80,16 +82,18 @@ app.get('/summoner/:userId', async (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 })
-app.get('/match/:id', async (req, res) => {
+app.get('/:region/match/:id', async (req, res) => {
   try {
     const matchId = req.params.id
+    const region = req.params.region
     const matchInfo = await getMatch(matchId)
     const playerStatsPromises = matchInfo.info.participants.map(async playerStat => {
-      const accountInfo = await getAccountInfo(playerStat.puuid)
-      playerStat.rank = await getGameModesStats(accountInfo.id)
+      const accountInfo = await getAccountInfo(playerStat.puuid, region)
+      playerStat.rank = await getGameModesStats(accountInfo.id, region)
       return playerStat
     })
     matchInfo.info.participants = await Promise.all(playerStatsPromises)
+
     return res.json(matchInfo);
   } catch (error) {
     console.error(error);

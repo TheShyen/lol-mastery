@@ -1,4 +1,4 @@
-export default function urlConstruction(baseURL: string, endpoint: string, lang?:string, params?: string) {
+export default function urlConstruction(baseURL: string, endpoint: string, lang: string = '', params?: string) {
   const url = new URL(endpoint, baseURL + lang);
   const searchParams = new URLSearchParams(params)
   if (searchParams.size) {

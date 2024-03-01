@@ -30,7 +30,7 @@
       </template>
     
     </div>
-    <div>
+    <div v-if="matchTime">
       <div class="match-time">{{matchTime}}</div>
       <div class="match-champions">
         <q-img
@@ -48,7 +48,6 @@
 <script setup lang="ts">
 import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
 import {getItemImageUrl} from "~/services/getSpellImageUrl";
-import type {VueI18n} from "vue-i18n";
 import type {PlayerPerformance} from "~/types/Player/PlayerPerformance";
 import ItemInfoPopup from "~/components/ItemInfoPopup.vue";
 import {getGameResult} from "../../utils/getGameResult";
@@ -95,7 +94,6 @@ function getItemById(id: string) {
 .player-info
   min-width: 180px
   color: #ffffff
-  text-align: left
   &__nick
     font-size: 13px
   &__rank
@@ -107,6 +105,7 @@ function getItemById(id: string) {
 .kda-info
   min-width: 70px
   color: $blue-color
+  text-align: center
 .match-time
   color: #fff
   font-size: 13px
