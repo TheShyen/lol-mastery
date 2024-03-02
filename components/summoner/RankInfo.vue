@@ -2,9 +2,9 @@
   <section class="rank-info">
   <div class="ratings">
     <img class="ratings__emblem" :src="getEmblemImagePath(gameModesStats)" alt="emblem"/>
-    <div class="ratings__text">{{gameModesStats[0].tier}} {{gameModesStats[0].rank}}</div>
-    <div class="ratings__text">Wins: {{gameModesStats[0].wins}}  Losses: {{gameModesStats[0].losses}}</div>
-    <div class="ratings__text">LP: {{gameModesStats[0].leaguePoints}}</div>
+    <div class="ratings__rank">{{gameModesStats[0].tier}} {{gameModesStats[0].rank}}</div>
+    <div class="ratings__stats">Wins: {{gameModesStats[0].wins}}  Losses: {{gameModesStats[0].losses}}</div>
+    <div class="ratings__lp">LP: {{gameModesStats[0].leaguePoints}}</div>
   </div>
   <div class="graphs">
     <Winrate  style="width: 200px; height: 200px" :games="gameModesStats[0]"></Winrate>
@@ -35,20 +35,25 @@ function calcWinrate(info: GameModeStat) {
   background-color: #282828
   margin-top: 10px
 .ratings
+  text-align: center
+  color: #fff
   &__emblem
     width: 200px
     height: 200px
-  &__text
-    font-size: 18px
-    color: $gold-color
-    text-align: center
+  &__rank
+    font-size: 20px
+  &__stats
+    font-size: 14px
+    opacity: 0.7
+  &__lp
+    opacity: 0.6
 .graphs
   display: flex
   align-items: center
   flex-direction: column
   justify-content: center
   &__text
-    color: $blue-color
+    color: #fff
     font-size: 18px
     margin-top: 20px
 </style>

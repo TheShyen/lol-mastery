@@ -34,5 +34,6 @@ export const RussianDict = {
   horde: 'Личинка бездны',
   inhibitor: 'Ингибитор',
   riftHerald: 'Герольд Бездны',
-  tower: 'Башня'
+  tower: 'Башня',
+  recentGames: 'Недавние игры'
 }

@@ -5,6 +5,7 @@
       <SummonerBanner :mainChampion="champion" :summonerAccountInfo="summonerInfo.accountInfo"/>
       <SummonerRankInfo :gameModesStats="summonerInfo.gameModesStats"/>
       <section class="match-list">
+        <div class="match-list__recent">{{$t('recentGames')}}</div>
         <SummonerGameResultItem
           v-for="playerPerformance in summonerInfo.playerPerformances"
           :matchTime="getMatchTimes(playerPerformance, $t)"
@@ -96,6 +97,12 @@ function addPlayerToRecentList() {
 .match-list
   font-family: "Helvetica Neue Bold", sans-serif
   margin: 20px auto
-  width: 54%
+  width: 60%
+  &__recent
+    display: flex
+    justify-content: center
+    margin-bottom: 10px
+    font-size: 18px
+    color: $gold-color
 
 </style>

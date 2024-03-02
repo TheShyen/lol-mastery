@@ -1,7 +1,7 @@
 <template>
   <main class="game-stats">
-    <div class="game-stats__wrapper">
-      <section class="match-table" v-if="fullGameInfo">
+    <div class="game-stats__wrapper" v-if="fullGameInfo">
+      <section class="match-table">
         <div class="match-table__results">
           <div class="teams-results">
             <div
@@ -14,7 +14,7 @@
               <template v-for="(object, objectName) of fullGameInfo.info.teams[0].objectives">
                 <div v-if="objectName != 'champion'" class="objectives__icon">
                   <img :src="`/_nuxt/assets/objectIcons/${objectName}.svg`"/>
-                  <div>
+                  <div class="objectives__text">
                     {{object.kills}}
                   </div>
                   <q-tooltip>
@@ -24,6 +24,9 @@
                 
               </template>
             </div>
+          </div>
+          <div class="game-duration">
+            {{formatGameDuration(fullGameInfo.info.gameDuration)}}
           </div>
           <div class="teams-results_right">
             <div
@@ -36,7 +39,7 @@
               <template v-for="(object, objectName) of fullGameInfo.info.teams[1].objectives">
                 <div v-if="objectName != 'champion'" class="objectives__icon">
                   <img :src="`/_nuxt/assets/objectIcons/${objectName}.svg`"/>
-                  <div>
+                  <div class="objectives__text">
                     {{object.kills}}
                   </div>
                   <q-tooltip>
@@ -54,6 +57,7 @@
               :isMatchPage="true"
               v-for="player of fullGameInfo.info.participants.slice(0, 5)"
               class="match-list__item"
+              @click="goToSummonerPage(player.riotIdGameName, player.riotIdTagline)"
             />
           </div>
           <div class="match-list__divider"></div>
@@ -63,10 +67,13 @@
               :isMatchPage="true"
               v-for="player of fullGameInfo.info.participants.slice(-5)"
               class="match-list__item-right"
+              @click="goToSummonerPage(player.riotIdGameName, player.riotIdTagline)"
             />
           </div>
         </div>
-        
+      </section>
+      <section>
+        <DamageDealt :data="fullGameInfo"/>
       </section>
     </div>
   </main>
@@ -76,8 +83,10 @@
 import type {Match} from "~/types/Player/PlayerInfo";
 import GameResultItem from "~/components/summoner/GameResultItem.vue";
 import {getGameResult} from "~/utils/getGameResult";
+import DamageDealt from "~/components/graphs/DamageDealt.vue";
 
 const route = useRoute()
+const router = useRouter()
 const accountStore = useAccountStore()
 
 const fullGameInfo = ref<Match | null>(null)
@@ -85,6 +94,18 @@ onMounted(async () => {
   fullGameInfo.value = await accountStore.getGameInfo(route.params.matchId as string)
   console.log(fullGameInfo.value)
 })
+
+function formatGameDuration(gameDurationInSeconds: number) {
+  const minutes = Math.floor(gameDurationInSeconds / 60);
+  const seconds = gameDurationInSeconds % 60;
+  const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+  return `${minutes}:${formattedSeconds}`;
+}
+
+function goToSummonerPage(name, tag) {
+  router.push(`/summoner/${name}+${tag}`)
+}
+
 </script>
 
 <style scoped lang="sass">
@@ -115,9 +136,12 @@ onMounted(async () => {
   &__game
     color: #2DEB90
     font-size: 18px
+    width: 5em
 .teams-results_right
   flex-direction: row-reverse
-
+.game-duration
+  color: #dccfcf
+  font-size: 15px
 .red
   color: #ff5859
 .objectives,
@@ -130,6 +154,8 @@ onMounted(async () => {
     display: flex
     flex-wrap: nowrap
     flex-direction: row
+  &__text
+    margin-left: 3px
 .objectives_right
   flex-direction: row-reverse
   

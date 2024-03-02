@@ -34,6 +34,7 @@ export const EnglishDict = {
   horde: 'Voidgrub',
   inhibitor: 'Inhibitor',
   riftHerald: 'Rift Herald',
-  tower: 'Tower'
+  tower: 'Tower',
+  recentGames: 'Recent games'
 
 }
