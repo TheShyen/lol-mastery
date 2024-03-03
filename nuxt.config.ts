@@ -22,4 +22,12 @@ export default defineNuxtConfig({
   css: [
     '@/assets/fonts.css',
   ],
+  app: {
+    head: {
+      title: 'LOL Mastery',
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/headerLogo.png' }
+      ]
+    }
+  }
 })

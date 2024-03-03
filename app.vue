@@ -13,11 +13,12 @@ const langStore = useLangStore()
 const champStore = useChampionStore()
 const itemStore = useItemStore()
 const appStore = useAppStore()
-
+const accountStore = useAccountStore()
 
 onMounted(() => {
   langStore.setLanguageFromLocalStorage()
   appStore.setRecentPlayersFromLocalStorage()
+  accountStore.setRegionFromLocalStorage()
   champStore.getChampions()
   itemStore.getItems()
 })
@@ -25,6 +26,10 @@ watch(() => langStore.locale, () => {
   champStore.getChampions()
   itemStore.getItems()
   addToLocalStorage('language', JSON.stringify(langStore.locale))
+})
+
+watch(() => accountStore.region, () => {
+  addToLocalStorage('region', JSON.stringify(accountStore.region))
 })
 
 watch(() => route.fullPath, () => {
