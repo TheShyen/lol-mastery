@@ -37,7 +37,6 @@ onMounted(async () => {
 
 <style scoped lang="sass">
 .game-stats
-  min-height: 100vh
   font-family: "Helvetica Neue Bold", sans-serif
   &__wrapper
     max-width: 1200px
@@ -52,6 +51,7 @@ onMounted(async () => {
     flex-direction: row
     width: 90%
     justify-content: space-between
+    color: $blue-color
 .match-list
   display: flex
   flex-direction: column
