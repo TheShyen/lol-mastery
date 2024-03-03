@@ -33,27 +33,27 @@ function getGameModesStats(id, region) {
 }
 
 function getMatchList(puuid) {
-  return axios.get(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10&api_key=${API_KEY}`)
-    .then(response => response.data)
-    .catch(err => console.error(err))
+    return axios.get(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10&api_key=${API_KEY}`)
+        .then(response => response.data)
+        .catch(err => console.error(err))
 }
 function getMatch(id) {
-  return axios.get(`https://europe.api.riotgames.com/lol/match/v5/matches/${id}?api_key=${API_KEY}`)
-    .then(response => response.data)
-    .catch(err => console.error(err))
+    return axios.get(`https://europe.api.riotgames.com/lol/match/v5/matches/${id}?api_key=${API_KEY}`)
+        .then(response => response.data)
+        .catch(err => console.error(err))
 }
 async function createMatchListWithFullInfo(PUUID) {
-  const matchList = await getMatchList(PUUID);
-  const matchInfoPromises = matchList.map(id => getMatch(id));
-  return Promise.all(matchInfoPromises);
+    const matchList = await getMatchList(PUUID);
+    const matchInfoPromises = matchList.map(id => getMatch(id));
+    return Promise.all(matchInfoPromises);
 }
 function createPlayerGameStats(matchList, puuid) {
-  return matchList.map((item) => {
-    const playerIndex = item.metadata.participants.indexOf(puuid)
-    const playerInfo = {...item.info.participants[playerIndex]};
-    playerInfo.matchID = item.metadata.matchId;
-    return playerInfo;
-  })
+    return matchList.map((item) => {
+        const playerIndex = item.metadata.participants.indexOf(puuid)
+        const playerInfo = {...item.info.participants[playerIndex]};
+        playerInfo.matchID = item.metadata.matchId;
+        return playerInfo;
+    })
 }
 
 app.get('/:region/summoner/:userId', async (req, res) => {
@@ -83,22 +83,22 @@ app.get('/:region/summoner/:userId', async (req, res) => {
     }
 })
 app.get('/:region/match/:id', async (req, res) => {
-  try {
-    const matchId = req.params.id
-    const region = req.params.region
-    const matchInfo = await getMatch(matchId)
-    const playerStatsPromises = matchInfo.info.participants.map(async playerStat => {
-      const accountInfo = await getAccountInfo(playerStat.puuid, region)
-      playerStat.rank = await getGameModesStats(accountInfo.id, region)
-      return playerStat
-    })
-    matchInfo.info.participants = await Promise.all(playerStatsPromises)
+    try {
+        const matchId = req.params.id
+        const region = req.params.region
+        const matchInfo = await getMatch(matchId)
+        const playerStatsPromises = matchInfo.info.participants.map(async playerStat => {
+            const accountInfo = await getAccountInfo(playerStat.puuid, region)
+            playerStat.rank = await getGameModesStats(accountInfo.id, region)
+            return playerStat
+        })
+        matchInfo.info.participants = await Promise.all(playerStatsPromises)
 
-    return res.json(matchInfo);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
+        return res.json(matchInfo);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
 })
 app.listen(4000, function() {
     console.log('Proxy server started on port 4000')
