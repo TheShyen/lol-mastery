@@ -35,6 +35,7 @@ export const EnglishDict = {
   inhibitor: 'Inhibitor',
   riftHerald: 'Rift Herald',
   tower: 'Tower',
-  recentGames: 'Recent games'
+  recentGames: 'Recent games',
+  goldAdvantage: 'Team Gold Advantage'
 
 }

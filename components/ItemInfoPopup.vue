@@ -20,6 +20,7 @@ defineProps<{
 .item-info
   padding: 10px 10px
   max-width: 500px
+  font-family: "Beaufort for LOL Bold", sans-serif
   &__name
     color: #eacaa0
   &__cost

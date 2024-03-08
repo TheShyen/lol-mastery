@@ -17,7 +17,7 @@
     <div class="search">
       <q-input
         v-model="search"
-        :input-style="{ color: 'yellow' }"
+        :input-style="{color: 'yellow'}"
         ref="searchElementRef"
         color="yellow"
         @focus="isFocus = true"

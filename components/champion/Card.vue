@@ -34,14 +34,13 @@ defineProps<{
   &__image
     height: 280px
     max-width: 260px
-    
-    
+
   &__name
     padding: 8px 15px
     background-color: $gold-color
     text-transform: uppercase
     font-family: "Beaufort for LOL Bold", sans-serif
-   
+    font-style: italic
     transition: .3s
       
   &:hover

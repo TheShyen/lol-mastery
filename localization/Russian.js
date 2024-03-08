@@ -35,5 +35,6 @@ export const RussianDict = {
   inhibitor: 'Ингибитор',
   riftHerald: 'Герольд Бездны',
   tower: 'Башня',
-  recentGames: 'Недавние игры'
+  recentGames: 'Недавние игры',
+  goldAdvantage: 'Командное преимущество в золоте'
 }

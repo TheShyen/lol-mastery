@@ -6,12 +6,12 @@
           <div class="teams-results">
             <div
               class="teams-results__game"
-              :class="{red : !fullGameInfo.info.teams[0].win}"
+              :class="{red : !fullGameInfo.matchInfo.info.teams[0].win}"
             >
-              {{getGameResult(fullGameInfo.info.teams[0].win, $t)}}
+              {{getGameResult(fullGameInfo.matchInfo.info.teams[0].win, $t)}}
             </div>
             <div class="objectives">
-              <template v-for="(object, objectName) of fullGameInfo.info.teams[0].objectives">
+              <template v-for="(object, objectName) of fullGameInfo.matchInfo.info.teams[0].objectives">
                 <div v-if="objectName != 'champion'" class="objectives__icon">
                   <img :src="`/_nuxt/assets/objectIcons/${objectName}.svg`"/>
                   <div class="objectives__text">
@@ -26,17 +26,17 @@
             </div>
           </div>
           <div class="game-duration">
-            {{formatGameDuration(fullGameInfo.info.gameDuration)}}
+            {{formatGameDuration(fullGameInfo.matchInfo.info.gameDuration)}}
           </div>
           <div class="teams-results_right">
             <div
               class="teams-results__game"
-              :class="{red : !fullGameInfo.info.teams[1].win}"
+              :class="{red : !fullGameInfo.matchInfo.info.teams[1].win}"
             >
-              {{getGameResult(fullGameInfo.info.teams[1].win, $t)}}
+              {{getGameResult(fullGameInfo.matchInfo.info.teams[1].win, $t)}}
             </div>
             <div class="objectives_right">
-              <template v-for="(object, objectName) of fullGameInfo.info.teams[1].objectives">
+              <template v-for="(object, objectName) of fullGameInfo.matchInfo.info.teams[1].objectives">
                 <div v-if="objectName != 'champion'" class="objectives__icon">
                   <img :src="`/_nuxt/assets/objectIcons/${objectName}.svg`"/>
                   <div class="objectives__text">
@@ -55,7 +55,7 @@
             <GameResultItem
               :playerPerformance="player"
               :isMatchPage="true"
-              v-for="player of fullGameInfo.info.participants.slice(0, 5)"
+              v-for="player of fullGameInfo.matchInfo.info.participants.slice(0, 5)"
               class="match-list__item"
               @click="goToSummonerPage(player.riotIdGameName, player.riotIdTagline)"
             />
@@ -65,31 +65,33 @@
             <GameResultItem
               :playerPerformance="player"
               :isMatchPage="true"
-              v-for="player of fullGameInfo.info.participants.slice(-5)"
+              v-for="player of fullGameInfo.matchInfo.info.participants.slice(5)"
               class="match-list__item-right"
               @click="goToSummonerPage(player.riotIdGameName, player.riotIdTagline)"
             />
           </div>
         </div>
       </section>
-      <section>
-        <DamageDealt :data="fullGameInfo"/>
+      <section class="graphs">
+        <DamageDealt :data="fullGameInfo.matchInfo"/>
+        <TeamGoldAdvantage :data="fullGameInfo.goldDifference"/>
       </section>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import type {Match} from "~/types/Player/PlayerInfo";
 import GameResultItem from "~/components/summoner/GameResultItem.vue";
 import {getGameResult} from "~/utils/getGameResult";
 import DamageDealt from "~/components/graphs/DamageDealt.vue";
+import type {AllMatchData} from "~/types/AllMatchData";
+import TeamGoldAdvantage from "~/components/graphs/TeamGoldAdvantage.vue";
 
 const route = useRoute()
 const router = useRouter()
 const accountStore = useAccountStore()
 
-const fullGameInfo = ref<Match | null>(null)
+const fullGameInfo = ref<AllMatchData | null>(null)
 onMounted(async () => {
   fullGameInfo.value = await accountStore.getGameInfo(route.params.matchId as string)
   console.log(fullGameInfo.value)
@@ -171,4 +173,9 @@ function goToSummonerPage(name: string, tag: string) {
       flex-direction: row-reverse
       width: 35em
       text-align: right
+
+.graphs
+  display: flex
+  justify-content: space-around
+  flex-wrap: wrap
 </style>

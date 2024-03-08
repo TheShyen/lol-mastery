@@ -12,13 +12,7 @@
                 <q-skeleton square size="50px"/>
               </template>
             </q-img>
-            <q-menu fit anchor="bottom start" self="top left" dark square max-height="300">
-              <div class="item-info">
-                <div class="item-info__name">{{ item.name }}</div>
-                <div v-html="formatItemText(item.description)"></div>
-                <div class="item-info__cost">{{ $t('goldCost') }} {{ item.gold.total }}</div>
-              </div>
-            </q-menu>
+            <ItemInfoPopup :item-info="item"/>
           </div>
         </div>
       </div>
@@ -31,7 +25,6 @@
 
 import {useItemStore} from "~/stores/ItemsStore";
 import {getItemImageUrl} from "~/services/getSpellImageUrl";
-import {formatItemText} from "~/utils/formatItemText";
 
 
 const store = useItemStore()

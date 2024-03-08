@@ -9,7 +9,7 @@
     <div v-if="!isMatchPage" class="game-result__status" :class="{red : !playerPerformance.win}">{{getGameResult(playerPerformance.win, $t)}}</div>
     <div v-else class="player-info">
       <div class="player-info__nick">{{playerPerformance.riotIdGameName + "#" + playerPerformance.riotIdTagline}}</div>
-      <div class="player-info__rank">{{playerPerformance.rank[0].tier}} {{playerPerformance.rank[0].rank}}</div>
+      <div class="player-info__rank" v-if="playerPerformance.rank?.length">{{playerPerformance.rank[0].tier}} {{playerPerformance.rank[0].rank}}</div>
     </div>
     <div class="kda-info">
       <div>{{playerPerformance.kills}} / {{playerPerformance.deaths}} / {{playerPerformance.assists}}</div>

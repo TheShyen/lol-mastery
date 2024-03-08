@@ -22,6 +22,7 @@ function getAccountInfo(puuid, region) {
 function getChampionMastery(puuid, region) {
     return axios.get(`https://${region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?api_key=${API_KEY}`)
         .then(response => response.data)
+
         .catch(err => console.error(err))
 }
 
@@ -42,6 +43,11 @@ function getMatch(id) {
         .then(response => response.data)
         .catch(err => console.error(err))
 }
+function getMatchTimeline(id) {
+    return axios.get(`https://europe.api.riotgames.com/lol/match/v5/matches/${id}/timeline?api_key=${API_KEY}`)
+        .then(response => response.data)
+        .catch(err => console.error(err))
+}
 async function createMatchListWithFullInfo(PUUID) {
     const matchList = await getMatchList(PUUID);
     const matchInfoPromises = matchList.map(id => getMatch(id));
@@ -54,6 +60,22 @@ function createPlayerGameStats(matchList, puuid) {
         playerInfo.matchID = item.metadata.matchId;
         return playerInfo;
     })
+}
+
+function getGoldDifference(frames) {
+    return frames.map(frame => calculateGoldDifference(frame.participantFrames))
+}
+
+function calculateGoldDifference(participantFrames) {
+    let sumFirstFive = 0;
+    let sumLastFive = 0;
+
+    for (let i = 1; i < 6; i++) {
+        sumFirstFive += participantFrames[i].totalGold;
+        sumLastFive += participantFrames[i + 5].totalGold;
+    }
+
+    return sumFirstFive - sumLastFive;
 }
 
 app.get('/:region/summoner/:userId', async (req, res) => {
@@ -86,15 +108,19 @@ app.get('/:region/match/:id', async (req, res) => {
     try {
         const matchId = req.params.id
         const region = req.params.region
-        const matchInfo = await getMatch(matchId)
+        const [matchInfo, matchTimeline] = await Promise.all( [getMatch(matchId), getMatchTimeline(matchId)])
         const playerStatsPromises = matchInfo.info.participants.map(async playerStat => {
             const accountInfo = await getAccountInfo(playerStat.puuid, region)
             playerStat.rank = await getGameModesStats(accountInfo.id, region)
             return playerStat
         })
         matchInfo.info.participants = await Promise.all(playerStatsPromises)
-
-        return res.json(matchInfo);
+        const goldDifference = getGoldDifference(matchTimeline.info.frames)
+        return res.json({
+            matchInfo,
+            matchTimeline,
+            goldDifference
+        });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Internal Server Error' });

@@ -43,6 +43,7 @@ onMounted(async () => {
     accountStore.getAccountInfo(route.params.nick as string)
         .then(summonerInfoData => {
           summonerInfo.value = summonerInfoData;
+          console.log(summonerInfo.value)
           getChampForBanner();
         }),
     (!itemStore.items) ? itemStore.getItems() : Promise.resolve()
