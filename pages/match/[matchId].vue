@@ -13,7 +13,7 @@
             <div class="objectives">
               <template v-for="(object, objectName) of fullGameInfo.matchInfo.info.teams[0].objectives">
                 <div v-if="objectName != 'champion'" class="objectives__icon">
-                  <img :src="`/_nuxt/assets/objectIcons/${objectName}.svg`"/>
+                  <img :src="`/objectIcons/${objectName}.svg`"/>
                   <div class="objectives__text">
                     {{object.kills}}
                   </div>
