@@ -1,7 +1,7 @@
 import type {AllPlayerInfo} from "~/types/Player/PlayerInfo";
 import urlConstruction from "~/utils/UrlConstructor";
 import type {AllMatchData} from "~/types/AllMatchData";
-const proxyUrl = 'https://lol-mastery-server.netlify.app/.netlify/functions/api/'
+const proxyUrl = import.meta.env.VITE_APP_PROXY_URL
 export async function getSummoner(nick: string, region: string): Promise<AllPlayerInfo> {
   return await $fetch(urlConstruction(proxyUrl, `${region}/summoner/${nick}`))
 }
