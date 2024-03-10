@@ -78,6 +78,10 @@ function calculateGoldDifference(participantFrames) {
     return sumFirstFive - sumLastFive;
 }
 
+function getChampionNames(data) {
+  return data.info.participants.map(player => player.championName)
+}
+
 app.get('/:region/summoner/:userId', async (req, res) => {
     try {
         const nick = req.params.userId.split("+").join('/');
@@ -116,10 +120,17 @@ app.get('/:region/match/:id', async (req, res) => {
         })
         matchInfo.info.participants = await Promise.all(playerStatsPromises)
         const goldDifference = getGoldDifference(matchTimeline.info.frames)
+        const champions = getChampionNames(matchInfo)
+        const kills = {
+          playerKills: matchInfo.info.participants.map(player => player.kills),
+          allKills: [matchInfo.info.teams[0].objectives.champion.kills, matchInfo.info.teams[1].objectives.champion.kills]
+        }
         return res.json({
             matchInfo,
             matchTimeline,
-            goldDifference
+            goldDifference,
+            champions,
+            kills
         });
     } catch (error) {
         console.error(error);

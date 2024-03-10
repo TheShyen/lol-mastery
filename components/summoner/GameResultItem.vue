@@ -28,7 +28,6 @@
           <ItemInfoPopup :itemInfo="getItemById(playerPerformance[key])"/>
         </q-img>
       </template>
-    
     </div>
     <div v-if="matchTime">
       <div class="match-time">{{matchTime}}</div>
@@ -114,10 +113,10 @@ function getItemById(id: string) {
     width: 36px
     height: 36px
 .champion-items
-  display: flex
-  flex-wrap: wrap
-  flex-direction: row
-  max-width: 95px
+  display: grid
+  grid-template-columns: 1fr 1fr 1fr 1fr
+  grid-template-rows: 1fr 1fr
+  gap: 1px
   &__img
     width: 20px
     height: 20px

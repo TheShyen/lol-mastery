@@ -76,6 +76,9 @@
         <DamageDealt :data="fullGameInfo.matchInfo"/>
         <TeamGoldAdvantage :data="fullGameInfo.goldDifference"/>
       </section>
+      <section>
+        <DefaultDataGraph/>
+      </section>
     </div>
   </main>
 </template>
@@ -86,12 +89,14 @@ import {getGameResult} from "~/utils/getGameResult";
 import DamageDealt from "~/components/graphs/DamageDealt.vue";
 import type {AllMatchData} from "~/types/AllMatchData";
 import TeamGoldAdvantage from "~/components/graphs/TeamGoldAdvantage.vue";
+import MatchAnalysisGraph from "~/components/graphs/DefaultDataGraph.vue";
+import DefaultDataGraph from "~/components/graphs/DefaultDataGraph.vue";
 
 const route = useRoute()
 const router = useRouter()
 const accountStore = useAccountStore()
 
-const fullGameInfo = ref<AllMatchData | null>(null)
+const fullGameInfo = shallowRef<AllMatchData | null>(null)
 onMounted(async () => {
   fullGameInfo.value = await accountStore.getGameInfo(route.params.matchId as string)
   console.log(fullGameInfo.value)
