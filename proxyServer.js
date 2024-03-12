@@ -81,6 +81,13 @@ function calculateGoldDifference(participantFrames) {
 function getChampionNames(data) {
   return data.info.participants.map(player => player.championName)
 }
+function trimArray(arr) {
+    return arr.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+}
+
+function cteateTeamData(data) {
+    return [trimArray(data.playersData.slice(0,5)), trimArray(data.playersData.slice(5))]
+}
 
 app.get('/:region/summoner/:userId', async (req, res) => {
     try {
@@ -120,17 +127,41 @@ app.get('/:region/match/:id', async (req, res) => {
         })
         matchInfo.info.participants = await Promise.all(playerStatsPromises)
         const goldDifference = getGoldDifference(matchTimeline.info.frames)
-        const champions = getChampionNames(matchInfo)
+        const matchChampions = getChampionNames(matchInfo)
+
         const kills = {
-          playerKills: matchInfo.info.participants.map(player => player.kills),
-          allKills: [matchInfo.info.teams[0].objectives.champion.kills, matchInfo.info.teams[1].objectives.champion.kills]
+            playersData: matchInfo.info.participants.map(player => player.kills),
+            teamData: [matchInfo.info.teams[0].objectives.champion.kills, matchInfo.info.teams[1].objectives.champion.kills],
+            name: 'championKill'
         }
+
+        const goldEarned = {
+            playersData: matchInfo.info.participants.map(player => player.goldEarned),
+            teamData: [],
+            name: 'goldEarned'
+        }
+        goldEarned.teamData = cteateTeamData(goldEarned)
+
+        const wardsPlaced = {
+            playersData: matchInfo.info.participants.map(player => player.wardsPlaced),
+            teamData: [],
+            name: 'wardsPlaced'
+        }
+        wardsPlaced.teamData = cteateTeamData(wardsPlaced)
+
+        const creepStat = {
+            playersData: matchInfo.info.participants.map(player => player.totalAllyJungleMinionsKilled + player.totalMinionsKilled),
+            teamData: [],
+            name: 'creepStat'
+        }
+        creepStat.teamData = cteateTeamData(creepStat)
+
         return res.json({
             matchInfo,
             matchTimeline,
             goldDifference,
-            champions,
-            kills
+            matchChampions,
+            dataForGraphs: [kills, goldEarned, wardsPlaced, creepStat]
         });
     } catch (error) {
         console.error(error);

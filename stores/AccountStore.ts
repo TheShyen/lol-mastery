@@ -5,7 +5,7 @@ import {getFromLocalStorage} from "~/utils/getFromLocalStorage";
 export const useAccountStore = defineStore('account', () => {
   const isLoading = ref(false)
   const region = ref(REGION_NAME.RU)
-  
+  const matchChampions = ref<string[]>([])
   function setRegionFromLocalStorage() {
     const json = getFromLocalStorage('region')
     if (json) {
@@ -39,6 +39,7 @@ export const useAccountStore = defineStore('account', () => {
   return {
     isLoading,
     region,
+    matchChampions,
     setRegionFromLocalStorage,
     getAccountInfo,
     getGameInfo

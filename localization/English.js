@@ -36,6 +36,10 @@ export const EnglishDict = {
   riftHerald: 'Rift Herald',
   tower: 'Tower',
   recentGames: 'Recent games',
-  goldAdvantage: 'Team Gold Advantage'
+  goldAdvantage: 'Team Gold Advantage',
+  championKill: 'Champion Kill',
+  goldEarned: 'Gold Earned',
+  wardsPlaced: 'Wards Placed',
+  creepStat: 'CS'
 
 }

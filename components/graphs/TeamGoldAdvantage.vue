@@ -71,7 +71,7 @@ onMounted(() => {
   align-items: center
   margin-top: 30px
   width: 35em
-  background-color: #282828
+  background-color: $content-bg-color
   &__title
     margin-top: 10px
     color: $blue-color

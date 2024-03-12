@@ -36,5 +36,9 @@ export const RussianDict = {
   riftHerald: 'Герольд Бездны',
   tower: 'Башня',
   recentGames: 'Недавние игры',
-  goldAdvantage: 'Командное преимущество в золоте'
+  goldAdvantage: 'Командное преимущество в золоте',
+  championKill: 'Чемпионов убито',
+  goldEarned: 'Получено золота',
+  wardsPlaced: 'Установлено тотемов',
+  creepStat: 'Добивания'
 }
