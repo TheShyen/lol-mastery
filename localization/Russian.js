@@ -40,5 +40,9 @@ export const RussianDict = {
   championKill: 'Чемпионов убито',
   goldEarned: 'Получено золота',
   wardsPlaced: 'Установлено тотемов',
-  creepStat: 'Добивания'
+  creepStat: 'Добивания',
+  CHALLENGER: 'Претендент',
+  wins: 'Побед',
+  losses: 'Поражений',
+  bestPlayers: 'Лучшие игроки'
 }

@@ -40,6 +40,10 @@ export const EnglishDict = {
   championKill: 'Champion Kill',
   goldEarned: 'Gold Earned',
   wardsPlaced: 'Wards Placed',
-  creepStat: 'CS'
+  creepStat: 'CS',
+  CHALLENGER: 'Challenger',
+  wins: 'Wins',
+  losses: 'Defeats',
+  bestPlayers: 'Best players'
 
 }

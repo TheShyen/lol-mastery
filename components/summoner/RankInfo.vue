@@ -1,7 +1,7 @@
 <template>
   <section class="rank-info" v-if="gameModesStats.length">
     <div class="ratings">
-      <img class="ratings__emblem" :src="getEmblemImagePath(gameModesStats)" alt="emblem"/>
+      <img class="ratings__emblem" :src="getEmblemImagePath(gameModesStats[0].tier)" alt="emblem"/>
       <div class="ratings__rank">{{ gameModesStats[0].tier }} {{ gameModesStats[0].rank }}</div>
       <div class="ratings__stats">Wins: {{ gameModesStats[0].wins }} Losses: {{ gameModesStats[0].losses }}</div>
       <div class="ratings__lp">LP: {{ gameModesStats[0].leaguePoints }}</div>
@@ -32,7 +32,7 @@ function calcWinrate(info: GameModeStat) {
 .rank-info
   display: flex
   justify-content: space-around
-  background-color: #282828
+  background-color: $content-bg-color
   margin-top: 10px
 
 .ratings

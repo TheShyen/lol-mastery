@@ -1,16 +1,16 @@
 <template>
   <q-header class="text-white header" reveal>
     <q-toolbar class="justify-evenly">
-      <q-toolbar-title class="text-h5 name" shrink >
+      <q-toolbar-title class="text-h5 name" shrink @click="route.push('/')">
         <q-avatar size="lg">
           <img alt="logo" src="/headerLogo.png">
         </q-avatar>
         LoLMastery
       </q-toolbar-title>
       <q-tabs class="tabs" >
-        <q-route-tab class="tab" name="images" @click="route.push('/')">{{ $t('main') }}</q-route-tab>
         <q-route-tab class="tab" name="videos" @click="route.push('/champions')">{{ $t('champions') }}</q-route-tab>
         <q-route-tab class="tab" name="articles" @click="route.push('/items')">{{ $t('items') }}</q-route-tab>
+        <q-route-tab class="tab" name="articles" @click="route.push('/topPlayers')">{{$t('bestPlayers')}}</q-route-tab>
       </q-tabs>
     </q-toolbar>
     <q-select borderless dark v-model="accountStore.region" :popup-content-style="regionStyle" class="region" :options="regionNamesArray" />
@@ -134,6 +134,11 @@ function searchAccount(val:string) {
 .name
   color: $gold-color
   font-family: "Helvetica Neue Bold", sans-serif
+  cursor: pointer
+  transition: 0.6s all
+  &:hover
+    transform: scale(1.05)
+    
 .header
   background: $primary-bg-color
 
