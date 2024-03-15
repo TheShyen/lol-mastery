@@ -1,6 +1,7 @@
 <template>
-  <main class="game-stats">
-    <div class="game-stats__wrapper" v-if="fullGameInfo">
+  <DownloadPageSpinner v-if="accountStore.isLoading"/>
+  <main class="game-stats" v-if="fullGameInfo">
+    <div class="game-stats__wrapper">
       <section class="match-table">
         <PlayersTableHeader :match-info="fullGameInfo.matchInfo.info"/>
         <PlayersTable :match-info="fullGameInfo.matchInfo.info"/>
@@ -23,6 +24,7 @@ import TeamGoldAdvantage from "~/components/graphs/TeamGoldAdvantage.vue";
 import PlayersTable from "~/components/match/PlayersTable.vue";
 import PlayersTableHeader from "~/components/match/PlayersTableHeader.vue";
 import TeamAnalysisGraphs from "~/components/match/TeamAnalysisGraphs.vue";
+import DownloadPageSpinner from "~/components/UI/DownloadPageSpinner.vue";
 
 const route = useRoute()
 const accountStore = useAccountStore()

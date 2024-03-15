@@ -48,6 +48,25 @@ function getMatchTimeline(id) {
         .then(response => response.data)
         .catch(err => console.error(err))
 }
+
+function getTopPlayers(region) {
+  return axios.get(`https://${region}.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/CHALLENGER/I?api_key=${API_KEY}`)
+    .then(response => response.data)
+    .catch(err => console.error(err))
+}
+
+function getSummonerInfoById(region, id) {
+  return axios.get(`https://${region}.api.riotgames.com/lol/summoner/v4/summoners/${id}?api_key=${API_KEY}`)
+    .then(response => response.data)
+    .catch(err => console.error(err))
+}
+
+function getNick(puuid) {
+  return axios.get(`https://europe.api.riotgames.com/riot/account/v1/accounts/by-puuid/${puuid}?api_key=${API_KEY}`)
+    .then(response => response.data)
+    .catch(err => console.error(err))
+}
+
 async function createMatchListWithFullInfo(PUUID) {
     const matchList = await getMatchList(PUUID);
     const matchInfoPromises = matchList.map(id => getMatch(id));
@@ -167,6 +186,28 @@ app.get('/:region/match/:id', async (req, res) => {
         console.error(error);
         return res.status(500).json({ error: 'Internal Server Error' });
     }
+})
+
+app.get('/:region/topPlayers', async (req, res) => {
+  try {
+    const region = req.params.region
+    let topPlayersList = await getTopPlayers(region)
+    topPlayersList = await Promise.all(topPlayersList.slice(0, 15).map(async item => {
+      const summonerInfo = await getSummonerInfoById(region, item.summonerId)
+      const nickInfo = await getNick(summonerInfo.puuid)
+      return {
+        ...item,
+        nickName: nickInfo.gameName + "#" + nickInfo.tagLine,
+        icon: summonerInfo.profileIconId
+      }
+    }))
+    return res.json(
+      topPlayersList
+    );
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
 })
 app.listen(4000, function() {
     console.log('Proxy server started on port 4000')

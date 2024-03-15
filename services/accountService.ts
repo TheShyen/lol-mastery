@@ -9,3 +9,7 @@ export async function getSummoner(nick: string, region: string): Promise<AllPlay
 export async function getGame(id: string, region: string): Promise<AllMatchData> {
   return await $fetch(urlConstruction(proxyUrl, `${region}/match/${id}`))
 }
+
+export async function getTopPlayers(region: string) {
+  return await $fetch(urlConstruction(proxyUrl, `${region}/topPlayers`))
+}

@@ -1,6 +1,6 @@
 <template>
     <q-layout view="hhh lpR fFf" class="bg-color">
-      <AllPagesHeader></AllPagesHeader>
+      <CommonHeader/>
       <slot/>
     </q-layout>
 </template>
