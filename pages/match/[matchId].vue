@@ -34,7 +34,9 @@ onMounted(async () => {
   fullGameInfo.value = await accountStore.getGameInfo(route.params.matchId as string)
   if (fullGameInfo.value) {
     accountStore.matchChampions = fullGameInfo.value.matchChampions
+    console.log(fullGameInfo.value)
   }
+
 })
 
 </script>

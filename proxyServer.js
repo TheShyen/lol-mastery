@@ -108,6 +108,23 @@ function cteateTeamData(data) {
     return [trimArray(data.playersData.slice(0,5)), trimArray(data.playersData.slice(5))]
 }
 
+function reformatTimelineData(data) {
+    return data.info.participants.map(item => {
+        return {
+            ...item,
+            frames: getAllItemsInTimestamp(data, item.participantId)
+
+        }
+    })
+}
+function getAllItemsInTimestamp(data, id) {
+    return data.info.frames.map(item =>
+        item.events.filter(event =>
+            event.participantId === id && event.type === "ITEM_PURCHASED"
+        )
+    ).filter(array => array.length > 0);
+}
+
 app.get('/:region/summoner/:userId', async (req, res) => {
     try {
         const nick = req.params.userId.split("+").join('/');
@@ -176,12 +193,14 @@ app.get('/:region/match/:id', async (req, res) => {
         }
         creepStat.teamData = cteateTeamData(creepStat)
 
+
         return res.json({
             matchInfo,
             matchTimeline,
             goldDifference,
             matchChampions,
-            dataForGraphs: [kills, goldEarned, wardsPlaced, creepStat]
+            dataForGraphs: [kills, goldEarned, wardsPlaced, creepStat],
+            playersItemsFrame: reformatTimelineData(matchTimeline)
         });
     } catch (error) {
         console.error(error);
