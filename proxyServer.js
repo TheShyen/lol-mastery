@@ -152,6 +152,7 @@ app.get('/:region/match/:id', async (req, res) => {
             playersData: matchInfo.info.participants.map(player => player.kills),
             teamData: [matchInfo.info.teams[0].objectives.champion.kills, matchInfo.info.teams[1].objectives.champion.kills],
             name: 'championKill'
+
         }
 
         const goldEarned = {
