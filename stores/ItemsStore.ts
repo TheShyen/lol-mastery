@@ -36,6 +36,9 @@ export const useItemStore = defineStore('items', () => {
       isLoading.value = false;
     }
   }
+  function getItemById(id: string) {
+    return items.value.find((item) => item.id == id)
+  }
   function groupItemsByCategory(items: ItemData[]) {
     groupedItems.value =  {
       startItems: [],
@@ -96,6 +99,7 @@ export const useItemStore = defineStore('items', () => {
     items,
     groupedItems,
     isLoading,
-    getItems
+    getItems,
+    getItemById
   }
 })

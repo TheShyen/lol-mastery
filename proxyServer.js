@@ -108,12 +108,13 @@ function cteateTeamData(data) {
     return [trimArray(data.playersData.slice(0,5)), trimArray(data.playersData.slice(5))]
 }
 
-function reformatTimelineData(data) {
-    return data.info.participants.map(item => {
+function reformatTimelineData(data, matchChampions) {
+    return data.info.participants.map((item, index) => {
         return {
             ...item,
-            frames: getAllItemsInTimestamp(data, item.participantId)
-
+            itemFrames: getAllItemsInTimestamp(data, item.participantId),
+            championName: matchChampions[index],
+            skillFrames: getAllSkillsInTimestamp(data, item.participantId)
         }
     })
 }
@@ -123,6 +124,13 @@ function getAllItemsInTimestamp(data, id) {
             event.participantId === id && event.type === "ITEM_PURCHASED"
         )
     ).filter(array => array.length > 0);
+}
+function getAllSkillsInTimestamp(data, id) {
+  return data.info.frames.flatMap(item =>
+    item.events.filter(event =>
+      event.participantId === id && event.type === "SKILL_LEVEL_UP"
+    )
+  );
 }
 
 app.get('/:region/summoner/:userId', async (req, res) => {
@@ -169,7 +177,6 @@ app.get('/:region/match/:id', async (req, res) => {
             playersData: matchInfo.info.participants.map(player => player.kills),
             teamData: [matchInfo.info.teams[0].objectives.champion.kills, matchInfo.info.teams[1].objectives.champion.kills],
             name: 'championKill'
-
         }
 
         const goldEarned = {
@@ -200,7 +207,7 @@ app.get('/:region/match/:id', async (req, res) => {
             goldDifference,
             matchChampions,
             dataForGraphs: [kills, goldEarned, wardsPlaced, creepStat],
-            playersItemsFrame: reformatTimelineData(matchTimeline)
+            playersItemsFrame: reformatTimelineData(matchTimeline, matchChampions)
         });
     } catch (error) {
         console.error(error);

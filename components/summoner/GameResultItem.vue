@@ -1,8 +1,9 @@
 <template>
   <div class="game-result">
-    <div class="champion-icon">
-      <div class="champion-icon__img">
-        <q-img :src="getSquareChampionImg(playerPerformance.championName+'.png')"></q-img>
+    <div class="icons">
+      <div class="champion-icon">
+        <q-img :src="getSquareChampionImg(playerPerformance.championName+'.png')" class="champion-icon__img"></q-img>
+        <div class="champion-icon__level">{{playerPerformance.champLevel}}</div>
       </div>
       <div class="champion-icon__runes"></div>
     </div>
@@ -25,7 +26,7 @@
           @click.stop
           :src="getItemImageUrl(playerPerformance[key] + '.png')"
         >
-          <ItemInfoPopup :itemInfo="getItemById(playerPerformance[key])"/>
+          <ItemInfoPopup :itemInfo="itemStore.getItemById(playerPerformance[key])"/>
         </q-img>
       </template>
     </div>
@@ -66,9 +67,6 @@ const props = withDefaults(defineProps<{
 const itemKeys = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6'];
 
 
-function getItemById(id: string) {
-  return itemStore.items.find((item) => item.id == id)
-}
 
 </script>
 
@@ -109,9 +107,15 @@ function getItemById(id: string) {
   color: #fff
   font-size: 13px
 .champion-icon
-  &__img
-    width: 36px
-    height: 36px
+  width: 36px
+  height: 36px
+  position: relative
+  &__level
+    position: absolute
+    top: 60%
+    left: 60%
+    color: #ffffff
+    font-size: 12px
 .champion-items
   display: grid
   grid-template-columns: 1fr 1fr 1fr 1fr
