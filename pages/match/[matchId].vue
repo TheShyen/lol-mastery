@@ -24,7 +24,7 @@
             align="justify"
             narrow-indicator
           >
-            <q-tab v-for="player of fullGameInfo.playersItemsFrame" :name="player.puuid">
+            <q-tab v-for="player of fullGameInfo.playersFrames" :name="player.puuid">
               <img
                 :src="getSquareChampionImg(player.championName + '.png')"
                 alt="spell"
@@ -37,22 +37,33 @@
           <q-separator />
           
           <q-tab-panels v-model="player" animated class="information" >
-            <q-tab-panel :name="playerTimeline.puuid" v-for="playerTimeline of fullGameInfo.playersItemsFrame" >
-              <div class="text-h6">{{ playerTimeline.championName }}</div>
+            <q-tab-panel :name="playerFrame.puuid" v-for="playerFrame of fullGameInfo.playersFrames" >
               <div class="timeline-list">
-                <div v-for="(playerFrames, index) of playerTimeline.itemFrames" class="timeline-item">
+                <div v-for="(playerFrames, index) of playerFrame.itemFrames" class="timeline-item">
                   <div class="timeline-info">
                     <div class="timeline-item__items">
                       <q-img  v-for="frame of playerFrames" :src="getItemImageUrl(frame.itemId + '.png')" width="36px">
                         <ItemInfoPopup :itemInfo="itemStore.getItemById(frame.itemId)"/>
                       </q-img>
-                      
                     </div>
                     <div class="timeline-item__time">{{formatMilliseconds(playerFrames[0].timestamp)}}</div>
                   </div>
-                  <img v-if="index !== playerTimeline.itemFrames.length - 1" src="/arrow.svg" width="32px" class="timeline-item__arrow">
+                  <img v-if="index !== playerFrame.itemFrames.length - 1" src="/arrow.svg" width="32px" class="timeline-item__arrow">
                 </div>
               </div>
+              <table class="skill-table">
+                <tr>
+                  <th></th>
+                  <th v-for="index of playerFrame.skillFrames.length">{{index}}</th>
+                </tr>
+                <tr v-for="i of 4">
+                  <td></td>
+                  <template  v-for="skill of playerFrame.skillFrames">
+                    <td v-if="skill.skillSlot === i">{{SKILLS[skill.skillSlot]}}</td>
+                    <td v-else></td>
+                  </template>
+                </tr>
+              </table>
             </q-tab-panel>
           </q-tab-panels>
         </q-card>
@@ -73,6 +84,7 @@ import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
 import dayjs from "dayjs";
 import {getItemImageUrl} from "~/services/getSpellImageUrl";
 import ItemInfoPopup from "~/components/ItemInfoPopup.vue";
+import {SKILLS} from "~/constants/skills";
 
 const route = useRoute()
 const accountStore = useAccountStore()
@@ -85,7 +97,7 @@ onMounted(async () => {
   fullGameInfo.value = await accountStore.getGameInfo(route.params.matchId as string)
   if (fullGameInfo.value) {
     accountStore.matchChampions = fullGameInfo.value.matchChampions
-    player.value = fullGameInfo.value.playersItemsFrame[0].puuid
+    player.value = fullGameInfo.value.playersFrames[0].puuid
     console.log(fullGameInfo.value)
   }
 })
@@ -135,13 +147,15 @@ function formatMilliseconds(milliseconds: number) {
   margin-top: 50px
   &__info
     background-color: $content-bg-color
-    width: 90%
 .timeline-list
   display: flex
   flex-direction: row
   flex-wrap: wrap
   row-gap: 15px
   column-gap: 10px
+  padding: 10px
+  border-radius: 5px
+  background-color: #212121
 .timeline-item
   display: flex
   align-items: center
@@ -158,5 +172,22 @@ function formatMilliseconds(milliseconds: number) {
   align-items: center
   color: #fff
 
-    
+.skill-table
+  border-collapse: collapse
+  width: 80%
+  margin: 30px auto
+
+
+.skill-table th, .skill-table td
+  border: 1px solid #3a3232
+  padding: 8px
+  text-align: center
+
+.skill-table th
+  background-color: #4b4242
+  color: #efefef
+  width: 30px
+.skill-table td:not(:empty)
+  background-color: lightblue
+
 </style>

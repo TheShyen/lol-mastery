@@ -207,7 +207,7 @@ app.get('/:region/match/:id', async (req, res) => {
             goldDifference,
             matchChampions,
             dataForGraphs: [kills, goldEarned, wardsPlaced, creepStat],
-            playersItemsFrame: reformatTimelineData(matchTimeline, matchChampions)
+            playersFrames: reformatTimelineData(matchTimeline, matchChampions)
         });
     } catch (error) {
         console.error(error);
