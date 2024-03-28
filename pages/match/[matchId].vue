@@ -33,36 +33,43 @@
               />
             </q-tab>
           </q-tabs>
-          
-          <q-separator />
-          
-          <q-tab-panels v-model="player" animated class="information" >
-            <q-tab-panel :name="playerFrame.puuid" v-for="playerFrame of fullGameInfo.playersFrames" >
+          <q-separator/>
+          <q-tab-panels v-model="player" animated class="information">
+            <q-tab-panel :name="playerFrame.puuid" v-for="(playerFrame, index) of fullGameInfo.playersFrames">
               <div class="timeline-list">
                 <div v-for="(playerFrames, index) of playerFrame.itemFrames" class="timeline-item">
                   <div class="timeline-info">
                     <div class="timeline-item__items">
-                      <q-img  v-for="frame of playerFrames" :src="getItemImageUrl(frame.itemId + '.png')" width="36px">
+                      <q-img v-for="frame of playerFrames" :src="getItemImageUrl(frame.itemId + '.png')" width="36px">
                         <ItemInfoPopup :itemInfo="itemStore.getItemById(frame.itemId)"/>
                       </q-img>
                     </div>
-                    <div class="timeline-item__time">{{formatMilliseconds(playerFrames[0].timestamp)}}</div>
+                    <div class="timeline-item__time">{{ formatMilliseconds(playerFrames[0].timestamp) }}</div>
                   </div>
-                  <img v-if="index !== playerFrame.itemFrames.length - 1" src="/arrow.svg" width="32px" class="timeline-item__arrow">
+                  <img v-if="index !== playerFrame.itemFrames.length - 1" src="/arrow.svg" alt="arrow" width="32px"
+                       class="timeline-item__arrow">
                 </div>
               </div>
               <table class="skill-table">
-                <tr>
-                  <th></th>
-                  <th v-for="index of playerFrame.skillFrames.length">{{index}}</th>
-                </tr>
+                <thead>
+                  <tr>
+                    <th class="skill-table__header"></th>
+                    <th class="skill-table__header" v-for="index of playerFrame.skillFrames.length">{{ index }}</th>
+                  </tr>
+                </thead>
+                <tbody>
                 <tr v-for="i of 4">
-                  <td></td>
-                  <template  v-for="skill of playerFrame.skillFrames">
-                    <td v-if="skill.skillSlot === i">{{SKILLS[skill.skillSlot]}}</td>
+                  <th>
+                    <q-img v-if="championsInfo" :src="getSpellImageURL(championsInfo[index].spells[i-1].image.full)" width="32px">
+                      <SkillInfoPopup :ability="championsInfo[index].spells[i-1]" :championKey="championsInfo[index].key"/>
+                    </q-img>
+                  </th>
+                  <template v-for="skill of playerFrame.skillFrames">
+                    <td v-if="skill.skillSlot === i">{{ SKILLS[skill.skillSlot as keyof typeof SKILLS] }}</td>
                     <td v-else></td>
                   </template>
                 </tr>
+                </tbody>
               </table>
             </q-tab-panel>
           </q-tab-panels>
@@ -82,23 +89,26 @@ import TeamAnalysisGraphs from "~/components/match/TeamAnalysisGraphs.vue";
 import DownloadPageSpinner from "~/components/UI/DownloadPageSpinner.vue";
 import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
 import dayjs from "dayjs";
-import {getItemImageUrl} from "~/services/getSpellImageUrl";
+import {getItemImageUrl, getSpellImageURL} from "~/services/getSpellImageUrl";
 import ItemInfoPopup from "~/components/ItemInfoPopup.vue";
 import {SKILLS} from "~/constants/skills";
+import type {ChampionDetailedInfo} from "~/types/ChampionInfo";
 
 const route = useRoute()
 const accountStore = useAccountStore()
 const itemStore = useItemStore()
 
 const player = ref('')
+const championsInfo = ref<ChampionDetailedInfo[] | null>(null)
 
 const fullGameInfo = shallowRef<AllMatchData | null>(null)
 onMounted(async () => {
   fullGameInfo.value = await accountStore.getGameInfo(route.params.matchId as string)
   if (fullGameInfo.value) {
-    accountStore.matchChampions = fullGameInfo.value.matchChampions
     player.value = fullGameInfo.value.playersFrames[0].puuid
+    championsInfo.value = await accountStore.getMatchChampions(fullGameInfo.value.matchChampions)
     console.log(fullGameInfo.value)
+    console.log(championsInfo.value)
   }
 })
 
@@ -122,7 +132,6 @@ function formatMilliseconds(milliseconds: number) {
   flex-direction: column
   align-items: center
 
-
 .graphs
   display: flex
   justify-content: space-around
@@ -135,18 +144,23 @@ function formatMilliseconds(milliseconds: number) {
   row-gap: 25px
   background-color: $content-bg-color
   margin-top: 15px
+
 .information
   background-color: $content-bg-color
   min-height: 500px
   overflow: hidden
+
 .timeline
   display: flex
   justify-content: center
   align-items: center
   flex-direction: column
   margin-top: 50px
+
   &__info
+    width: 100%
     background-color: $content-bg-color
+
 .timeline-list
   display: flex
   flex-direction: row
@@ -156,16 +170,20 @@ function formatMilliseconds(milliseconds: number) {
   padding: 10px
   border-radius: 5px
   background-color: #212121
+
 .timeline-item
   display: flex
   align-items: center
+
   &__arrow
     margin-left: 5px
     margin-bottom: 6px
+
   &__items
     display: flex
     column-gap: 5px
     cursor: pointer
+
 .timeline-info
   display: flex
   flex-direction: column
@@ -178,15 +196,19 @@ function formatMilliseconds(milliseconds: number) {
   margin: 30px auto
 
 
-.skill-table th, .skill-table td
+.skill-table__header, .skill-table td
   border: 1px solid #3a3232
   padding: 8px
   text-align: center
 
 .skill-table th
+  border: 1px solid #3a3232
   background-color: #4b4242
   color: #efefef
-  width: 30px
+
+.skill-table th img
+  cursor: pointer
+
 .skill-table td:not(:empty)
   background-color: lightblue
 

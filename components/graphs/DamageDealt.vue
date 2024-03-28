@@ -1,7 +1,7 @@
 <template>
   <div class="graph">
     <div class="graph__title">
-      Нанесенный урон
+      {{$t('damageDealt')}}
     </div>
     <canvas id="damage"></canvas>
     <div class="champions">

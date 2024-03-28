@@ -93,6 +93,7 @@ function calcProgress(value) {
     left: 50%
     transform: translate(-50%, -50%)
     color: $blue-text
+    text-align: center
   .red
     color: rgb(234,73,88)
 .divider

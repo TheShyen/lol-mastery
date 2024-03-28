@@ -8,12 +8,16 @@
         LoLMastery
       </q-toolbar-title>
       <q-tabs class="tabs" >
-        <q-route-tab class="tab" name="videos" @click="route.push('/champions')">{{ $t('champions') }}</q-route-tab>
-        <q-route-tab class="tab" name="articles" @click="route.push('/items')">{{ $t('items') }}</q-route-tab>
-        <q-route-tab class="tab" name="articles" @click="route.push('/topPlayers')">{{$t('bestPlayers')}}</q-route-tab>
+        <q-route-tab class="tab" name="videos" @click="goToSomePage('/champions')">{{ $t('champions') }}</q-route-tab>
+        <q-route-tab class="tab" name="articles" @click="goToSomePage('/items')">{{ $t('items') }}</q-route-tab>
+        <q-route-tab class="tab" name="articles" @click="goToSomePage('/topPlayers')">{{$t('bestPlayers')}}</q-route-tab>
       </q-tabs>
     </q-toolbar>
-    <q-select borderless dark v-model="accountStore.region" :popup-content-style="regionStyle" class="region" :options="regionNamesArray" />
+    <q-select borderless dark v-model="accountStore.region" :popup-content-style="regionStyle" class="region" :options="regionNamesArray">
+      <q-tooltip class="bg-yellow text-body2 text-black">
+        <strong class="tooltip">{{$t('serverTooltip')}}</strong>
+      </q-tooltip>
+    </q-select>
     <div class="search">
       <q-input
         v-model="search"
@@ -34,6 +38,7 @@
           {{$t('search')}}
         </template>
       </q-input>
+
       <q-list v-if="search.length || isFocus" separator>
         <q-item v-for="searchListItem in searchResult" v-ripple clickable class="search-item" @click="goToCharacterOrSummonerPage(searchListItem)">
           <q-item-section avatar v-if="typeof searchListItem !== 'string'">
@@ -58,8 +63,15 @@
           </q-item-section>
         </q-item>
       </q-list>
+      <q-tooltip class="bg-yellow text-body2 text-black" v-if="!(search.length || isFocus)">
+        <strong class="tooltip">{{$t('searchTooltip')}}</strong>
+      </q-tooltip>
     </div>
-    <q-select square filled v-model="languageStore.locale" color="black" bg-color="yellow" :popup-content-style="languageStyle" :options="languageArray" class="lang"/>
+    <q-select square filled v-model="languageStore.locale" color="black" bg-color="yellow" :popup-content-style="languageStyle" :options="languageArray" class="lang">
+      <q-tooltip class="bg-yellow text-body2 text-black">
+        <strong class="tooltip">{{$t('languageTooltip')}}</strong>
+      </q-tooltip>
+    </q-select>
   </q-header>
 </template>
 
@@ -70,6 +82,7 @@ import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
 import {nickConversion} from "~/utils/nickConversion";
 import type {VNodeRef} from "vue";
 import {regionNamesArray} from "~/constants/region";
+import {addToLocalStorage} from "~/utils/addToLocalStorage";
 
 const route = useRouter()
 const languageStore = useLangStore()
@@ -90,7 +103,7 @@ onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 })
 function handleClickOutside (event: Event) {
-  if(event.target !== searchElementRef.value.nativeEl) {
+  if(event.target !== searchElementRef.value?.nativeEl) {
     isFocus.value = false
   }
 }
@@ -109,6 +122,10 @@ watch(search, (newSearchValue) => {
   }
 })
 
+watch(() => accountStore.region, () => {
+  addToLocalStorage('region', JSON.stringify(accountStore.region))
+})
+
 function goToCharacterOrSummonerPage(champ: ChampionData | string) {
   if (searchResult.value.includes(t('nothingFound'))) {
     return;
@@ -121,6 +138,10 @@ function goToCharacterOrSummonerPage(champ: ChampionData | string) {
   search.value = ''
 }
 
+function goToSomePage(routePath: string) {
+  clearError({ redirect: routePath })
+}
+
 function searchAccount(val:string) {
   route.push('/summoner/' + nickConversion(val))
 }
@@ -131,9 +152,9 @@ function searchAccount(val:string) {
   height: 62px
   display: flex
   justify-content: center
+  font-family: "Helvetica Neue Bold", sans-serif
 .name
   color: $gold-color
-  font-family: "Helvetica Neue Bold", sans-serif
   cursor: pointer
   transition: 0.6s all
   &:hover
@@ -144,12 +165,10 @@ function searchAccount(val:string) {
 
 .tabs
   color: $gold-color
-  font-family: "Helvetica Neue Bold", sans-serif
   font-size: 22px
 .tab
   text-transform: none
 .region
-  font-family: "Helvetica Neue Bold", sans-serif
   font-size: 12px
   width: 80px
   margin-top: 3px
@@ -157,7 +176,6 @@ function searchAccount(val:string) {
   margin-left: 50px
 .lang
   color: $gold-color
-  font-family: "Helvetica Neue Bold", sans-serif
   font-size: 18px
   width: 80px
   margin-top: 3px
@@ -176,5 +194,6 @@ function searchAccount(val:string) {
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
-    
+.tooltip
+  font-family: "Helvetica Neue Bold", sans-serif
 </style>

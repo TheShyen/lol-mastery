@@ -1,5 +1,5 @@
 import type {Match} from "~/types/Player/PlayerInfo";
-import type {DataFramesType} from "~/types/ItemFramesType";
+import type {DataFramesType} from "~/types/DataFramesType";
 
 export interface AllMatchData {
   matchInfo: Match,

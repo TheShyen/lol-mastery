@@ -51,6 +51,7 @@
 
 <script setup lang="ts">
 import type {MatchInfo} from "~/types/Player/PlayerInfo";
+import {getGameResult} from "~/utils/getDataUtils/getGameResult";
 
 defineProps<{
   matchInfo: MatchInfo

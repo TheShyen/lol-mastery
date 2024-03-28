@@ -1,1 +1,1 @@
-export const version: string = '14.6.1'
+export const version: string = import.meta.env.VITE_APP_GAME_VERSION;

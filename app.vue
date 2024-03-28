@@ -1,12 +1,11 @@
 <template>
   <NuxtLayout>
-    <NuxtPage/>
+    <NuxtPage :key="langStore.locale"/>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 import {addToLocalStorage} from "~/utils/addToLocalStorage";
-import {getFromLocalStorage} from "~/utils/getFromLocalStorage";
 
 const route = useRoute()
 const langStore = useLangStore()
@@ -26,10 +25,6 @@ watch(() => langStore.locale, () => {
   champStore.getChampions()
   itemStore.getItems()
   addToLocalStorage('language', JSON.stringify(langStore.locale))
-})
-
-watch(() => accountStore.region, () => {
-  addToLocalStorage('region', JSON.stringify(accountStore.region))
 })
 
 watch(() => route.fullPath, () => {

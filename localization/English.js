@@ -22,6 +22,9 @@ export const EnglishDict = {
   ago: 'ago',
   victory: 'Victory',
   defeat: 'Defeat',
+  lowDifficulty: "Low",
+  mediumDifficulty: "Medium",
+  highDifficulty: "High",
   startItems: 'Starter Items',
   boots: 'Boots',
   epicItems: 'Epic Items',
@@ -44,6 +47,15 @@ export const EnglishDict = {
   CHALLENGER: 'Challenger',
   wins: 'Wins',
   losses: 'Defeats',
-  bestPlayers: 'Best players'
+  damageDealt: 'Damage dealt',
+  searchTooltip: 'Champion name or nickname(nickname#tag)',
+  serverTooltip: 'Server selection',
+  languageTooltip: 'Language',
+  bestPlayers: 'Best players',
+  mainPage: 'Go to Main page',
+  pageNotFound: 'Page not found',
+  pageNotFoundMessage: 'It seems something went wrong! The page you are requesting does not exist. It may be out of date, deleted, or an incorrect address was entered in the address bar.',
+  accountErrorName: 'Player not found',
+  accountError: "Unfortunately, the player was not found. Please check that you have selected the correct server and enter the player's nickname in the correct format: nickname#tag."
 
 }

@@ -10,7 +10,6 @@
 
 const store = useChampionStore()
 
-
 </script>
 
 <style scoped lang="sass">

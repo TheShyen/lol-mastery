@@ -27,7 +27,7 @@ export const useChampionStore = defineStore('champions', () => {
       return response.data[name]
     } catch (err) {
       console.error(err)
-      showError('error')
+      showError({cause: 'pageNotFound', statusMessage: 'pageNotFoundMessage'})
       return null
     } finally {
       isLoading.value = false;

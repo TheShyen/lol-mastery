@@ -22,15 +22,9 @@
 </template>
 
 <script setup lang="ts">
-
 import {useItemStore} from "~/stores/ItemsStore";
 import {getItemImageUrl} from "~/services/getSpellImageUrl";
-
-
 const store = useItemStore()
-
-
-
 
 </script>
 

@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {getFromLocalStorage} from "~/utils/getFromLocalStorage";
+import {getFromLocalStorage} from "~/utils/getDataUtils/getFromLocalStorage";
 import {addToLocalStorage} from "~/utils/addToLocalStorage";
 
 export const useAppStore = defineStore('app', () => {

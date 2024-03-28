@@ -2,11 +2,9 @@
   <NuxtLayout>
     <div class="error">
       <div class="info">
-        <div class="info__title">Страница не найдена</div>
-        <div class="info__desc">Кажется что-то пошло не так! Страница, которую вы запрашиваете, не существует. Возможно
-          она устарела, была удалена, или введен неверный адрес в адресной строке.
-        </div>
-        <MainButton @click="handleError" class="info__btn">Перейти на главную</MainButton>
+        <div class="info__title">{{t(error?.cause)}}</div>
+        <div class="info__desc">{{t(error?.statusMessage)}}</div>
+        <MainButton @click="handleError" class="info__btn">{{t('mainPage')}}</MainButton>
       </div>
     </div>
   </NuxtLayout>
@@ -14,7 +12,13 @@
 
 <script setup lang="ts">
 import MainButton from "~/components/UI/MainButton.vue";
-
+const { t } = useI18n()
+const props = defineProps<{
+  error: {
+    cause: string;
+    statusMessage: string;
+  }
+}>()
 const handleError = () => clearError({ redirect: '/' })
 </script>
 

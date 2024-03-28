@@ -1,5 +1,5 @@
 <template>
-  <q-menu fit anchor="bottom start" self="top left" dark square max-height="300">
+  <q-menu fit anchor="bottom start" self="top left" dark square max-height="300" v-if="itemInfo">
     <div class="item-info">
       <div class="item-info__name">{{ itemInfo.name }}</div>
       <div v-html="formatItemText(itemInfo.description)"></div>
@@ -9,10 +9,10 @@
 </template>
 
 <script setup lang="ts">
-import {formatItemText} from "~/utils/formatItemText";
+import {formatItemText} from "~/utils/reformatDataUtils/formatItemText";
 import type {ItemData} from "~/types/ItemsType";
 defineProps<{
-  itemInfo: ItemData
+  itemInfo: ItemData | undefined
 }>()
 </script>
 

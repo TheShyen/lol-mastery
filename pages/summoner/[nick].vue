@@ -25,14 +25,14 @@ import type {AllPlayerInfo} from "~/types/Player/PlayerInfo";
 import type {ChampionData} from "~/types/Champions";
 import type {PlayerPerformance} from "~/types/Player/PlayerPerformance";
 import type {VueI18n} from "vue-i18n";
-
-import {addToLocalStorage} from "~/utils/addToLocalStorage";
+import {getTimeElapsed} from "~/utils/getDataUtils/getTimeElapsed";
 
 
 const route = useRoute()
 const router = useRouter()
 const accountStore = useAccountStore()
 const championStore = useChampionStore()
+const langStore = useLangStore()
 const appStore = useAppStore()
 const summonerInfo = ref<AllPlayerInfo | null>(null)
 const champion = ref<ChampionData | null>(null)
@@ -43,12 +43,10 @@ onMounted(async () => {
     accountStore.getAccountInfo(route.params.nick as string)
         .then(summonerInfoData => {
           summonerInfo.value = summonerInfoData;
-          console.log(summonerInfo.value)
           getChampForBanner();
         }),
     (!itemStore.items) ? itemStore.getItems() : Promise.resolve()
   ]);
-
   if (summonerInfo.value) {
     appStore.addPlayerToRecentList(route.params.nick as string)
   }
@@ -78,7 +76,7 @@ function getMatchTimes(game: PlayerPerformance, $t: VueI18n['t']) {
       gameEndTime = item.info.gameEndTimestamp
     }
   })
-  return `${getTimeElapsed(gameEndTime, $t)} - ${Math.floor(game.timePlayed / 60)}${$t('minutes')}  ${game.timePlayed % 60}s`
+  return `${getTimeElapsed(gameEndTime, langStore.locale)} - ${Math.floor(game.timePlayed / 60)}${$t('minutes')}  ${game.timePlayed % 60}s`
 }
 
 

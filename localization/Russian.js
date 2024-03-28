@@ -21,6 +21,9 @@ export const RussianDict = {
   day: 'дня',
   ago: 'назад',
   victory: 'Победа',
+  lowDifficulty: "Низкая",
+  mediumDifficulty: "Средняя",
+  highDifficulty: "Высокая",
   defeat: 'Поражение',
   startItems: 'Начальные предметы',
   boots: 'Ботинки',
@@ -44,5 +47,14 @@ export const RussianDict = {
   CHALLENGER: 'Претендент',
   wins: 'Побед',
   losses: 'Поражений',
-  bestPlayers: 'Лучшие игроки'
+  damageDealt: 'Нанесённый урон',
+  searchTooltip: 'Имя чемпиона или никнейм(ник#тег)',
+  serverTooltip: 'Выбор сервера',
+  languageTooltip: 'Язык',
+  bestPlayers: 'Лучшие игроки',
+  mainPage: 'Перейти на главную',
+  pageNotFound: 'Страница не найдена',
+  pageNotFoundMessage: 'Кажется что-то пошло не так! Страница, которую вы запрашиваете, не существует. Возможно она устарела, была удалена, или введен неверный адрес в адресной строке.',
+  accountErrorName: 'Игрок не найден',
+  accountError: 'К сожалению, игрок не обнаружен. Пожалуйста, проверьте, что вы выбрали правильный сервер, и вводите ник игрока в правильном формате: ник#тег.'
 }

@@ -50,7 +50,7 @@ import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
 import {getItemImageUrl} from "~/services/getSpellImageUrl";
 import type {PlayerPerformance} from "~/types/Player/PlayerPerformance";
 import ItemInfoPopup from "~/components/ItemInfoPopup.vue";
-import {getGameResult} from "../../utils/getGameResult";
+import {getGameResult} from "~/utils/getDataUtils/getGameResult";
 
 const router = useRouter()
 const itemStore = useItemStore()
@@ -65,7 +65,6 @@ const props = withDefaults(defineProps<{
 })
 
 const itemKeys = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6'];
-
 
 
 </script>
@@ -111,8 +110,11 @@ const itemKeys = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6']
   height: 36px
   position: relative
   &__level
+    background-color: rgba(0, 0, 0, 0.8)
+    border-radius: 30%
+    line-height: 1
     position: absolute
-    top: 60%
+    top: 65%
     left: 60%
     color: #ffffff
     font-size: 12px

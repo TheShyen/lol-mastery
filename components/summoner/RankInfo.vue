@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import {getEmblemImagePath} from "~/utils/getEmblemImagePath";
+import {getEmblemImagePath} from "~/utils/getDataUtils/getEmblemImagePath";
 import Winrate from "~/components/graphs/Winrate.vue";
 import type {GameModeStat} from "~/types/Player/PlayerInfo";
 

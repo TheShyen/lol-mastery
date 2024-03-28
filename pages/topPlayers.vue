@@ -29,7 +29,7 @@
 
 <script setup >
 import {getProfileIconUrl} from "~/services/getProfileIconUrl";
-import {getEmblemImagePath} from "~/utils/getEmblemImagePath";
+import {getEmblemImagePath} from "~/utils/getDataUtils/getEmblemImagePath";
 import DownloadPageSpinner from "~/components/UI/DownloadPageSpinner.vue";
 
 const router = useRouter()

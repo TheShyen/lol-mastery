@@ -5,11 +5,11 @@
         <div class="info__left">
           <div class="role">
             <div class="head">{{ $t('role') }}</div>
-            <div class="subhead">{{ calcRole(champion.tags[0]) }}</div>
+            <div class="subhead">{{ getRole(champion.tags[0]) }}</div>
           </div>
           <div class="difficult">
             <div class="head">{{ $t('difficulty') }}</div>
-            <div class="subhead">{{ calcDifficult(champion.info.difficulty) }}</div>
+            <div class="subhead">{{ $t(getDifficult(champion.info.difficulty)) }}</div>
           </div>
         </div>
         <div class="info__divider"></div>
@@ -48,12 +48,12 @@
                 <div v-html="champion.passive.description" class="ability__desc"></div>
               </q-tab-panel>
               <q-tab-panel v-for='ability of champion.spells' :name="ability.name" class="ability" >
-                <div class="text-h5 ability__text">{{ ability.name }}</div>
+                <div class="text-h5 ability__name">{{ ability.name }}</div>
                 <div class="ability__cost-cooldown">{{$t('cost')}} {{ability?.costBurn}}</div>
                 <div class="ability__cost-cooldown">{{$t('cooldown')}} {{ability?.cooldownBurn}}</div>
                 <div class="ability__tooltip" v-html="reformatAbilityDesc(ability.tooltip)"></div>
                 <div v-html="ability.description" class="ability__desc"></div>
-                <div class="ability__text" style="padding-top: 10px">{{$t('symbolInfo')}}</div>
+                <div class="ability__api-info">{{$t('symbolInfo')}}</div>
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -78,8 +78,10 @@
 import {getPassiveImageURL, getSpellImageURL} from "~/services/getSpellImageUrl";
 import {getSpellVideoURL} from "~/services/getSpellVideoURL";
 import type {ChampionDetailedInfo} from "~/types/ChampionInfo";
-import {calcDifficult} from "~/utils/calcDifficult";
-import {calcRole} from "~/utils/calcRole";
+import {getDifficult} from "~/utils/getDataUtils/getDifficult";
+import {getRole} from "~/utils/getDataUtils/getRole";
+import {reformatAbilityDesc} from "~/utils/reformatDataUtils/reformatAbilityDesc";
+import {reformatChampionKey} from "~/utils/reformatDataUtils/reformatChampionKey";
 
 
 const props = defineProps<{
@@ -94,9 +96,7 @@ onMounted(() => {
 })
 const keys = ['Q', 'W', 'E', 'R']
 const tab = ref('')
-function reformatAbilityDesc(inputString: string) {
-  return inputString.replace(/{{(.*?)}}/g, '?');
-}
+
 </script>
 
 <style scoped lang="sass">
@@ -182,8 +182,12 @@ function reformatAbilityDesc(inputString: string) {
 .ability
   padding-bottom: 60px
   min-height: 500px
-  &__text
+  &__name
     color: $gold-color
+  &__api-info
+    font-size: 11px
+    padding-top: 10px
+    color: #fff
   &__desc
     color: $blue-color
     font-size: 14px
