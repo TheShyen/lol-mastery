@@ -38,13 +38,13 @@ const store = useItemStore()
 
   &__wrapper
     margin: 0 auto
-    max-width: 1300px
+    max-width: 1282px
     min-height: 800px
 
 .items-list
   display: flex
   flex-wrap: wrap
-  gap: 10px 10px
+  gap: 10px 6px
 
 .items-section
   display: flex

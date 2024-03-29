@@ -10,6 +10,7 @@
       <q-tabs class="tabs" >
         <q-route-tab class="tab" name="videos" @click="goToSomePage('/champions')">{{ $t('champions') }}</q-route-tab>
         <q-route-tab class="tab" name="articles" @click="goToSomePage('/items')">{{ $t('items') }}</q-route-tab>
+        <q-route-tab class="tab" name="articles" @click="goToSomePage('/topPlayers')">Руны</q-route-tab>
         <q-route-tab class="tab" name="articles" @click="goToSomePage('/topPlayers')">{{$t('bestPlayers')}}</q-route-tab>
       </q-tabs>
     </q-toolbar>
@@ -165,7 +166,7 @@ function searchAccount(val:string) {
 
 .tabs
   color: $gold-color
-  font-size: 22px
+  font-size: 20px
 .tab
   text-transform: none
 .region
