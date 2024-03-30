@@ -39,7 +39,6 @@ const store = useItemStore()
   &__wrapper
     margin: 0 auto
     max-width: 1282px
-    min-height: 800px
 
 .items-list
   display: flex
@@ -60,9 +59,8 @@ const store = useItemStore()
 .item
   text-align: center
   cursor: pointer
-
+  transition: 0.6s all
   &:hover
-    transition: 0.5s all
     transform: scale(1.1)
 
   &__icon
