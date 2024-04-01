@@ -9,31 +9,34 @@ export const useRunesAndSpellsStore = defineStore('runes', () => {
   const runes = ref<MainRuneType[]>([])
   const spells = ref<SummonerSpell[]>([])
 
-  let selectedRunesIds: (number | RuneType)[] = []
+  let selectedRunesIds: (number | RuneType)[] = [];
+
   function getPlayerRunes(runeIds: RuneSelection[]) {
     return runeIds.map(item => {
-      item.selections.map(selectedRuneId => {
-        selectedRunesIds.push(selectedRuneId.perk)
-      })
-      return getRune(item.style)
-    })
+      item.selections.forEach(selectedRuneId => {
+        selectedRunesIds.push(selectedRuneId.perk);
+      });
+      return getRune(item.style);
+    });
   }
+
   function createRunesArray(runeIds: RuneSelection[]) {
-    const runes = getPlayerRunes(runeIds)
+    const runes = getPlayerRunes(runeIds);
     return runes.flatMap(item => {
       if (item) {
-        return item.slots.flatMap(item => {
-          return item.runes.map(item => item)
-        })
+        return item.slots.flatMap(slot => {
+          return slot.runes.map(rune => rune);
+        });
       }
-    })
+    });
   }
+
   function getSelectedRunes(runeIds: RuneSelection[]) {
-    selectedRunesIds = []
-    const allRunes = createRunesArray(runeIds)
+    selectedRunesIds = [];
+    const allRunes = createRunesArray(runeIds);
     return selectedRunesIds.map(runeId => {
-      return allRunes.find(item => item?.id == runeId)
-    })
+      return allRunes.find(item => item?.id == runeId);
+    });
   }
   function getRune(id: number) {
     return runes.value.find(item => item.id == id)
