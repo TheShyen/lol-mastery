@@ -81,11 +81,7 @@ export interface PlayerPerformance {
             flex: number;
             offense: number
         };
-        styles: {
-            description: string;
-            selections: PerkDescription[];
-            style: number;
-        };
+        styles: RuneSelection;
     };
     physicalDamageDealt: number;
     physicalDamageDealtToChampions: number;
@@ -162,9 +158,15 @@ export interface PlayerPerformance {
     wardsPlaced: number;
     win: boolean;
 }
-interface PerkDescription {
+export interface PerkDescription {
     perk: number;
     var1: number;
     var2: number;
     var3: number;
+}
+
+export interface RuneSelection {
+    description: string;
+    selections: PerkDescription[];
+    style: number;
 }

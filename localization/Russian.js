@@ -2,6 +2,7 @@ export const RussianDict = {
   champions: 'Чемпионы',
   main: 'Главная',
   items: 'Предметы',
+  runes: 'Руны',
   slogan: 'Анализируй. Изучай. Побеждай.',
   mainChampPromo: 'Изучай сильные и слабые стороны чемпионов',
   role: 'Роль',

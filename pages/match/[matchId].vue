@@ -8,73 +8,16 @@
       </section>
       <section class="graphs">
         <DamageDealt :data="fullGameInfo.matchInfo"/>
-        <TeamGoldAdvantage :data="fullGameInfo.goldDifference"/>
+        <TeamGoldAdvantage :data="fullGameInfo.goldDifference"/>git
       </section>
       <section class="team-analysis">
         <TeamAnalysisGraphs :data-for-graphs="fullGameInfo.dataForGraphs"/>
       </section>
-      <section class="timeline">
-        <q-card class="timeline__info">
-          <q-tabs
-            v-model="player"
-            dense
-            class="text-grey"
-            active-color="primary"
-            indicator-color="primary"
-            align="justify"
-            narrow-indicator
-          >
-            <q-tab v-for="player of fullGameInfo.playersFrames" :name="player.puuid">
-              <img
-                :src="getSquareChampionImg(player.championName + '.png')"
-                alt="spell"
-                width="36px"
-                height="36px"
-              />
-            </q-tab>
-          </q-tabs>
-          <q-separator/>
-          <q-tab-panels v-model="player" animated class="information">
-            <q-tab-panel :name="playerFrame.puuid" v-for="(playerFrame, index) of fullGameInfo.playersFrames">
-              <div class="timeline-list">
-                <div v-for="(playerFrames, index) of playerFrame.itemFrames" class="timeline-item">
-                  <div class="timeline-info">
-                    <div class="timeline-item__items">
-                      <q-img v-for="frame of playerFrames" :src="getItemImageUrl(frame.itemId + '.png')" width="36px">
-                        <ItemInfoPopup :itemInfo="itemStore.getItemById(frame.itemId)"/>
-                      </q-img>
-                    </div>
-                    <div class="timeline-item__time">{{ formatMilliseconds(playerFrames[0].timestamp) }}</div>
-                  </div>
-                  <img v-if="index !== playerFrame.itemFrames.length - 1" src="/arrow.svg" alt="arrow" width="32px"
-                       class="timeline-item__arrow">
-                </div>
-              </div>
-              <table class="skill-table">
-                <thead>
-                  <tr>
-                    <th class="skill-table__header"></th>
-                    <th class="skill-table__header" v-for="index of playerFrame.skillFrames.length">{{ index }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                <tr v-for="i of 4">
-                  <th>
-                    <q-img v-if="championsInfo" :src="getSpellImageURL(championsInfo[index].spells[i-1].image.full)" width="32px">
-                      <SkillInfoPopup :ability="championsInfo[index].spells[i-1]" :championKey="championsInfo[index].key"/>
-                    </q-img>
-                  </th>
-                  <template v-for="skill of playerFrame.skillFrames">
-                    <td v-if="skill.skillSlot === i">{{ SKILLS[skill.skillSlot as keyof typeof SKILLS] }}</td>
-                    <td v-else></td>
-                  </template>
-                </tr>
-                </tbody>
-              </table>
-            </q-tab-panel>
-          </q-tab-panels>
-        </q-card>
-      </section>
+      <DetailedInfoAboutPlayerInMatch
+        :players-frames="fullGameInfo.playersFrames"
+        :champions-info="championsInfo"
+        :players-perfomance="fullGameInfo.matchInfo.info.participants"
+      />
     </div>
   </main>
 </template>
@@ -87,34 +30,23 @@ import PlayersTable from "~/components/match/PlayersTable.vue";
 import PlayersTableHeader from "~/components/match/PlayersTableHeader.vue";
 import TeamAnalysisGraphs from "~/components/match/TeamAnalysisGraphs.vue";
 import DownloadPageSpinner from "~/components/UI/DownloadPageSpinner.vue";
-import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
-import dayjs from "dayjs";
-import {getItemImageUrl, getSpellImageURL} from "~/services/getSpellImageUrl";
-import ItemInfoPopup from "~/components/ItemInfoPopup.vue";
-import {SKILLS} from "~/constants/skills";
 import type {ChampionDetailedInfo} from "~/types/ChampionInfo";
+import DetailedInfoAboutPlayerInMatch from "~/components/match/DetailedInfoAboutPlayerInMatch.vue";
+
 
 const route = useRoute()
 const accountStore = useAccountStore()
-const itemStore = useItemStore()
 
-const player = ref('')
+
 const championsInfo = ref<ChampionDetailedInfo[] | null>(null)
 
 const fullGameInfo = shallowRef<AllMatchData | null>(null)
 onMounted(async () => {
   fullGameInfo.value = await accountStore.getGameInfo(route.params.matchId as string)
   if (fullGameInfo.value) {
-    player.value = fullGameInfo.value.playersFrames[0].puuid
     championsInfo.value = await accountStore.getMatchChampions(fullGameInfo.value.matchChampions)
-    console.log(fullGameInfo.value)
-    console.log(championsInfo.value)
   }
 })
-
-function formatMilliseconds(milliseconds: number) {
-  return dayjs(milliseconds).format('mm:ss')
-}
 
 </script>
 
@@ -145,10 +77,6 @@ function formatMilliseconds(milliseconds: number) {
   background-color: $content-bg-color
   margin-top: 15px
 
-.information
-  background-color: $content-bg-color
-  min-height: 500px
-  overflow: hidden
 
 .timeline
   display: flex

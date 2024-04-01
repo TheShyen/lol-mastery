@@ -5,7 +5,14 @@
         <q-img :src="getSquareChampionImg(playerPerformance.championName+'.png')" class="champion-icon__img"></q-img>
         <div class="champion-icon__level">{{playerPerformance.champLevel}}</div>
       </div>
-      <div class="champion-icon__runes"></div>
+      <div class="summoner-spells">
+        <q-img @click.stop :src="getSpellUrl(playerPerformance.summoner1Id)" class="summoner-spells__icon">
+          <RuneOrSkillInfoPopup :data="findItem(runesAndSpellsStore.spells, playerPerformance.summoner1Id)"/>
+        </q-img>
+        <q-img @click.stop :src="getSpellUrl(playerPerformance.summoner2Id)" class="summoner-spells__icon">
+          <RuneOrSkillInfoPopup :data="findItem(runesAndSpellsStore.spells, playerPerformance.summoner2Id)"/>
+        </q-img>
+      </div>
     </div>
     <div v-if="!isMatchPage" class="game-result__status" :class="{red : !playerPerformance.win}">{{getGameResult(playerPerformance.win, $t)}}</div>
     <div v-else class="player-info">
@@ -47,15 +54,17 @@
 
 <script setup lang="ts">
 import {getSquareChampionImg} from "~/services/getChampionSquareImageUrl";
-import {getItemImageUrl} from "~/services/getSpellImageUrl";
+import {getItemImageUrl, getSpellImageURL} from "~/services/getSpellImageUrl";
 import type {PlayerPerformance} from "~/types/Player/PlayerPerformance";
 import ItemInfoPopup from "~/components/ItemInfoPopup.vue";
 import {getGameResult} from "~/utils/getDataUtils/getGameResult";
+import {findItem} from "~/utils/getDataUtils/findItem";
 
 const router = useRouter()
 const itemStore = useItemStore()
+const runesAndSpellsStore = useRunesAndSpellsStore()
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   playerPerformance: PlayerPerformance,
   playersInfo?: PlayerPerformance[],
   matchTime?: string
@@ -66,6 +75,9 @@ const props = withDefaults(defineProps<{
 
 const itemKeys = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6'];
 
+function getSpellUrl(target: number) {
+  return getSpellImageURL(findItem(runesAndSpellsStore.spells, target)?.id + '.png')
+}
 
 </script>
 
@@ -96,15 +108,19 @@ const itemKeys = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6']
     font-size: 10px
     font-style: italic
     opacity: 0.7
+
 .red
   color: #ff5859
+
 .kda-info
   min-width: 70px
   color: $blue-color
   text-align: center
+
 .match-time
   color: #fff
   font-size: 13px
+
 .champion-icon
   width: 36px
   height: 36px
@@ -118,6 +134,14 @@ const itemKeys = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6']
     left: 60%
     color: #ffffff
     font-size: 12px
+
+.summoner-spells
+  display: flex
+  gap: 0 2px
+  &__icon
+    transition: 0.6s all
+    &:hover
+      transform: scale(1.15)
 .champion-items
   display: grid
   grid-template-columns: 1fr 1fr 1fr 1fr
@@ -129,6 +153,9 @@ const itemKeys = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6']
     margin: 1px
     border-radius: 4px
     cursor: pointer
+    transition: 0.6s all
+    &:hover
+      transform: scale(1.15)
 
 .match-champions
   display: flex
@@ -144,4 +171,7 @@ const itemKeys = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6']
     margin: 1px
     border-radius: 4px
     cursor: pointer
+    transition: 0.6s all
+    &:hover
+      transform: scale(1.15)
 </style>

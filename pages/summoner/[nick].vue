@@ -50,6 +50,7 @@ onMounted(async () => {
   if (summonerInfo.value) {
     appStore.addPlayerToRecentList(route.params.nick as string)
   }
+
 })
 
 async function getChampForBanner() {

@@ -2,6 +2,7 @@ export const EnglishDict = {
   main: 'Main',
   items: 'Items',
   champions: 'Champions',
+  runes: 'Runes',
   slogan: 'Analyze. Study. Win.',
   mainChampPromo: 'Learn the strengths and weaknesses of champions',
   role: 'Role',

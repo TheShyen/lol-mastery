@@ -1,8 +1,8 @@
 <template>
-  <q-menu fit anchor="bottom start" self="top left" dark square v-if="ability">
+  <q-menu fit anchor="bottom start" self="top left" dark square v-if="data">
     <div class="rune">
-      <div class="text-h6 rune__name">{{ ability.name }}</div>
-      <div class="rune__desc" v-html="ability.longDesc"></div>
+      <div class="text-h6 rune__name">{{ data.name }}</div>
+      <div class="rune__desc" v-html="data.longDesc || data.description"></div>
     </div>
   </q-menu>
 </template>
@@ -10,9 +10,10 @@
 <script setup lang="ts">
 
 import type {RuneType} from "~/types/RunesType";
+import type {SummonerSpell} from "~/types/SummonerSpellsType";
 
 defineProps<{
-  ability: RuneType,
+  data: RuneType | SummonerSpell,
 }>()
 </script>
 

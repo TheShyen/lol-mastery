@@ -2,16 +2,7 @@
   <section class="runes">
     <div class="runes__wrapper">
       <div class="runes-block">
-        <div class="rune" v-for="rune of runesStore.runes">
-          <div class="rune__name text-h6">{{ rune.name }}</div>
-          <div v-for="slot of rune.slots" class="runeSlots">
-            <div v-for="runeFromSlot of slot.runes">
-              <q-img :src="getRuneImageUrl(runeFromSlot.icon)" height="48px" width="48px" class="runeSlots__icon">
-                <RuneInfoPopup :ability="runeFromSlot"/>
-              </q-img>
-            </div>
-          </div>
-        </div>
+        <RunesBranch v-for="rune of runesStore.runes" :runes="rune"/>
       </div>
     
     </div>
@@ -19,12 +10,11 @@
 </template>
 
 <script setup lang="ts">
-import {getRuneImageUrl} from "~/services/getRuneImageUrl"
+import {useRunesAndSpellsStore} from "~/stores/RunesAndSpellsStore";
 
-const runesStore = useRunesStore()
+const runesStore = useRunesAndSpellsStore()
 onMounted(async () => {
   await runesStore.getRunes()
-  console.log(runesStore.runes)
 })
 </script>
 

@@ -11,19 +11,27 @@ const route = useRoute()
 const langStore = useLangStore()
 const champStore = useChampionStore()
 const itemStore = useItemStore()
+const runesAndSpellsStore = useRunesAndSpellsStore()
 const appStore = useAppStore()
 const accountStore = useAccountStore()
 
-onMounted(() => {
+onMounted(async () => {
   langStore.setLanguageFromLocalStorage()
   appStore.setRecentPlayersFromLocalStorage()
   accountStore.setRegionFromLocalStorage()
-  champStore.getChampions()
-  itemStore.getItems()
+  await Promise.all([
+    champStore.getChampions(),
+    itemStore.getItems(),
+    runesAndSpellsStore.getRunes(),
+    runesAndSpellsStore.getSummonerSpells()
+  ])
+  console.log(runesAndSpellsStore.runes)
 })
 watch(() => langStore.locale, () => {
   champStore.getChampions()
   itemStore.getItems()
+  runesAndSpellsStore.getRunes()
+  runesAndSpellsStore.getSummonerSpells()
   addToLocalStorage('language', JSON.stringify(langStore.locale))
 })
 
@@ -34,5 +42,12 @@ watch(() => route.fullPath, () => {
   if (!champStore.champions.length) {
     champStore.getChampions()
   }
+  if (!runesAndSpellsStore.runes.length) {
+    runesAndSpellsStore.getRunes()
+  }
+  if (!runesAndSpellsStore.spells.length) {
+    runesAndSpellsStore.getSummonerSpells()
+  }
+
 })
 </script>
