@@ -53,4 +53,7 @@
   font-family: "Helvetica Neue Bold", sans-serif
   color: #FFFFFF
 
+@media (max-width: 1300px)
+  .slogan
+    font-size: 44px
 </style>

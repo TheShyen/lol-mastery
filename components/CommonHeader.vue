@@ -1,13 +1,14 @@
 <template>
   <q-header class="text-white header" reveal>
-    <q-toolbar class="justify-evenly">
-      <q-toolbar-title class="text-h5 name" shrink @click="route.push('/')">
+    <q-toolbar class="toolbar">
+      <q-btn flat @click="drawer = !drawer" color="yellow" round dense icon="menu" v-if="windowWidth < 1300"/>
+      <q-toolbar-title class="name" shrink @click="route.push('/')">
         <q-avatar size="lg">
           <img alt="logo" src="/headerLogo.png">
         </q-avatar>
         LoLMastery
       </q-toolbar-title>
-      <q-tabs class="tabs" >
+      <q-tabs class="tabs" v-if="windowWidth >= 1300">
         <q-route-tab class="tab" name="videos" @click="goToSomePage('/champions')">{{ $t('champions') }}</q-route-tab>
         <q-route-tab class="tab" name="articles" @click="goToSomePage('/items')">{{ $t('items') }}</q-route-tab>
         <q-route-tab class="tab" name="articles" @click="goToSomePage('/runes')">Руны</q-route-tab>
@@ -74,6 +75,17 @@
       </q-tooltip>
     </q-select>
   </q-header>
+  <q-drawer
+    v-model="drawer"
+    :width="300"
+  >
+      <q-tabs class="drawer tabs" vertical>
+        <q-route-tab class="tab" name="videos" @click="goToSomePage('/champions')">{{ $t('champions') }}</q-route-tab>
+        <q-route-tab class="tab" name="articles" @click="goToSomePage('/items')">{{ $t('items') }}</q-route-tab>
+        <q-route-tab class="tab" name="articles" @click="goToSomePage('/runes')">Руны</q-route-tab>
+        <q-route-tab class="tab" name="articles" @click="goToSomePage('/topPlayers')">{{$t('bestPlayers')}}</q-route-tab>
+      </q-tabs>
+  </q-drawer>
 </template>
 
 <script setup lang="ts">
@@ -84,6 +96,8 @@ import {nickConversion} from "~/utils/nickConversion";
 import type {VNodeRef} from "vue";
 import {regionNamesArray} from "~/constants/region";
 import {addToLocalStorage} from "~/utils/addToLocalStorage";
+import {dom} from "quasar";
+import width = dom.width;
 
 const route = useRouter()
 const languageStore = useLangStore()
@@ -95,10 +109,15 @@ const {t} = useI18n()
 const languageStyle = { backgroundColor: '#F2E437', fontFamily: 'Helvetica Neue Bold'}
 const regionStyle = {fontFamily: 'Helvetica Neue Bold', fontSize: '12px'}
 
+const windowWidth = ref(window.innerWidth)
+const drawer = ref(false)
 const search = ref('')
 const searchResult = ref<(ChampionData | string)[]>([])
 const isFocus = ref(false)
 const searchElementRef = ref<VNodeRef>('')
+
+window.addEventListener('resize', handleResize);
+
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
@@ -146,6 +165,10 @@ function goToSomePage(routePath: string) {
 function searchAccount(val:string) {
   route.push('/summoner/' + nickConversion(val))
 }
+
+function handleResize() {
+  windowWidth.value = window.innerWidth
+}
 </script>
 
 <style scoped lang="sass">
@@ -154,10 +177,14 @@ function searchAccount(val:string) {
   display: flex
   justify-content: center
   font-family: "Helvetica Neue Bold", sans-serif
+  
+.toolbar
+  justify-content: space-evenly
 .name
   color: $gold-color
   cursor: pointer
   transition: 0.6s all
+  font-size: 24px
   &:hover
     transform: scale(1.05)
     
@@ -171,10 +198,8 @@ function searchAccount(val:string) {
   text-transform: none
 .region
   font-size: 12px
-  width: 80px
+  width: 110px
   margin-top: 3px
-  margin-right: 10px
-  margin-left: 50px
 .lang
   color: $gold-color
   font-size: 18px
@@ -184,7 +209,7 @@ function searchAccount(val:string) {
   margin-left: 50px
 .search
   margin-top: 3px
-  width: 20em
+  min-width: 200px
 .search-item
   background-color: $primary-bg-color
   &:hover
@@ -197,4 +222,16 @@ function searchAccount(val:string) {
     text-overflow: ellipsis
 .tooltip
   font-family: "Helvetica Neue Bold", sans-serif
+.drawer
+  background-color: $secondary-bg-color
+
+  
+@media (max-width: 1300px)
+  .toolbar
+    width: 400px
+    justify-content: center
+  .region
+    width: 100px
+  .search
+    width: 250px
 </style>
